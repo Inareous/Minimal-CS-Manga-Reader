@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minimal_CS_Manga_Reader.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,15 @@ namespace Minimal_CS_Manga_Reader
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
+        public MainView ViewModel { get; private set; }
+
         public MainWindow()
         {
+            ViewModel = new MainView();
             InitializeComponent();
+            DataContext = ViewModel;
         }
     }
 }
