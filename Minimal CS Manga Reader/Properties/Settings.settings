@@ -5,5 +5,17 @@
     <Setting Name="Path" Type="System.String" Scope="User">
       <Value Profile="(Default)">FirstTimeNotSet</Value>
     </Setting>
+    <Setting Name="ZoomScale" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="ScrollIncrement" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="ImageMargin" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="Background" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Silver</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

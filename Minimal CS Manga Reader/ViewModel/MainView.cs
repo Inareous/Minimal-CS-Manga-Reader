@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
+using Minimal_CS_Manga_Reader.Properties;
 using PropertyChanged;
 using ReactiveUI;
 
@@ -19,12 +20,12 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public ReactiveCommand<Unit, Unit> Submit { get; }
 
         #region Toolbar Stuff
-        public int ImageMargin { get; set; } = 30; // 30 is placeholder, edit to settings later
-        public string ImageMarginX { get; set; } // 30 is placeholder, edit to settings later
-        public int ScrollIncrement { get; set; } = 100; // 100 is placeholder, edit to settings later
-        public string ScrollIncrementX { get; set; }  // 100 is placeholder, edit to settings later
-        public int ZoomScale { get; set; } = 100; // 100 is placeholder, edit to settings later
-        public double ZoomScaleX { get; set; } = 1;
+        public int ImageMargin { get; set; } = Settings.Default.ImageMargin ;
+        public string ImageMarginX { get; set; }
+        public int ScrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
+        public string ScrollIncrementX { get; set; }
+        public int ZoomScale { get; set; } = Settings.Default.ZoomScale;
+        public double ZoomScaleX { get; set; }
         public ReactiveCommand<Unit, int> IncreaseZoom { get; }
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
 
@@ -45,8 +46,12 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public MainView()
         {
             DataSource.Initialize();
+            // INIT
             ActiveDirShow = DataSource._activeDirShow;
+            ImageMarginX = $"0,0,0,{ImageMargin}";
             ScrollIncrementX = ScrollIncrement.ToString();
+            ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
+            // --
             #region Zoom
             IncreaseZoom = ReactiveCommand.Create(() => ZoomScale += 10);
             DecreaseZoom = ReactiveCommand.Create(() => ZoomScale >= 11 ? ZoomScale -= 10 : 10);
@@ -54,15 +59,13 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 .Where(ZoomScale => ZoomScale < 10)
                 .Subscribe(x => ZoomScale = 10);
             this.WhenAnyValue(x => x.ZoomScale)
-                .Subscribe(x => ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999);
+                .Subscribe(x =>  ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999);
             #endregion
 
             this.WhenAnyValue(x => x.ImageMargin)
-                .Subscribe(x => ImageMarginX = $"0,0,0,{ImageMargin}");
+                .Subscribe(x =>  ImageMarginX = $"0,0,0,{ImageMargin}");
             this.WhenAnyValue(x => x.ActiveDirShow)
-                .Subscribe(x => {
-                    DataSource._activeDir = DataSource._path + "\\" + ActiveDirShow;
-                    UpdateAsync().ConfigureAwait(true); });
+                .Subscribe(x => UpdateAsync().ConfigureAwait(true));
             this.WhenAnyValue(x => x.ImageList.Count)
                 .Subscribe(x => ImageCount = ImageList.Count);
             this.WhenAnyValue(x => x.ScrollIncrement)
@@ -76,6 +79,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
         public async Task UpdateAsync()
         {
+            DataSource._activeDir = DataSource._path + "\\" + ActiveDirShow;
             ts.Cancel();
             T?.Wait(ts.Token);
             ts = new CancellationTokenSource();
