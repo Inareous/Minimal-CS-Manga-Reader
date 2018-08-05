@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
         xmlns:local="clr-namespace:Minimal_CS_Manga_Reader"
+        xmlns:scroll="clr-namespace:Minimal_CS_Manga_Reader.Helper"
         mc:Ignorable="d"
         Title="Minimal CS Manga Reader" Height="800" Width="1024">
     <Window.Resources>
@@ -104,9 +106,15 @@
         <Grid Row="1">
             <ScrollViewer
                 x:Name="Scrollviewer"
+                scroll:ScrollHelper.IsEnabled="True"
+                i:MouseWheel.Enhanced="true"
+                i:MouseWheel.Smoothing="None"
+                i:MouseWheel.Debouncing="None"
+                i:MouseWheel.ScrollSmoothing="None"
+                i:MouseWheel.ScrollMode="Auto"
+                i:MouseWheel.PhysicalVScrollIncrement="{Binding ScrollIncrementX}"
                 PanningMode="Both"
                 HorizontalScrollBarVisibility="Auto"
-                FocusVisualStyle="{x:Null}"
                 Focusable="True"
                 Height="{Binding Path=ActualHeight,
            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"

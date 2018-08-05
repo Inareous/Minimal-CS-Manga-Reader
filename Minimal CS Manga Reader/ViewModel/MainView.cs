@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
 using PropertyChanged;
 using ReactiveUI;
@@ -21,6 +22,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public int ImageMargin { get; set; } = 30; // 30 is placeholder, edit to settings later
         public string ImageMarginX { get; set; } // 30 is placeholder, edit to settings later
         public int ScrollIncrement { get; set; } = 100; // 100 is placeholder, edit to settings later
+        public string ScrollIncrementX { get; set; }  // 100 is placeholder, edit to settings later
         public int ZoomScale { get; set; } = 100; // 100 is placeholder, edit to settings later
         public double ZoomScaleX { get; set; } = 1;
         public ReactiveCommand<Unit, int> IncreaseZoom { get; }
@@ -44,6 +46,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         {
             DataSource.Initialize();
             ActiveDirShow = DataSource._activeDirShow;
+            ScrollIncrementX = ScrollIncrement.ToString();
             #region Zoom
             IncreaseZoom = ReactiveCommand.Create(() => ZoomScale += 10);
             DecreaseZoom = ReactiveCommand.Create(() => ZoomScale >= 11 ? ZoomScale -= 10 : 10);
@@ -62,6 +65,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                     UpdateAsync().ConfigureAwait(true); });
             this.WhenAnyValue(x => x.ImageList.Count)
                 .Subscribe(x => ImageCount = ImageList.Count);
+            this.WhenAnyValue(x => x.ScrollIncrement)
+                .Subscribe(x => ScrollIncrementX = ScrollIncrement.ToString());
         }
 
 
@@ -75,6 +80,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             T?.Wait(ts.Token);
             ts = new CancellationTokenSource();
             DataSource.ClearImageList();
+            ScrollHelper.Helper();
             T = await Task.Run(async () =>
             {
                 await DataSource.DirUpdatedAsync(ts.Token).ConfigureAwait(true);
