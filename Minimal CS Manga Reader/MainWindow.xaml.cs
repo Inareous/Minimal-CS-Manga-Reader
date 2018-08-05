@@ -28,6 +28,7 @@ namespace Minimal_CS_Manga_Reader
         public MainWindow()
         {
             ViewModel = new MainView();
+
             InitializeComponent();
             DataContext = ViewModel;
         }
