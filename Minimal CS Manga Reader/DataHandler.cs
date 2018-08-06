@@ -152,8 +152,12 @@ namespace Minimal_CS_Manga_Reader
         {
             try
             {
-                if (!ZipArchive.IsZipFile(file) && !RarArchive.IsRarFile(file)) FetchImagesFromDirectory(file, xBitmaps, token);
+                if (!ZipArchive.IsZipFile(file) && !RarArchive.IsRarFile(file))
+                {
+                    FetchImagesFromDirectory(file, xBitmaps, token);
+                }
                 else
+                {
                     using (Stream stream = File.Open(file, FileMode.Open))
                     using (var reader = ReaderFactory.Open(stream))
                     {
@@ -179,6 +183,7 @@ namespace Minimal_CS_Manga_Reader
                             }
                         }
                     }
+                }
             }
             catch (OperationCanceledException)
             {

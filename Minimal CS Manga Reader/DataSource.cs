@@ -20,7 +20,6 @@ namespace Minimal_CS_Manga_Reader.Model
             _path = Settings.Default
                 .Path; //Always assuming path exist since we will use context registry, no need for sanity check
 
-
         public static ReactiveList<string> _chapterListShow { get; set; }
 
         public static string _activeDir { get; set; }

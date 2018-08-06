@@ -107,7 +107,7 @@
                         Background :
                     </Label>
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
-                              FontSize="13" Width="100"  />
+                              FontSize="13" Width="100" />
                     <Separator />
                 </ToolBar>
             </ToolBarTray>

@@ -19,13 +19,15 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public MainView()
         {
             #region INIT
+
             DataSource.Initialize();
             ActiveIndex = ChaptersList.Count - 1;
             ImageMarginX = $"0,0,0,{ImageMargin}";
             ScrollIncrementX = ScrollIncrement.ToString();
             ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
             ActiveBackgroundView = Settings.Default.Background;
-            #endregion
+
+            #endregion INIT
 
             #region Zoom
 
@@ -64,7 +66,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #endregion Settings Change
         }
 
-
         public ReactiveList<BitmapSource> ImageList => DataSource._imageList;
 
         #region Toolbar Stuff
@@ -72,6 +73,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         // STUFF NOT CATEGORIZED
         //  public int ActiveImage => ImageList.Count;
         public string ActiveDirShow { get; set; }
+
         public int ActiveIndex { get; set; }
         public ReactiveList<string> ChaptersList => DataSource._chapterListShow;
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
