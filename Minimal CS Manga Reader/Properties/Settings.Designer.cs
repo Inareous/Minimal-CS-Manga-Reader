@@ -73,7 +73,7 @@ namespace Minimal_CS_Manga_Reader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Silver")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
         public string Background {
             get {
                 return ((string)(this["Background"]));

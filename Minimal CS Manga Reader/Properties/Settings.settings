@@ -15,7 +15,7 @@
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="Background" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Silver</Value>
+      <Value Profile="(Default)">Black</Value>
     </Setting>
   </Settings>
 </SettingsFile>

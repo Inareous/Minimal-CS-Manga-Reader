@@ -24,6 +24,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             ImageMarginX = $"0,0,0,{ImageMargin}";
             ScrollIncrementX = ScrollIncrement.ToString();
             ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
+            ActiveBackgroundView = Settings.Default.Background;
             #endregion
 
             #region Zoom

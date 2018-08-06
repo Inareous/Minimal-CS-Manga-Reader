@@ -1,13 +1,23 @@
-﻿<Window x:Class="Minimal_CS_Manga_Reader.MainWindow"
+﻿<Controls:MetroWindow  x:Class="Minimal_CS_Manga_Reader.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
         xmlns:local="clr-namespace:Minimal_CS_Manga_Reader"
         xmlns:scroll="clr-namespace:Minimal_CS_Manga_Reader.Helper"
         mc:Ignorable="d"
-        Title="Minimal CS Manga Reader" Height="800" Width="1024">
+        Title="Minimal CS Manga Reader" Height="800" Width="1024"
+        WindowState="Maximized"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisible" />
     </Window.Resources>
@@ -18,12 +28,12 @@
         </Grid.RowDefinitions>
         <Grid Row="0">
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
-                <ToolBar ClipToBounds="False" Height="32">
+                <ToolBar ClipToBounds="False" Height="35">
                     <Label VerticalAlignment="Center">
                         Chapter :
                     </Label>
                     <ComboBox ItemsSource="{Binding ChaptersList}" SelectedItem="{Binding ActiveDirShow}" SelectedIndex="{Binding ActiveIndex}"
-                               FontSize="13" Width="350" MaxWidth="350"
+                              FontSize="13" Width="350" MaxWidth="350"
                               MinWidth="350"
                               HorizontalAlignment="Left" FontFamily="Roboto" FontWeight="Normal">
                         <ComboBox.ItemContainerStyle>
@@ -88,16 +98,16 @@
                              FontSize="12" TextAlignment="Center"
                              VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                              HorizontalAlignment="Center" Width="40" />
-                    <Button Width="30" HorizontalAlignment="Left" Margin="0 5" ToolTip="Increase by 10%" Command="{Binding IncreaseZoom}">
+                    <Button Width="30" HorizontalAlignment="Left" Margin="0 5" ToolTip="Increase by 10%" Command="{Binding DecreaseZoom}">
                     </Button>
-                    <Button Width="30" HorizontalAlignment="Left" Margin="0 5" ToolTip="Decrease by 10%" Command="{Binding DecreaseZoom}">
+                    <Button Width="30" HorizontalAlignment="Left" Margin="0 5" ToolTip="Decrease by 10%" Command="{Binding IncreaseZoom}">
                     </Button>
                     <Separator />
                     <Label VerticalAlignment="Center">
                         Background :
                     </Label>
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
-                              Width="100" />
+                              FontSize="13" Width="100"  />
                     <Separator />
                 </ToolBar>
             </ToolBarTray>
@@ -157,4 +167,4 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-</Window>
+</Controls:MetroWindow>
