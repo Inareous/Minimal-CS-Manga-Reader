@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Minimal CS Manga Reader" Height="800" Width="1024">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisible" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -22,11 +22,10 @@
                     <Label VerticalAlignment="Center">
                         Chapter :
                     </Label>
-                    <ComboBox ItemsSource="{Binding ChaptersList}" SelectedItem="{Binding ActiveDirShow}"
+                    <ComboBox ItemsSource="{Binding ChaptersList}" SelectedItem="{Binding ActiveDirShow}" SelectedIndex="{Binding ActiveIndex}"
                                FontSize="13" Width="350" MaxWidth="350"
                               MinWidth="350"
-                              HorizontalAlignment="Left" FontFamily="Roboto" FontWeight="Normal"
-                              >
+                              HorizontalAlignment="Left" FontFamily="Roboto" FontWeight="Normal">
                         <ComboBox.ItemContainerStyle>
                             <Style TargetType="ComboBoxItem">
                                 <Setter Property="Height" Value="23" />
@@ -49,11 +48,12 @@
                         </ComboBox.ItemsPanel>
                     </ComboBox>
                     <Button ToolTip="Previous Chapter" Command="{Binding PreviousClick}"
-                            IsEnabled="{Binding IsEnabledPrevious, Mode=OneWay}">
+                             VerticalAlignment="Center"
+                                                 HorizontalAlignment="Center">
                     </Button>
                     <Button ToolTip="Next Chapter" Command="{Binding NextClick}"
-                            IsEnabled="{Binding IsEnabledNext, Mode=OneWay}" VerticalAlignment="Top">
-
+                            VerticalAlignment="Center"
+                                                 HorizontalAlignment="Center">
                     </Button>
                     <Separator />
                     <TextBox Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
@@ -71,8 +71,7 @@
                     <TextBox Text="{Binding ImageMargin, Mode=TwoWay}"
                              FontSize="12" TextAlignment="Center"
                              VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                             HorizontalAlignment="Center" ToolTip="Edit margin of each image" Width="40"
-                             />
+                             HorizontalAlignment="Center" ToolTip="Edit margin of each image" Width="40" />
                     <Separator />
                     <Label VerticalAlignment="Center">
                         Scroll Increment :
@@ -80,7 +79,7 @@
                     <TextBox Text="{Binding ScrollIncrement, Mode=TwoWay}"
                              FontSize="12" TextAlignment="Center"
                              VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                             HorizontalAlignment="Center" Width="40"/>
+                             HorizontalAlignment="Center" Width="40" />
                     <Separator />
                     <Label VerticalAlignment="Center">
                         Zoom (%) :
@@ -153,7 +152,6 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </DataTemplate>
-
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>

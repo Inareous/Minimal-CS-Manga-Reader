@@ -6,7 +6,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
-
 namespace Minimal_CS_Manga_Reader.Helper
 {
     public class
@@ -94,10 +93,13 @@ namespace Minimal_CS_Manga_Reader.Helper
             _captures[sender] = new MouseCapture
             {
                 VerticalOffset = target.VerticalOffset,
+                HorizontalOffset = target.HorizontalOffset,
                 Point = e.GetPosition(target)
             };
             target.Cursor = Cursors.SizeNS;
         }
+
+        private static double ScrollableWidthSaved { get; set; } = 0;
 
         public static void target_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -106,7 +108,11 @@ namespace Minimal_CS_Manga_Reader.Helper
                 !(e.ExtentHeightChange < 0)) return;
             var x = sender as ScrollViewer;
             // x?.ScrollToTop();
-            x?.ScrollToHorizontalOffset(Math.Round(x.ScrollableWidth / 2 - 1));
+            if (x.ScrollableWidth != ScrollableWidthSaved)
+            {
+                ScrollableWidthSaved = x.ScrollableWidth;
+                x?.ScrollToHorizontalOffset(Math.Round(x.ScrollableWidth / 2 - 1));
+            }
         }
 
         private static void target_KeyDown(object sender, KeyEventArgs e)
@@ -118,29 +124,36 @@ namespace Minimal_CS_Manga_Reader.Helper
                     target.ScrollToVerticalOffset(Math.Round(target.VerticalOffset - target.ViewportHeight * 4 / 5));
                     e.Handled = true;
                     break;
+
                 case Key.PageDown:
                     target.ScrollToVerticalOffset(Math.Round(target.VerticalOffset + target.ViewportHeight * 4 / 5));
                     e.Handled = true;
                     break;
+
                 case Key.Up:
                     target.ScrollToVerticalOffset(Math.Round(target.VerticalOffset - target.ViewportHeight * 1 / 10));
                     e.Handled = true;
                     break;
+
                 case Key.Down:
                     target.ScrollToVerticalOffset(Math.Round(target.VerticalOffset + target.ViewportHeight * 1 / 10));
                     e.Handled = true;
                     break;
+
                 case Key.Left:
                     target.ScrollToVerticalOffset(Math.Round(target.VerticalOffset - target.ViewportHeight * 4 / 5));
                     e.Handled = true;
                     break;
+
                 case Key.Right:
                     target.ScrollToVerticalOffset(Math.Round(target.VerticalOffset + target.ViewportHeight * 4 / 5));
                     e.Handled = true;
                     break;
+
                 case Key.Home:
                     target.ScrollToHome();
                     break;
+
                 case Key.End:
                     target.ScrollToBottom();
                     break;
@@ -153,7 +166,6 @@ namespace Minimal_CS_Manga_Reader.Helper
             target.Cursor = Cursors.Arrow;
             target?.ReleaseMouseCapture();
         }
-
 
         private static void target_PreviewMouseMove(object sender, MouseEventArgs e)
         {
@@ -169,17 +181,25 @@ namespace Minimal_CS_Manga_Reader.Helper
 
             var target = (ScrollViewer)sender;
 
-
             var capture = _captures[sender];
 
             var point = e.GetPosition(target);
 
             var dy = (point.Y - capture.Point.Y) * DragScaler;
-            var dx = (point.X - capture.Point.X)*DragScaler;
+            //double dx = (point.X - capture.Point.X) *DragScaler;
+            //var containx = capture.HorizontalOffset - dx;
+            //if (containx > target.ScrollableWidth)
+            //{
+            //    containx = target.ScrollableWidth;
+            //}
+            //if (containx < 0)
+            //{
+            //    containx = 0;
+            //}
             if (Math.Abs(dy) > 5) target.CaptureMouse();
 
-            target.ScrollToVerticalOffset(Math.Round(capture.VerticalOffset - dy));
-            target.ScrollToHorizontalOffset(Math.Round(capture.HorizontalOffset - dx));
+            //if (Math.Abs(dx) > 2) { target.ScrollToHorizontalOffset(Math.Round(containx)); }
+            if (Math.Abs(dy) > 5) { target.ScrollToVerticalOffset(Math.Round(capture.VerticalOffset - dy)); }
         }
 
         private static TParentItem FindVisualParent<TParentItem>(DependencyObject obj)

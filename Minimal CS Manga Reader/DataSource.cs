@@ -3,10 +3,8 @@ using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,24 +21,19 @@ namespace Minimal_CS_Manga_Reader.Model
                 .Path; //Always assuming path exist since we will use context registry, no need for sanity check
 
 
-        public static ReactiveList<string> _chapterList { get; set; }
-
         public static ReactiveList<string> _chapterListShow { get; set; }
-
-        public static string _activeDirShow { get; set; }
 
         public static string _activeDir { get; set; }
 
         public static ReactiveList<BitmapSource> _imageList { get; set; } = new ReactiveList<BitmapSource>();
 
-        public static int _activeImage { get; set; } = 1;
-        public static bool notZip = true;
-
+        public static ReactiveList<string> _chapterList { get; set; }
 
         public static string _imageCountShow { get; set; }
 
         public static void Initialize()
         {
+            bool notZip = true;
             if (_path.Equals("FirstTimeOpenNotSet"))
                 _path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -65,13 +58,12 @@ namespace Minimal_CS_Manga_Reader.Model
                 }
                 Settings.Default.Save();
             }
-            if (notZip) {_chapterList = DataHandler.FetchChapters(_path);} else { _chapterList.Add(_path);}
+            if (notZip) { _chapterList = DataHandler.FetchChapters(_path); } else { _chapterList.Add(_path); }
             if (_chapterList.Count.Equals(0)) return;
             _chapterListShow = SetChapters();
-            _activeDirShow = _chapterListShow.Count == 0 ? "" : _chapterListShow[_chapterListShow.Count-1];
+            string _activeDirShow = _chapterListShow.Count == 0 ? "" : _chapterListShow[_chapterListShow.Count - 1];
             _activeDir = notZip ? _path + "\\" + _activeDirShow : _path.Replace("\\" + _activeDirShow, "");
         }
-
 
         public static ReactiveList<string> SetChapters()
         {
@@ -84,7 +76,6 @@ namespace Minimal_CS_Manga_Reader.Model
             }
             return c;
         }
-
 
         public static Task DirUpdatedAsync(CancellationToken token)
         {
@@ -100,7 +91,6 @@ namespace Minimal_CS_Manga_Reader.Model
                 return Task.CompletedTask;
             }
         }
-
 
         public static void ClearImageList()
         {

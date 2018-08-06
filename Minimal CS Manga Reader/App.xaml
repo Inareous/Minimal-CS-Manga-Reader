@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:Minimal_CS_Manga_Reader"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-
     </Application.Resources>
 </Application>

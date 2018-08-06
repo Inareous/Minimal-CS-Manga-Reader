@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ReactiveUI;
+using SharpCompress.Archives.Rar;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Readers;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -10,10 +14,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ReactiveUI;
-using SharpCompress.Archives.Rar;
-using SharpCompress.Archives.Zip;
-using SharpCompress.Readers;
 using Color = System.Drawing.Color;
 using PixelFormat = System.Windows.Media.PixelFormat;
 
@@ -82,7 +82,6 @@ namespace Minimal_CS_Manga_Reader
             return bitmapSource;
         }
 
-
         private static BitmapSource ConvertStreamToSource(Bitmap x)
         {
             var dpiYProperty =
@@ -106,7 +105,6 @@ namespace Minimal_CS_Manga_Reader
                     g.DrawImage(x, 0, 0, newBitmap.Width, newBitmap.Height);
                 }
             }
-
             catch (Exception e)
             {
                 if (e.Message.Equals(
@@ -122,7 +120,6 @@ namespace Minimal_CS_Manga_Reader
                         g.DrawImage(x, 0, 0, newBitmap.Width, newBitmap.Height);
                     }
                 }
-
                 else
                 {
                     throw; // Saving for unexpected error
@@ -180,7 +177,6 @@ namespace Minimal_CS_Manga_Reader
                                 { xBitmaps.Add(x); });
                                 i++;
                             }
-
                         }
                     }
             }
@@ -190,7 +186,6 @@ namespace Minimal_CS_Manga_Reader
                 { xBitmaps.Clear(); });
             }
         }
-
 
         private static void FetchImagesFromDirectory(string path, ReactiveList<BitmapSource> xBitmaps,
            CancellationToken token)
@@ -221,7 +216,6 @@ namespace Minimal_CS_Manga_Reader
                 Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
                 { xBitmaps.Clear(); });
             }
-
         }
     }
 }

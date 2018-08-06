@@ -28,4 +28,3 @@ namespace Minimal_CS_Manga_Reader
         }
     }
 }
-
