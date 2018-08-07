@@ -40,6 +40,6 @@ ReleaseVersion, Issue
 * [Material Design In Xaml](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
 * [MahApps](https://github.com/MahApps/MahApps.Metro)
 
-#License
+# License
 
 MIT
