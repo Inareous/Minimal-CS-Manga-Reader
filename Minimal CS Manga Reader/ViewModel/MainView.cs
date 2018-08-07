@@ -52,9 +52,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                               ActiveDirShow = DataSource._chapterListShow[ActiveIndex];
                               UpdateAsync().ConfigureAwait(true);
                           });
-            this.ImageList.ItemsAdded.Subscribe(z => {
+            this.ImageList.ItemsAdded.Subscribe(x => {
                 sum = ImageHeight.Count == 0 ? 0 : sum + ImageHeight[ImageHeight.Count - 1];
-                ImageHeight.Add(z.Height+sum);
+                ImageHeight.Add(x.Height+sum);
                 ImageCount = ImageList.Count;
                 ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
             });
@@ -115,8 +115,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             T?.Wait(Ts.Token);
             Ts = new CancellationTokenSource();
             DataSource.ClearImageList();
-            ScrollHelper.Helper();
             ImageHeight.Clear();
+            ScrollHelper.Helper();
             T = await Task.Run(async () =>
             {
                 await DataSource.DirUpdatedAsync(Ts.Token).ConfigureAwait(true);
