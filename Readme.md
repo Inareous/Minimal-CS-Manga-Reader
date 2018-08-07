@@ -34,6 +34,12 @@ ReleaseVersion, Issue
 
 # 3rd Party Libraries Used
 
-* [Stylet](https://github.com/canton7/Stylet)
+* [ReactiveUI](https://github.com/reactiveui/reactiveui)
+* [PropertyChanged.Fody](https://github.com/Fody/PropertyChanged)
 * [SharpCompress](https://github.com/adamhathcock/sharpcompress)
 * [Material Design In Xaml](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
+* [MahApps](https://github.com/MahApps/MahApps.Metro)
+
+#License
+
+MIT
