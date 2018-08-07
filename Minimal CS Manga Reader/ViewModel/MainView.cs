@@ -53,8 +53,12 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                               UpdateAsync().ConfigureAwait(true);
                           });
             this.ImageList.ItemsAdded.Subscribe(x => {
-                sum = ImageHeight.Count == 0 ? 0 : sum + ImageHeight[ImageHeight.Count - 1];
-                ImageHeight.Add(x.Height+sum);
+                    sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
+                    ImageHeight.Add(x.Height + sum);
+                if (ImageHeight.Count == ImageList.Count+1)
+                {
+                    ImageHeight.RemoveAt(ImageHeight.Count-1);
+                }
                 ImageCount = ImageList.Count;
                 ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
             });
@@ -62,6 +66,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #endregion Chapter Change
 
             #region ActiveImage
+
             #endregion
 
             #region Settings Change
@@ -78,6 +83,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public ReactiveList<double> ImageHeight { get; set; } = new ReactiveList<double>();
         private double sum { get; set; }
         public string WindowTitle { get; set; }
+
         #region Toolbar Stuff
 
         // STUFF NOT CATEGORIZED
@@ -114,8 +120,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             Ts.Cancel();
             T?.Wait(Ts.Token);
             Ts = new CancellationTokenSource();
-            DataSource.ClearImageList();
             ImageHeight.Clear();
+            DataSource.ClearImageList();
             ScrollHelper.Helper();
             T = await Task.Run(async () =>
             {
