@@ -21,6 +21,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #region INIT
 
             DataSource.Initialize();
+            WindowTitle = $"{DataSource._mangaTitle}  -  Minimal CS Manga Reader";
             ActiveIndex = ChaptersList.Count - 1;
             ImageMarginX = $"0,0,0,{ImageMargin}";
             ScrollIncrementX = ScrollIncrement.ToString();
@@ -51,10 +52,17 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                               ActiveDirShow = DataSource._chapterListShow[ActiveIndex];
                               UpdateAsync().ConfigureAwait(true);
                           });
-            this.WhenAnyValue(x => x.ImageList.Count)
-                .Subscribe(x => ImageCount = ImageList.Count);
+            this.ImageList.ItemsAdded.Subscribe(z => {
+                sum = ImageHeight.Count == 0 ? 0 : sum + ImageHeight[ImageHeight.Count - 1];
+                ImageHeight.Add(z.Height+sum);
+                ImageCount = ImageList.Count;
+                ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
+            });
 
             #endregion Chapter Change
+
+            #region ActiveImage
+            #endregion
 
             #region Settings Change
 
@@ -67,7 +75,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         }
 
         public ReactiveList<BitmapSource> ImageList => DataSource._imageList;
-
+        public ReactiveList<double> ImageHeight { get; set; } = new ReactiveList<double>();
+        private double sum { get; set; }
+        public string WindowTitle { get; set; }
         #region Toolbar Stuff
 
         // STUFF NOT CATEGORIZED
@@ -75,6 +85,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public string ActiveDirShow { get; set; }
 
         public int ActiveIndex { get; set; }
+        public double ActiveImage { get; set; }
         public ReactiveList<string> ChaptersList => DataSource._chapterListShow;
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
         public int ImageCount { get; set; }
@@ -105,11 +116,13 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             Ts = new CancellationTokenSource();
             DataSource.ClearImageList();
             ScrollHelper.Helper();
+            ImageHeight.Clear();
             T = await Task.Run(async () =>
             {
                 await DataSource.DirUpdatedAsync(Ts.Token).ConfigureAwait(true);
                 return Task.CompletedTask;
             }).ConfigureAwait(true);
+
         }
 
         #endregion Updater Task

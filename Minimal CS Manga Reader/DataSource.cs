@@ -30,6 +30,8 @@ namespace Minimal_CS_Manga_Reader.Model
 
         public static string _imageCountShow { get; set; }
 
+        public static string _mangaTitle { get; set; }
+
         public static void Initialize()
         {
             bool notZip = true;
@@ -57,6 +59,10 @@ namespace Minimal_CS_Manga_Reader.Model
                 }
                 Settings.Default.Save();
             }
+            //
+            var p = _path.Split('\\').ToArray();
+            _mangaTitle = p[p.Length-1];
+            //
             if (notZip) { _chapterList = DataHandler.FetchChapters(_path); } else { _chapterList.Add(_path); }
             if (_chapterList.Count.Equals(0)) return;
             _chapterListShow = SetChapters();
