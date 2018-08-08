@@ -66,8 +66,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
             #endregion Chapter Change
 
-
-
             #region Settings Change
 
             this.WhenAnyValue(x => x.ImageMargin)

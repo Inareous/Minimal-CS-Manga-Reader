@@ -61,7 +61,7 @@ namespace Minimal_CS_Manga_Reader.Model
             }
             //
             var p = _path.Split('\\').ToArray();
-            _mangaTitle = p[p.Length-1];
+            _mangaTitle = p[p.Length - 1];
             //
             if (notZip) { _chapterList = DataHandler.FetchChapters(_path); } else { _chapterList.Add(_path); }
             if (_chapterList.Count.Equals(0)) return;

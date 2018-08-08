@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls;
 using Minimal_CS_Manga_Reader.ViewModel;
-using System.Windows;
 
 namespace Minimal_CS_Manga_Reader
 {

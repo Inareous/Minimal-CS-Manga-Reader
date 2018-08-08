@@ -22,7 +22,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisible" />
         <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
     </Window.Resources>
     <Grid>
