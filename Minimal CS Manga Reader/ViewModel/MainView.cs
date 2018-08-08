@@ -38,7 +38,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 .Where(ZoomScale => ZoomScale < 10)
                 .Subscribe(x => ZoomScale = 10);
             this.WhenAnyValue(x => x.ZoomScale)
-                .Subscribe(x => {
+                .Subscribe(x =>
+                {
                     ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
                     Settings.Default.ZoomScale = ZoomScale;
                     Settings.Default.Save();
@@ -74,7 +75,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #region Settings Change
 
             this.WhenAnyValue(x => x.ImageMargin)
-                .Subscribe(x => {
+                .Subscribe(x =>
+                {
                     ImageMarginX = $"0,0,0,{ImageMargin}";
                     Settings.Default.ImageMargin = ImageMargin;
                     Settings.Default.Save();
@@ -84,12 +86,15 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 .Where(ImageMargin => ImageMargin < 0)
                 .Subscribe(x => ImageMargin = 0);
             this.WhenAnyValue(x => x.ScrollIncrement)
-                .Subscribe(x => {
+                .Subscribe(x =>
+                {
                     Settings.Default.ScrollIncrement = ScrollIncrement;
                     Settings.Default.Save();
-                    ScrollIncrementX = ScrollIncrement.ToString(); });
+                    ScrollIncrementX = ScrollIncrement.ToString();
+                });
             this.WhenAnyValue(x => x.ActiveBackgroundView)
-                .Subscribe(x => {
+                .Subscribe(x =>
+                {
                     Settings.Default.Background = ActiveBackgroundView;
                     Settings.Default.Save();
                 });

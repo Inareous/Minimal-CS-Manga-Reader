@@ -35,7 +35,7 @@
                    VerticalAlignment="Center"
                    Margin="10 0 8 0"
                    FontWeight="Light"
-                   FontSize="14"/>
+                   FontSize="14" />
         </DataTemplate>
     </Controls:MetroWindow.TitleTemplate>
     <Grid>
