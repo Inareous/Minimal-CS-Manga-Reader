@@ -158,6 +158,7 @@
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Resource Include="favicon.ico" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +168,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="dll\WpfMouseWheelLib.dll" />
+    <Resource Include="Properties\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

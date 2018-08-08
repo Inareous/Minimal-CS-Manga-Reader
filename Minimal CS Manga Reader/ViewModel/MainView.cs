@@ -22,7 +22,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
             DataSource.Initialize();
             WindowTitle = $"{DataSource._mangaTitle}  -  Minimal CS Manga Reader";
-            ActiveIndex = ChaptersList.Count - 1;
+            ActiveIndex = ChaptersList.Count <= 0 ? 0 : ChaptersList.Count - 1;
             ImageMarginX = $"0,0,0,{ImageMargin}";
             ScrollIncrementX = ScrollIncrement.ToString();
             ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
@@ -40,6 +40,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             this.WhenAnyValue(x => x.ZoomScale)
                 .Subscribe(x => {
                     ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
+                    Settings.Default.ZoomScale = ZoomScale;
+                    Settings.Default.Save();
                     UpdateImageHeightMod();
                 });
 
@@ -52,7 +54,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             this.WhenAnyValue(x => x.ActiveIndex)
                 .Subscribe(x =>
                           {
-                              ActiveDirShow = DataSource._chapterListShow[ActiveIndex];
+                              ActiveDirShow = DataSource._chapterListShow.Count != 0 ? DataSource._chapterListShow[ActiveIndex] : "";
                               UpdateAsync().ConfigureAwait(true);
                           });
             this.ImageList.ItemsAdded.Subscribe(x =>
@@ -74,13 +76,23 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             this.WhenAnyValue(x => x.ImageMargin)
                 .Subscribe(x => {
                     ImageMarginX = $"0,0,0,{ImageMargin}";
+                    Settings.Default.ImageMargin = ImageMargin;
+                    Settings.Default.Save();
                     UpdateImageHeightMod();
                 });
             this.WhenAnyValue(x => x.ImageMargin)
                 .Where(ImageMargin => ImageMargin < 0)
                 .Subscribe(x => ImageMargin = 0);
             this.WhenAnyValue(x => x.ScrollIncrement)
-                .Subscribe(x => ScrollIncrementX = ScrollIncrement.ToString());
+                .Subscribe(x => {
+                    Settings.Default.ScrollIncrement = ScrollIncrement;
+                    Settings.Default.Save();
+                    ScrollIncrementX = ScrollIncrement.ToString(); });
+            this.WhenAnyValue(x => x.ActiveBackgroundView)
+                .Subscribe(x => {
+                    Settings.Default.Background = ActiveBackgroundView;
+                    Settings.Default.Save();
+                });
 
             #endregion Settings Change
         }

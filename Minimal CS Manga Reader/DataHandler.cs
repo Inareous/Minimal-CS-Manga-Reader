@@ -190,6 +190,10 @@ namespace Minimal_CS_Manga_Reader
                 Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
                 { xBitmaps.Clear(); });
             }
+            catch (Exception)
+            {
+                //throw;
+            }
         }
 
         private static void FetchImagesFromDirectory(string path, ReactiveList<BitmapSource> xBitmaps,
@@ -220,6 +224,10 @@ namespace Minimal_CS_Manga_Reader
             {
                 Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
                 { xBitmaps.Clear(); });
+            }
+            catch (Exception)
+            {
+                //throw;
             }
         }
     }

@@ -16,10 +16,12 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
+        WindowTransitionsEnabled = "False"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Icon="/favicon.ico">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisible" />
         <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
@@ -143,7 +145,7 @@
                 x:Name="Scrollviewer"
                 Style="{StaticResource scrFocus}"
                 scroll:ScrollHelper.IsEnabled="True"
-                i:MouseWheel.Enhanced="true"
+                i:MouseWheel.Enhanced="True"
                 i:MouseWheel.Smoothing="None"
                 i:MouseWheel.Debouncing="None"
                 i:MouseWheel.ScrollSmoothing="None"
