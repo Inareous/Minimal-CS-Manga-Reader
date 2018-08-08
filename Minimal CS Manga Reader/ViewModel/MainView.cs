@@ -38,7 +38,10 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 .Where(ZoomScale => ZoomScale < 10)
                 .Subscribe(x => ZoomScale = 10);
             this.WhenAnyValue(x => x.ZoomScale)
-                .Subscribe(x => ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999);
+                .Subscribe(x => {
+                    ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
+                    UpdateImageHeightMod();
+                });
 
             #endregion Zoom
 
@@ -69,15 +72,27 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #region Settings Change
 
             this.WhenAnyValue(x => x.ImageMargin)
-                .Subscribe(x => ImageMarginX = $"0,0,0,{ImageMargin}");
+                .Subscribe(x => {
+                    ImageMarginX = $"0,0,0,{ImageMargin}";
+                    UpdateImageHeightMod();
+                });
             this.WhenAnyValue(x => x.ScrollIncrement)
                 .Subscribe(x => ScrollIncrementX = ScrollIncrement.ToString());
 
             #endregion Settings Change
         }
 
+        private void UpdateImageHeightMod()
+        {
+            for (int i = 0; i < ImageHeightMod.Count; ++i)
+            {
+                ImageHeightMod[i] = (ImageHeight[i] * ZoomScaleX) + ImageMargin;
+            }
+        }
+
         public ReactiveList<BitmapSource> ImageList => DataSource._imageList;
         public ReactiveList<double> ImageHeight { get; set; } = new ReactiveList<double>();
+        public ReactiveList<double> ImageHeightMod { get; set; } = new ReactiveList<double>();
         private double sum { get; set; }
         public string WindowTitle { get; set; }
 
@@ -125,6 +140,11 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 await DataSource.DirUpdatedAsync(Ts.Token).ConfigureAwait(true);
                 return Task.CompletedTask;
             }).ConfigureAwait(true);
+            ImageHeightMod.Clear();
+            // INIT Height Mod
+            ImageHeightMod.AddRange(ImageHeight);
+            UpdateImageHeightMod();
+            //
         }
 
         #endregion Updater Task
