@@ -76,6 +76,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                     ImageMarginX = $"0,0,0,{ImageMargin}";
                     UpdateImageHeightMod();
                 });
+            this.WhenAnyValue(x => x.ImageMargin)
+                .Where(ImageMargin => ImageMargin < 0)
+                .Subscribe(x => ImageMargin = 0);
             this.WhenAnyValue(x => x.ScrollIncrement)
                 .Subscribe(x => ScrollIncrementX = ScrollIncrement.ToString());
 
