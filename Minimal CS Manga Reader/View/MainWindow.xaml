@@ -10,6 +10,7 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="800" Width="1024"
         WindowState="Maximized"
+        TitlebarHeight="26"
         TitleCharacterCasing="Normal"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -25,6 +26,16 @@
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
     </Window.Resources>
+    <Controls:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{TemplateBinding Content}"
+                   TextTrimming="CharacterEllipsis"
+                   VerticalAlignment="Center"
+                   Margin="10 0 8 0"
+                   FontWeight="Light"
+                   FontSize="14"/>
+        </DataTemplate>
+    </Controls:MetroWindow.TitleTemplate>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -32,7 +43,7 @@
         </Grid.RowDefinitions>
         <Grid Row="0">
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
-                <ToolBar ClipToBounds="False" Height="36">
+                <ToolBar ClipToBounds="False" Height="30">
                     <Label VerticalAlignment="Center">
                         Chapter :
                     </Label>
