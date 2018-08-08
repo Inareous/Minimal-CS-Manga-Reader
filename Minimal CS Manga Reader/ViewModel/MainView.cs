@@ -52,12 +52,13 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                               ActiveDirShow = DataSource._chapterListShow[ActiveIndex];
                               UpdateAsync().ConfigureAwait(true);
                           });
-            this.ImageList.ItemsAdded.Subscribe(x => {
-                    sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
-                    ImageHeight.Add(x.Height + sum);
-                if (ImageHeight.Count == ImageList.Count+1)
+            this.ImageList.ItemsAdded.Subscribe(x =>
+            {
+                sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
+                ImageHeight.Add(x.Height + sum);
+                if (ImageHeight.Count == ImageList.Count + 1)
                 {
-                    ImageHeight.RemoveAt(ImageHeight.Count-1);
+                    ImageHeight.RemoveAt(ImageHeight.Count - 1);
                 }
                 ImageCount = ImageList.Count;
                 ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
@@ -65,9 +66,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
             #endregion Chapter Change
 
-            #region ActiveImage
 
-            #endregion
 
             #region Settings Change
 
@@ -128,7 +127,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 await DataSource.DirUpdatedAsync(Ts.Token).ConfigureAwait(true);
                 return Task.CompletedTask;
             }).ConfigureAwait(true);
-
         }
 
         #endregion Updater Task

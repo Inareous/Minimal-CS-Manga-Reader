@@ -21,6 +21,9 @@
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisible" />
+        <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -29,7 +32,7 @@
         </Grid.RowDefinitions>
         <Grid Row="0">
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
-                <ToolBar ClipToBounds="False" Height="35">
+                <ToolBar ClipToBounds="False" Height="36">
                     <Label VerticalAlignment="Center">
                         Chapter :
                     </Label>
@@ -58,13 +61,18 @@
                             </ItemsPanelTemplate>
                         </ComboBox.ItemsPanel>
                     </ComboBox>
-                    <Button ToolTip="Previous Chapter" Command="{Binding PreviousClick}"
-                             VerticalAlignment="Center"
-                                                 HorizontalAlignment="Center">
+
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter"
+                             Command="{Binding PreviousClick}" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
+                        </Canvas>
                     </Button>
-                    <Button ToolTip="Next Chapter" Command="{Binding NextClick}"
-                            VerticalAlignment="Center"
-                                                 HorizontalAlignment="Center">
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter"
+                             Command="{Binding NextClick}" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
+                        </Canvas>
                     </Button>
                     <Separator />
                     <TextBox Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
@@ -99,9 +107,15 @@
                              FontSize="12" TextAlignment="Center"
                              VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                              HorizontalAlignment="Center" Width="40" />
-                    <Button Width="30" HorizontalAlignment="Left" Margin="0 5" ToolTip="Increase by 10%" Command="{Binding DecreaseZoom}">
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Increase by 10%" Command="{Binding DecreaseZoom}" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M19,13H5V11H19V13Z" Fill="MediumPurple" />
+                        </Canvas>
                     </Button>
-                    <Button Width="30" HorizontalAlignment="Left" Margin="0 5" ToolTip="Decrease by 10%" Command="{Binding IncreaseZoom}">
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Decrease by 10%" Command="{Binding IncreaseZoom}" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="MediumPurple" />
+                        </Canvas>
                     </Button>
                     <Separator />
                     <Label VerticalAlignment="Center">
@@ -116,6 +130,7 @@
         <Grid Row="1">
             <ScrollViewer
                 x:Name="Scrollviewer"
+                Style="{StaticResource scrFocus}"
                 scroll:ScrollHelper.IsEnabled="True"
                 i:MouseWheel.Enhanced="true"
                 i:MouseWheel.Smoothing="None"
@@ -132,6 +147,7 @@
            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
                 IsManipulationEnabled="True">
                 <ItemsControl VirtualizingStackPanel.IsVirtualizing="True"
+
                               Background="{
                           Binding RelativeSource={
                             RelativeSource FindAncestor,
@@ -139,8 +155,11 @@
                           Path=DataContext.ActiveBackgroundView}"
                               x:Name="ImageList" ItemsSource="{Binding ImageList}"
                               Height="Auto" HorizontalContentAlignment="Center" Focusable="True"
-                              IsManipulationEnabled="True" FocusVisualStyle="{x:Null}">
+                              IsManipulationEnabled="True" FocusVisualStyle="{x:Null}"
+                              ScrollViewer.CanContentScroll="True">
+
                     <ItemsControl.ItemTemplate>
+
                         <DataTemplate>
                             <Image Source="{Binding}"
                                    Stretch="Fill" Width="{Binding Width}" Height="{Binding Height}"
@@ -164,6 +183,11 @@
                             </Image>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
