@@ -36,18 +36,22 @@ namespace IntegrateContext
                     case 1:
                         Console.WriteLine("Registry created/updated");
                         break;
+
                     case 2:
                         Console.WriteLine("Registry deleted");
                         break;
+
                     default:
                         Console.WriteLine("Something went wrong!");
                         break;
                 }
                 Console.WriteLine("Exiting . . .");
             }
-            else {
+            else
+            {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Wrong input, exiting. . ."); }
+                Console.WriteLine("Wrong input, exiting. . .");
+            }
 
             Thread.Sleep(3000);
             Environment.Exit(0);
@@ -70,30 +74,18 @@ namespace IntegrateContext
 
         public static bool CheckFile(string curPath)
         {
-            bool exist = false;
             var fileList = Directory
                 .EnumerateFiles(curPath, "*", SearchOption.TopDirectoryOnly)
                 .Select(Path.GetFileName); // <-- note you can shorten the lambda
-            if (fileList.Any(x => x.Equals("MCS.exe")))
-            {
-                exist = true;
-            }
-
-            return exist;
+            return fileList.Any(x => x.Equals("MCS.exe")) ? true : false;
         }
 
         public static bool CheckIcon(string curPath)
         {
-            bool exist = false;
             var fileList = Directory
                 .EnumerateFiles(curPath, "*", SearchOption.TopDirectoryOnly)
                 .Select(Path.GetFileName); // <-- note you can shorten the lambda
-            if (fileList.Any(x => x.Equals("MCS.ico")))
-            {
-                exist = true;
-            }
-
-            return exist;
+            return fileList.Any(x => x.Equals("MCS.ico")) ? true : false;
         }
 
         public static int ReadSubKeyValue(string curPath)
@@ -105,14 +97,7 @@ namespace IntegrateContext
                 {
                     var str = registryKey.GetValue(null).ToString();
                     registryKey.Close();
-                    if (!str.Equals($"\"{curPath}\\MCS.exe\" \"-path=%L\" "))
-                    {
-                        return 1; // Found (exist), path different
-                    }
-                    else
-                    {
-                        return 2; // Exist, path same
-                    }
+                    return !str.Equals($"\"{curPath}\\MCS.exe\" \"-path=%L\" ") ? 1 : 2;
                 }
                 else
                 {
