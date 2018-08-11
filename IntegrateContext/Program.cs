@@ -30,8 +30,7 @@ namespace IntegrateContext
             Console.WriteLine("");
             if (int.TryParse(input, out int result) && result > 0 && result <= 2)
             {
-                int endStatus = RegistryAccess.EditRegistry(result);
-                switch (endStatus)
+                switch (RegistryAccess.EditRegistry(result))
                 {
                     case 1:
                         Console.WriteLine("Registry created/updated");
@@ -95,7 +94,7 @@ namespace IntegrateContext
             {
                 if (registryKey != null)
                 {
-                    var str = registryKey.GetValue(null).ToString();
+                    var str = registryKey?.GetValue(null).ToString();
                     registryKey.Close();
                     return !str.Equals($"\"{curPath}\\MCS.exe\" \"-path=%L\" ") ? 1 : 2;
                 }
