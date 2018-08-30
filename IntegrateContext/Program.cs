@@ -76,7 +76,7 @@ namespace IntegrateContext
             var fileList = Directory
                 .EnumerateFiles(curPath, "*", SearchOption.TopDirectoryOnly)
                 .Select(Path.GetFileName); // <-- note you can shorten the lambda
-            return fileList.Any(x => x.Equals("MCS.exe")) ? true : false;
+            return fileList.Any(x => x.Equals("Minimal CS Manga Reader.exe")) ? true : false;
         }
 
         public static bool CheckIcon(string curPath)
@@ -84,7 +84,7 @@ namespace IntegrateContext
             var fileList = Directory
                 .EnumerateFiles(curPath, "*", SearchOption.TopDirectoryOnly)
                 .Select(Path.GetFileName); // <-- note you can shorten the lambda
-            return fileList.Any(x => x.Equals("MCS.ico")) ? true : false;
+            return fileList.Any(x => x.Equals("Minimal CS Manga Reader.ico")) ? true : false;
         }
 
         public static int ReadSubKeyValue(string curPath)
@@ -96,7 +96,7 @@ namespace IntegrateContext
                 {
                     var str = registryKey?.GetValue(null).ToString();
                     registryKey.Close();
-                    return !str.Equals($"\"{curPath}\\MCS.exe\" \"-path=%L\" ") ? 1 : 2;
+                    return !str.Equals($"\"{curPath}\\Minimal CS Manga Reader.exe\" \"-path=%L\" ") ? 1 : 2;
                 }
                 else
                 {
@@ -114,8 +114,8 @@ namespace IntegrateContext
         {
             if (CheckFile(programPath) && CheckIcon(programPath))
             {
-                var fileExe = "MCS.exe";
-                var fileIcon = "MCS.ico";
+                var fileExe = "Minimal CS Manga Reader.exe";
+                var fileIcon = "Minimal CS Manga Reader.ico";
                 using (RegistryKey registryKey = Registry.CurrentUser.CreateSubKey(keyPath, true))
                 {
                     registryKey?.SetValue(null, $"Read with Minimal CS Manga Reader");
@@ -134,7 +134,7 @@ namespace IntegrateContext
             else
             {
                 Console.WriteLine(
-                    "File and icon missing, please make sure you place IntegrateContext in the same folder as MCS.exe and MCS.ico\n" +
+                    "File and icon missing, please make sure you place IntegrateContext in the same folder as Minimal CS Manga Reader.exe and Minimal CS Manga Reader.ico\n" +
                     "Exiting. .");
                 return false;
             }
