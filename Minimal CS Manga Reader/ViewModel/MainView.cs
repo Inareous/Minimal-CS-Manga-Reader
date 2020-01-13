@@ -1,9 +1,12 @@
-﻿using Minimal_CS_Manga_Reader.Helper;
+﻿using DynamicData;
+using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
 using Minimal_CS_Manga_Reader.Properties;
 using PropertyChanged;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -58,7 +61,26 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                               ActiveDirShow = DataSource._chapterListShow.Count != 0 ? DataSource._chapterListShow[ActiveIndex] : "";
                               UpdateAsync().ConfigureAwait(true);
                           });
-            this.ImageList.ItemsAdded.Subscribe(x =>
+
+            /*
+                         DataSource._imageList.Connect().OnItemAdded(x =>
+                                    {
+                                        ImageList.Add(x);
+                                        sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
+                                        ImageHeight.Add(x.Height + sum);
+                                        if (ImageHeight.Count == ImageList.Count + 1)
+                                        {
+                                            ImageHeight.RemoveAt(ImageHeight.Count - 1);
+                                        }
+                                        ImageCount = ImageList.Count;
+                                        ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
+                                    })
+                                    .Bind(out _imageList)
+                                    .DisposeMany()
+                                    .Subscribe();
+            */
+
+            DataSource._imageList.Connect().OnItemAdded(x =>
             {
                 sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
                 ImageHeight.Add(x.Height + sum);
@@ -68,7 +90,12 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 }
                 ImageCount = ImageList.Count;
                 ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
-            });
+            })
+                       .Bind(out _imageList)
+                       .DisposeMany()
+                       .Subscribe();
+
+
 
             #endregion Chapter Change
 
@@ -110,9 +137,12 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             }
         }
 
-        public ReactiveList<BitmapSource> ImageList => DataSource._imageList;
-        public ReactiveList<double> ImageHeight { get; set; } = new ReactiveList<double>();
-        public ReactiveList<double> ImageHeightMod { get; set; } = new ReactiveList<double>();
+        private readonly ReadOnlyObservableCollection<BitmapSource> _imageList;
+        public ReadOnlyObservableCollection<BitmapSource> ImageList => _imageList;
+
+
+        public List<double> ImageHeight { get; set; } = new List<double>();
+        public List<double> ImageHeightMod { get; set; } = new List<double>();
         private double sum { get; set; }
         public string WindowTitle { get; set; }
 
@@ -124,7 +154,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
         public int ActiveIndex { get; set; }
         public double ActiveImage { get; set; }
-        public ReactiveList<string> ChaptersList => DataSource._chapterListShow;
+        public List<string> ChaptersList => DataSource._chapterListShow;
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
         public int ImageCount { get; set; }
         public int ImageMargin { get; set; } = Settings.Default.ImageMargin;
@@ -137,7 +167,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public int ZoomScale { get; set; } = Settings.Default.ZoomScale;
         public double ZoomScaleX { get; set; }
         public string ActiveBackgroundView { get; set; } = Settings.Default.Background;
-        public ReactiveList<string> BackgroundViewList { get; set; } = new ReactiveList<string> { "Black", "White", "Silver" };
+        public List<string> BackgroundViewList { get; set; } = new List<string> { "Black", "White", "Silver" };
 
         #endregion Toolbar Stuff
 

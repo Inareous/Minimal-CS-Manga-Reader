@@ -1,8 +1,10 @@
-﻿using ReactiveUI;
+﻿using DynamicData;
+using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Readers;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -21,13 +23,13 @@ namespace Minimal_CS_Manga_Reader
 {
     public static class DataHandler
     {
-        public static ReactiveList<string> FetchChapters(string path)
+        public static List<string> FetchChapters(string path)
         {
             // TO DO -- OPTIMIZE
             var fileList = Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(s =>
                 s.EndsWith(".cbz") || s.EndsWith(".cbr") || s.EndsWith(".rar") || s.EndsWith(".zip"));
             var directories = Directory.GetDirectories(path);
-            var returnList = new ReactiveList<string>();
+            var returnList = new List<string>();
             returnList.AddRange(fileList);
             returnList.AddRange(directories);
             returnList.Sort(new NaturalStringComparer());
@@ -148,7 +150,7 @@ namespace Minimal_CS_Manga_Reader
             }
         }
 
-        public static void FetchImages(string file, ReactiveList<BitmapSource> xBitmaps, CancellationToken token)
+        public static void FetchImages(string file, SourceList<BitmapSource> xBitmaps, CancellationToken token)
         {
             try
             {
@@ -162,7 +164,7 @@ namespace Minimal_CS_Manga_Reader
                     using (var reader = ReaderFactory.Open(stream))
                     {
                         var i = 0;
-                        var c = new ReactiveList<BitmapSource>();
+                        var c = new SourceList<BitmapSource>();
                         while (reader.MoveToNextEntry())
                         {
                             if (reader.Entry.IsDirectory ||
@@ -196,7 +198,7 @@ namespace Minimal_CS_Manga_Reader
             }
         }
 
-        private static void FetchImagesFromDirectory(string path, ReactiveList<BitmapSource> xBitmaps,
+        private static void FetchImagesFromDirectory(string path, SourceList<BitmapSource> xBitmaps,
            CancellationToken token)
         {
             try

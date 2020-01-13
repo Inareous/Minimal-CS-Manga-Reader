@@ -1,8 +1,10 @@
-﻿using Minimal_CS_Manga_Reader.Properties;
+﻿using DynamicData;
+using Minimal_CS_Manga_Reader.Properties;
 using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,13 +22,13 @@ namespace Minimal_CS_Manga_Reader.Model
             _path = Settings.Default
                 .Path; //Always assuming path exist since we will use context registry, no need for sanity check
 
-        public static ReactiveList<string> _chapterListShow { get; set; } = new ReactiveList<string>();
+        public static List<string> _chapterListShow { get; set; } = new List<string>();
 
         public static string _activeDir { get; set; }
 
-        public static ReactiveList<BitmapSource> _imageList { get; set; } = new ReactiveList<BitmapSource>();
+        public static SourceList<BitmapSource> _imageList { get; set; } = new SourceList<BitmapSource>();
 
-        public static ReactiveList<string> _chapterList { get; set; }
+        public static List<string> _chapterList { get; set; }
 
         public static string _imageCountShow { get; set; }
 
@@ -70,14 +72,13 @@ namespace Minimal_CS_Manga_Reader.Model
             _activeDir = notZip ? _path + "\\" + _activeDirShow : _path.Replace("\\" + _activeDirShow, "");
         }
 
-        public static ReactiveList<string> SetChapters()
+        public static List<string> SetChapters()
         {
-            ReactiveList<string> c = new ReactiveList<string>();
+            List<string> c = new List<string>();
             foreach (var chapter in _chapterList)
             {
                 var x = chapter.Split('\\').ToList();
-                var y = x[x.Count - 1];
-                c.Add(y);
+                c.Add(x[x.Count - 1]);
             }
             return c;
         }
