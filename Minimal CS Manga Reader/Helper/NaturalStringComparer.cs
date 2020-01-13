@@ -27,4 +27,5 @@ namespace Minimal_CS_Manga_Reader
             return SafeNativeMethods.StrCmpLogicalW(x.Name, y.Name);
         }
     }
+
 }

@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using MaterialDesignThemes.Wpf;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
 using Minimal_CS_Manga_Reader.Properties;
@@ -60,26 +61,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                           {
                               ActiveDirShow = DataSource._chapterListShow.Count != 0 ? DataSource._chapterListShow[ActiveIndex] : "";
                               UpdateAsync().ConfigureAwait(true);
+                              EnablePrevClick = ActiveIndex == 0 ? false : true;
+                              EnableNextClick = ActiveIndex == ChaptersList.Count - 1 ? false : true;
                           });
-
-            /*
-                         DataSource._imageList.Connect().OnItemAdded(x =>
-                                    {
-                                        ImageList.Add(x);
-                                        sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
-                                        ImageHeight.Add(x.Height + sum);
-                                        if (ImageHeight.Count == ImageList.Count + 1)
-                                        {
-                                            ImageHeight.RemoveAt(ImageHeight.Count - 1);
-                                        }
-                                        ImageCount = ImageList.Count;
-                                        ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
-                                    })
-                                    .Bind(out _imageList)
-                                    .DisposeMany()
-                                    .Subscribe();
-            */
-
             DataSource._imageList.Connect().OnItemAdded(x =>
             {
                 sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
@@ -90,12 +74,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 }
                 ImageCount = ImageList.Count;
                 ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
-            })
-                       .Bind(out _imageList)
-                       .DisposeMany()
-                       .Subscribe();
-
-
+            }).Bind(out _imageList).DisposeMany().Subscribe();
 
             #endregion Chapter Change
 
@@ -126,7 +105,25 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                     Settings.Default.Save();
                 });
 
+            this.WhenAnyValue(x => x.isDark)
+                .Subscribe(x =>
+                {
+                    Settings.Default.isDark = isDark;
+                    Settings.Default.Save();
+                    ModifyTheme(theme => theme.SetBaseTheme(isDark ? Theme.Dark : Theme.Light));
+                });
+
             #endregion Settings Change
+        }
+
+        private void ModifyTheme(Action<ITheme> modificationAction)
+        {
+            PaletteHelper paletteHelper = new PaletteHelper();
+            ITheme theme = paletteHelper.GetTheme();
+
+            modificationAction?.Invoke(theme);
+
+            paletteHelper.SetTheme(theme);
         }
 
         private void UpdateImageHeightMod()
@@ -140,7 +137,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         private readonly ReadOnlyObservableCollection<BitmapSource> _imageList;
         public ReadOnlyObservableCollection<BitmapSource> ImageList => _imageList;
 
-
         public List<double> ImageHeight { get; set; } = new List<double>();
         public List<double> ImageHeightMod { get; set; } = new List<double>();
         private double sum { get; set; }
@@ -153,6 +149,11 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public string ActiveDirShow { get; set; }
 
         public int ActiveIndex { get; set; }
+        public bool isDark { get; set; } = Settings.Default.isDark;
+
+        public bool EnablePrevClick { get; set; }
+
+        public bool EnableNextClick { get; set; }
         public double ActiveImage { get; set; }
         public List<string> ChaptersList => DataSource._chapterListShow;
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }

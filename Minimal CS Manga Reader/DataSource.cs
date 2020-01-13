@@ -37,7 +37,7 @@ namespace Minimal_CS_Manga_Reader.Model
         public static void Initialize()
         {
             bool notZip = true;
-            if (_path.Equals("FirstTimeOpenNotSet"))
+            if (_path.Equals("FirstTimeNotSet") || _path.Equals(null))
                 _path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (_args.Length >= 2)

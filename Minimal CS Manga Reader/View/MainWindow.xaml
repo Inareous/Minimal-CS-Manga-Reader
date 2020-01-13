@@ -75,13 +75,13 @@
                         </ComboBox.ItemsPanel>
                     </ComboBox>
 
-                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter"
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter" IsEnabled="{Binding EnablePrevClick}"
                              Command="{Binding PreviousClick}" Style="{DynamicResource MaterialDesignFlatButton}">
                         <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
                         </Canvas>
                     </Button>
-                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter"
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter" IsEnabled="{Binding EnableNextClick}"
                              Command="{Binding NextClick}" Style="{DynamicResource MaterialDesignFlatButton}">
                         <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
@@ -108,7 +108,7 @@
                     <Label VerticalAlignment="Center">
                         Scroll Increment :
                     </Label>
-                    <TextBox Text="{Binding ScrollIncrement, Mode=TwoWay}"
+                    <TextBox Text="{Binding ScrollIncrement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              FontSize="12" TextAlignment="Center"
                              VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                              HorizontalAlignment="Center" Width="40" />
@@ -136,6 +136,8 @@
                     </Label>
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
                               FontSize="13" Width="100" />
+                    <Separator />
+                    <ToggleButton Margin="8 0 16 0" IsChecked="{Binding isDark, Mode=TwoWay}"/>
                     <Separator />
                 </ToolBar>
             </ToolBarTray>

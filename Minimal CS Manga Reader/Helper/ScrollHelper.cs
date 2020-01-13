@@ -196,7 +196,7 @@ namespace Minimal_CS_Manga_Reader.Helper
             //{
             //    containx = 0;
             //}
-            if (Math.Abs(dy) > 5) target.CaptureMouse();
+            //if (Math.Abs(dy) > 5) target.CaptureMouse();
 
             //if (Math.Abs(dx) > 2) { target.ScrollToHorizontalOffset(Math.Round(containx)); }
             if (Math.Abs(dy) > 5) { target.ScrollToVerticalOffset(Math.Round(capture.VerticalOffset - dy)); }
