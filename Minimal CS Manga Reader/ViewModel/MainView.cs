@@ -68,12 +68,13 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             {
                 sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
                 ImageHeight.Add(x.Height + sum);
+                ImageHeightMod.Add(x.Height + sum);
                 if (ImageHeight.Count == ImageList.Count + 1)
                 {
                     ImageHeight.RemoveAt(ImageHeight.Count - 1);
+                    ImageHeightMod.RemoveAt(ImageHeightMod.Count - 1);
                 }
                 ImageCount = ImageList.Count;
-                ActiveImage = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1]; // Not Used yet
             }).Bind(out _imageList).DisposeMany().Subscribe();
 
             #endregion Chapter Change
@@ -114,7 +115,61 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 });
 
             #endregion Settings Change
+
+            this.WhenAnyValue(x => x._activeImage).Subscribe(x =>
+            {
+                ActiveImage = _activeImage + 1;
+            });
+
         }
+
+        #region Scroll
+
+        public void ScrollChanged()
+        {
+            if (_scrollHeight >= _activeImageMin && _scrollHeight < _activeImageMax)
+            {
+                return;
+            }
+
+            if (_scrollHeight < _activeImageMin)
+            {
+                while (_scrollHeight < _activeImageMin)
+                {
+                    if (ImageHeightMod.ElementAtOrDefault(_activeImage - 1) != default)
+                    {
+                        _activeImageMin = ImageHeightMod[_activeImage - 1] + (ImageMargin * _activeImage);
+                        _activeImage -= 1;
+                    }
+                    else { _activeImageMin = 0; _activeImage = 0; }
+                }
+                _activeImageMax = ImageHeightMod.ElementAtOrDefault(_activeImage) + (ImageMargin * _activeImage);
+
+            }
+            else if (_scrollHeight > _activeImageMax)
+
+            {
+                while (_scrollHeight > _activeImageMax)
+                {
+                    if (ImageHeightMod.ElementAtOrDefault(_activeImage + 1) != default)
+                    {
+                        _activeImageMax = ImageHeightMod[_activeImage + 1] + (ImageMargin * _activeImage);
+                        _activeImage += 1;
+                    } else { return; }
+                }
+                _activeImageMin = ImageHeightMod.ElementAtOrDefault(_activeImage - 1) + (ImageMargin * _activeImage);
+            }
+
+            if (_activeImage < 0)
+            {
+                _activeImage = 0;
+            }
+        }
+
+        #endregion Scroll
+
+        private double _activeImageMin { get; set; } = 0;
+        private double _activeImageMax { get; set; } = 100;
 
         private void ModifyTheme(Action<ITheme> modificationAction)
         {
@@ -132,7 +187,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             {
                 ImageHeightMod[i] = (ImageHeight[i] * ZoomScaleX) + ImageMargin;
             }
+            _activeImageMax = ImageHeightMod.ElementAtOrDefault(1) != default ? ImageHeightMod[1] : 100;
         }
+
 
         private readonly ReadOnlyObservableCollection<BitmapSource> _imageList;
         public ReadOnlyObservableCollection<BitmapSource> ImageList => _imageList;
@@ -145,7 +202,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         #region Toolbar Stuff
 
         // STUFF NOT CATEGORIZED
-        //  public int ActiveImage => ImageList.Count;
         public string ActiveDirShow { get; set; }
 
         public int ActiveIndex { get; set; }
@@ -154,7 +210,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public bool EnablePrevClick { get; set; }
 
         public bool EnableNextClick { get; set; }
-        public double ActiveImage { get; set; }
+        private int _activeImage { get; set; } = 0;
+        public int ActiveImage { get; set; } = 0;
         public List<string> ChaptersList => DataSource._chapterListShow;
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
         public int ImageCount { get; set; }
@@ -175,6 +232,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         #region Updater Task
 
         private Task T;
+        public double _scrollHeight = 0;
+
         private CancellationTokenSource Ts { get; set; } = new CancellationTokenSource();
 
         public async Task UpdateAsync()
@@ -184,18 +243,16 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             T?.Wait(Ts.Token);
             Ts = new CancellationTokenSource();
             ImageHeight.Clear();
+            ImageHeightMod.Clear();
             DataSource.ClearImageList();
             ScrollHelper.Helper();
             T = await Task.Run(async () =>
             {
                 await DataSource.DirUpdatedAsync(Ts.Token).ConfigureAwait(true);
+                UpdateImageHeightMod();
                 return Task.CompletedTask;
             }).ConfigureAwait(true);
-            ImageHeightMod.Clear();
-            // INIT Height Mod
-            ImageHeightMod.AddRange(ImageHeight);
-            UpdateImageHeightMod();
-            //
+            
         }
 
         #endregion Updater Task

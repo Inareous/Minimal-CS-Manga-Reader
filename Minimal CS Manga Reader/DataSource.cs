@@ -1,6 +1,5 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Properties;
-using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System;
@@ -87,9 +86,9 @@ namespace Minimal_CS_Manga_Reader.Model
         {
             try
             {
-                Task.Run(() => DataHandler.FetchImages(_activeDir, _imageList, token), token);
+                var T = Task.Run(() => DataHandler.FetchImages(_activeDir, _imageList, token), token);
                 token.ThrowIfCancellationRequested();
-                return Task.CompletedTask;
+                return T;
             }
             catch (OperationCanceledException)
             {
