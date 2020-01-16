@@ -39,11 +39,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             IncreaseZoom = ReactiveCommand.Create(() => ZoomScale += 10);
             DecreaseZoom = ReactiveCommand.Create(() => ZoomScale >= 11 ? ZoomScale -= 10 : 10);
             this.WhenAnyValue(x => x.ZoomScale)
-                .Where(ZoomScale => ZoomScale < 10)
-                .Subscribe(x => ZoomScale = 10);
-            this.WhenAnyValue(x => x.ZoomScale)
                 .Subscribe(x =>
                 {
+                    if (ZoomScale < 10) ZoomScale = 10;
                     ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
                     Settings.Default.ZoomScale = ZoomScale;
                     Settings.Default.Save();
@@ -58,19 +56,20 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             PreviousClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex <= 0 ? 0 : ActiveIndex - 1);
             this.WhenAnyValue(x => x.ActiveIndex)
                 .Subscribe(x =>
-                          {
-                              ActiveDirShow = DataSource._chapterListShow.Count != 0 ? DataSource._chapterListShow[ActiveIndex] : "";
-                              UpdateAsync().ConfigureAwait(true);
-                              EnablePrevClick = ActiveIndex == 0 ? false : true;
-                              EnableNextClick = ActiveIndex == ChaptersList.Count - 1 ? false : true;
-                          });
-            DataSource._imageList.Connect().OnItemAdded(x =>
-            {
-                sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
-                ImageHeight.Add(x.Height + sum);
-                ImageHeightMod.Add(x.Height + sum);
-                ImageCount = DataSource._imageList.Count;
-            }).Bind(out _imageList).DisposeMany().Subscribe();
+                {
+                    ActiveDirShow = DataSource._chapterListShow.Count != 0 ? DataSource._chapterListShow[ActiveIndex] : "";
+                    UpdateAsync().ConfigureAwait(true);
+                    EnablePrevClick = ActiveIndex == 0 ? false : true;
+                    EnableNextClick = ActiveIndex == ChaptersList.Count - 1 ? false : true;
+                });
+            DataSource._imageList.Connect()
+                .OnItemAdded(x =>
+                {
+                    sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
+                    ImageHeight.Add(x.Height + sum);
+                    ImageHeightMod.Add(x.Height + sum);
+                    ImageCount = DataSource._imageList.Count;
+                }).Bind(out _imageList).DisposeMany().Subscribe();
 
             #endregion Chapter Change
 
@@ -79,14 +78,12 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             this.WhenAnyValue(x => x.ImageMargin)
                 .Subscribe(x =>
                 {
+                    if (ImageMargin < 0) ImageMargin = 0;
                     ImageMarginX = $"0,0,0,{ImageMargin}";
                     Settings.Default.ImageMargin = ImageMargin;
                     Settings.Default.Save();
                     UpdateImageHeightMod();
                 });
-            this.WhenAnyValue(x => x.ImageMargin)
-                .Where(ImageMargin => ImageMargin < 0)
-                .Subscribe(x => ImageMargin = 0);
             this.WhenAnyValue(x => x.ScrollIncrement)
                 .Subscribe(x =>
                 {
@@ -123,21 +120,11 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         {
             if (ImageList.Count <= 0 || _scrollHeight == 0) { _activeImage = 0; return; }
 
-            while (_scrollHeight < ImageHeightMod.ElementAtOrDefault(_activeImage - 1) && _activeImage > 0) // scrolling down
-            {
-                _activeImage -= 1;
-            }
+            while (_scrollHeight < ImageHeightMod.ElementAtOrDefault(_activeImage - 1) && _activeImage > 0) _activeImage -= 1;
 
-            while (_scrollHeight > ImageHeightMod.ElementAtOrDefault(_activeImage) && ImageHeightMod.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeightMod.Count) // scrolling down
-            {
-                _activeImage += 1;
-            }
+            while (_scrollHeight > ImageHeightMod.ElementAtOrDefault(_activeImage) && ImageHeightMod.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeightMod.Count) _activeImage += 1;// scrolling down
 
-            if (_activeImage < 0)
-            {
-                _activeImage = 0;
-                return;
-            }
+            if (_activeImage < 0)  _activeImage = 0;
         }
 
         #endregion Scroll
@@ -219,7 +206,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             {
                 await DataSource.DirUpdatedAsync(Ts.Token).ConfigureAwait(true);
                 UpdateImageHeightMod();
-                return Task.CompletedTask;
+                return T;
             }).ConfigureAwait(true);
         }
 
