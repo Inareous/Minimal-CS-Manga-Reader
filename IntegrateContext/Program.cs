@@ -30,20 +30,28 @@ namespace IntegrateContext
             Console.WriteLine("");
             if (int.TryParse(input, out int result) && result > 0 && result <= 2)
             {
-                switch (RegistryAccess.EditRegistry(result))
+                try
                 {
-                    case 1:
-                        Console.WriteLine("Registry created/updated");
-                        break;
+                    switch (RegistryAccess.EditRegistry(result))
+                    {
+                        case 1:
+                            Console.WriteLine("Registry created/updated");
+                            break;
 
-                    case 2:
-                        Console.WriteLine("Registry deleted");
-                        break;
+                        case 2:
+                            Console.WriteLine("Registry deleted");
+                            break;
 
-                    default:
-                        Console.WriteLine("Something went wrong!");
-                        break;
+                        default:
+                            Console.WriteLine("Something went wrong!");
+                            break;
+                    }
                 }
+                catch
+                {
+                    Console.WriteLine("Something went wrong!");
+                }
+                
                 Console.WriteLine("Exiting . . .");
             }
             else

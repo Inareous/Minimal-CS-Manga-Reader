@@ -14,16 +14,20 @@
         WindowState="Maximized"
         TitlebarHeight="26"
         TitleCharacterCasing="Normal"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        ShowIconOnTitleBar="False"
+        WindowTitleBrush="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
+        TitleForeground="{DynamicResource MaterialDesignBody}"
         WindowTransitionsEnabled = "False"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+        BorderThickness="0"
         Icon="/favicon.ico">
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisible" />
         <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
@@ -33,11 +37,12 @@
     <Controls:MetroWindow.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="{TemplateBinding Content}"
-                   TextTrimming="CharacterEllipsis"
                    VerticalAlignment="Center"
-                   Margin="10 0 8 0"
+                   Margin="8 0 8 0"
                    FontWeight="Light"
-                   FontSize="14" />
+                   FontStretch="ExtraExpanded"
+                   FontSize="14"
+                   FontFamily="{DynamicResource MaterialDesignFont}"/>
         </DataTemplate>
     </Controls:MetroWindow.TitleTemplate>
     <Grid>
