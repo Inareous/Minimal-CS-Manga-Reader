@@ -12,16 +12,14 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="800" Width="1024"
         WindowState="Maximized"
-        TitlebarHeight="26"
+        TitlebarHeight="24"
         TitleCharacterCasing="Normal"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         ShowIconOnTitleBar="False"
         WindowTitleBrush="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
-        TitleForeground="{DynamicResource MaterialDesignBody}"
         WindowTransitionsEnabled = "False"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
@@ -37,12 +35,13 @@
     <Controls:MetroWindow.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="{TemplateBinding Content}"
+                   Foreground="{DynamicResource MaterialDesignBody}"
                    VerticalAlignment="Center"
-                   Margin="8 0 8 0"
-                   FontWeight="Light"
+                   Margin="10 2 0 0"
+                   Opacity="1"
+                   FontWeight="Regular"
                    FontStretch="ExtraExpanded"
-                   FontSize="14"
-                   FontFamily="{DynamicResource MaterialDesignFont}"/>
+                   TextBlock.FontSize="12"/>
         </DataTemplate>
     </Controls:MetroWindow.TitleTemplate>
     <Grid>
