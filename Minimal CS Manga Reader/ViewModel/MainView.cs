@@ -115,7 +115,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             {
                 ActiveImage = _activeImage + 1;
             });
-
         }
 
         #region Scroll
@@ -157,10 +156,9 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         {
             for (int i = 0; i < ImageHeightMod.Count; ++i)
             {
-                ImageHeightMod[i] = (ImageHeight[i] * ZoomScaleX) + (ImageMargin * (i+1));
+                ImageHeightMod[i] = (ImageHeight[i] * ZoomScaleX) + (ImageMargin * (i + 1));
             }
         }
-
 
         private readonly ReadOnlyObservableCollection<BitmapSource> _imageList;
         public ReadOnlyObservableCollection<BitmapSource> ImageList => _imageList;
@@ -223,7 +221,6 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                 UpdateImageHeightMod();
                 return Task.CompletedTask;
             }).ConfigureAwait(true);
-            
         }
 
         #endregion Updater Task
