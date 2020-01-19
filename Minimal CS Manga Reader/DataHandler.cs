@@ -98,7 +98,7 @@ namespace Minimal_CS_Manga_Reader
             // Create bitmaps.
             try
             {
-                newBitmap = new Bitmap(width, height, pFormat);
+                newBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format16bppRgb555);
                 using (var g = Graphics.FromImage(newBitmap))
                 {
                     g.InterpolationMode = InterpolationMode.HighQualityBicubic;

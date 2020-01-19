@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using DynamicData.Binding;
 using MaterialDesignThemes.Wpf;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
@@ -62,7 +63,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                     EnablePrevClick = ActiveIndex == 0 ? false : true;
                     EnableNextClick = ActiveIndex == ChaptersList.Count - 1 ? false : true;
                 });
-            DataSource._imageList.Connect()
+            DataSource._imageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
                 {
                     sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
