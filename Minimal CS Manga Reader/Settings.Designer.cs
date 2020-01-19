@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Minimal_CS_Manga_Reader.Properties {
+namespace Minimal_CS_Manga_Reader {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -3,7 +3,6 @@ using DynamicData.Binding;
 using MaterialDesignThemes.Wpf;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
-using Minimal_CS_Manga_Reader.Properties;
 using PropertyChanged;
 using ReactiveUI;
 using System;

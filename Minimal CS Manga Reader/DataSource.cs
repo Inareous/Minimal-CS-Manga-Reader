@@ -1,5 +1,4 @@
 ﻿using DynamicData;
-using Minimal_CS_Manga_Reader.Properties;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System;

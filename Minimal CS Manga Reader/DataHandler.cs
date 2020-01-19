@@ -1,5 +1,4 @@
 ﻿using DynamicData;
-using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Readers;
