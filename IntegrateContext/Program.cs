@@ -120,25 +120,23 @@ namespace IntegrateContext
 
         private static bool CreateSubKeyValue()
         {
-            if (CheckFile(programPath) && CheckIcon(programPath))
+
+            if (CheckFile(programPath))
             {
-                var fileExe = "Minimal CS Manga Reader.exe";
-                var fileIcon = "Minimal CS Manga Reader.ico";
-                using (RegistryKey registryKey = Registry.CurrentUser.CreateSubKey(keyPath, true))
+                if (CheckIcon(programPath))
                 {
-                    registryKey?.SetValue(null, $"Read with Minimal CS Manga Reader");
-                    registryKey?.SetValue("icon", $"{programPath}\\{fileIcon}");
-                    registryKey?.Close();
+                    return SetSubkey(true);
                 }
-
-                using (RegistryKey registryKey = Registry.CurrentUser.CreateSubKey($@"{keyPath}\{commandSubDir}", true))
+                else
                 {
-                    registryKey?.SetValue(null, $"\"{programPath}\\{fileExe}\" \"-path=%L\" ");
-                    registryKey?.Close();
+                    Console.WriteLine(
+                    "File exist but icon is missing, do you want to continue without icon ? y/n");
+                    var input = Console.ReadKey().KeyChar.ToString();
+                    if (input == "Y" || input == "y") return SetSubkey(false);
+                    return false;
                 }
-
-                return true;
             }
+            
             else
             {
                 Console.WriteLine(
@@ -146,6 +144,26 @@ namespace IntegrateContext
                     "Exiting. .");
                 return false;
             }
+        }
+
+        private static bool SetSubkey(bool withIcon)
+        {
+            var fileExe = "Minimal CS Manga Reader.exe";
+            var fileIcon = "Minimal CS Manga Reader.ico";
+            using (RegistryKey registryKey = Registry.CurrentUser.CreateSubKey(keyPath, true))
+            {
+                registryKey?.SetValue(null, $"Read with Minimal CS Manga Reader");
+                if (withIcon) registryKey?.SetValue("icon", $"{programPath}\\{fileIcon}");
+                registryKey?.Close();
+            }
+
+            using (RegistryKey registryKey = Registry.CurrentUser.CreateSubKey($@"{keyPath}\{commandSubDir}", true))
+            {
+                registryKey?.SetValue(null, $"\"{programPath}\\{fileExe}\" \"-path=%L\" ");
+                registryKey?.Close();
+            }
+
+            return true;
         }
 
         internal static int EditRegistry(int result)

@@ -12,6 +12,7 @@ WpfMouseWheelLib.dll
 *.userprefs
 
 # Build results
+[Pp]ublishProfiles
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
