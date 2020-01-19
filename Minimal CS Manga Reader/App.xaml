@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
 
 
-                <materialDesign:CustomColorTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Purple" />
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple"  SecondaryColor="Purple" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
 
                 <!-- Material Design: MahApps Compatibility

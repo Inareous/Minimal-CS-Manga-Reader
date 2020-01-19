@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Minimal_CS_Manga_Reader</RootNamespace>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon></ApplicationIcon>
+    <ApplicationIcon>Minimal CS Manga Reader.ico</ApplicationIcon>
     <Win32Resource />
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
   </PropertyGroup>
@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
+    <PackageReference Include="MaterialDesignColors" Version="1.2.2" />
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.4" />
     <PackageReference Include="ReactiveUI" Version="11.1.12" />

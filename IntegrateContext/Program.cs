@@ -132,6 +132,7 @@ namespace IntegrateContext
                     Console.WriteLine(
                     "File exist but icon is missing, do you want to continue without icon ? y/n");
                     var input = Console.ReadKey().KeyChar.ToString();
+                    Console.WriteLine("");
                     if (input == "Y" || input == "y") return SetSubkey(false);
                     return false;
                 }
