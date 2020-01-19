@@ -1,5 +1,4 @@
 ﻿using DynamicData;
-using DynamicData.Binding;
 using MaterialDesignThemes.Wpf;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Model;
@@ -124,7 +123,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
             while (_scrollHeight > ImageHeightMod.ElementAtOrDefault(_activeImage) && ImageHeightMod.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeightMod.Count) _activeImage += 1;// scrolling down
 
-            if (_activeImage < 0)  _activeImage = 0;
+            if (_activeImage < 0) _activeImage = 0;
         }
 
         #endregion Scroll

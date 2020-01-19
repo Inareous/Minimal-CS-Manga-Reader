@@ -98,13 +98,11 @@ namespace Minimal_CS_Manga_Reader
             try
             {
                 newBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format16bppRgb555);
-                using (var g = Graphics.FromImage(newBitmap))
-                {
-                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                using var g = Graphics.FromImage(newBitmap);
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                    g.Clear(Color.Transparent);
-                    g.DrawImage(x, 0, 0, newBitmap.Width, newBitmap.Height);
-                }
+                g.Clear(Color.Transparent);
+                g.DrawImage(x, 0, 0, newBitmap.Width, newBitmap.Height);
             }
             catch (Exception e)
             {
@@ -113,13 +111,11 @@ namespace Minimal_CS_Manga_Reader
                 {
                     // Catch "A Graphics object cannot be created from an image that has an indexed pixel format."
                     newBitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format16bppRgb555);
-                    using (var g = Graphics.FromImage(newBitmap))
-                    {
-                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    using var g = Graphics.FromImage(newBitmap);
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                        g.Clear(Color.Transparent);
-                        g.DrawImage(x, 0, 0, newBitmap.Width, newBitmap.Height);
-                    }
+                    g.Clear(Color.Transparent);
+                    g.DrawImage(x, 0, 0, newBitmap.Width, newBitmap.Height);
                 }
                 else
                 {
@@ -159,28 +155,26 @@ namespace Minimal_CS_Manga_Reader
                 }
                 else
                 {
-                    using (Stream stream = File.Open(file, FileMode.Open))
-                    using (var reader = ReaderFactory.Open(stream))
+                    using Stream stream = File.Open(file, FileMode.Open);
+                    using var reader = ReaderFactory.Open(stream);
+                    var i = 0;
+                    var c = new SourceList<BitmapSource>();
+                    while (reader.MoveToNextEntry())
                     {
-                        var i = 0;
-                        var c = new SourceList<BitmapSource>();
-                        while (reader.MoveToNextEntry())
-                        {
-                            if (reader.Entry.IsDirectory ||
-                                !reader.Entry.Key.EndsWith("jpg") && !reader.Entry.Key.EndsWith("png") &&
-                                !reader.Entry.Key.EndsWith("jpeg")) continue;
-                            token.ThrowIfCancellationRequested();
-                            using var entryStream = reader.OpenEntryStream();
-                            using var memoryStream = new MemoryStream();
-                            entryStream.CopyTo(memoryStream);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            var bm = new Bitmap(memoryStream);
-                            var x = ConvertStreamToSource(bm);
-                            x.Freeze();
-                            Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
-                            { xBitmaps.Add(x); });
-                            i++;
-                        }
+                        if (reader.Entry.IsDirectory ||
+                            !reader.Entry.Key.EndsWith("jpg") && !reader.Entry.Key.EndsWith("png") &&
+                            !reader.Entry.Key.EndsWith("jpeg")) continue;
+                        token.ThrowIfCancellationRequested();
+                        using var entryStream = reader.OpenEntryStream();
+                        using var memoryStream = new MemoryStream();
+                        entryStream.CopyTo(memoryStream);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        var bm = new Bitmap(memoryStream);
+                        var x = ConvertStreamToSource(bm);
+                        x.Freeze();
+                        Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
+                        { xBitmaps.Add(x); });
+                        i++;
                     }
                 }
             }
@@ -206,17 +200,15 @@ namespace Minimal_CS_Manga_Reader
                 for (var i = 0; i < enumerable.Count; i++)
                 {
                     token.ThrowIfCancellationRequested();
-                    using (Stream stream = File.Open(enumerable[i], FileMode.Open))
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        stream.CopyTo(memoryStream);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
-                        var bm = new Bitmap(memoryStream);
-                        var x = ConvertStreamToSource(bm);
-                        x.Freeze();
-                        Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
-                        { xBitmaps.Add(x); });
-                    }
+                    using Stream stream = File.Open(enumerable[i], FileMode.Open);
+                    using var memoryStream = new MemoryStream();
+                    stream.CopyTo(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    var bm = new Bitmap(memoryStream);
+                    var x = ConvertStreamToSource(bm);
+                    x.Freeze();
+                    Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
+                    { xBitmaps.Add(x); });
                 }
             }
             catch (OperationCanceledException)
