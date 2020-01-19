@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Minimal_CS_Manga_Reader</RootNamespace>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Minimal CS Manga Reader.ico</ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
   </PropertyGroup>

@@ -170,18 +170,16 @@ namespace Minimal_CS_Manga_Reader
                                 !reader.Entry.Key.EndsWith("jpg") && !reader.Entry.Key.EndsWith("png") &&
                                 !reader.Entry.Key.EndsWith("jpeg")) continue;
                             token.ThrowIfCancellationRequested();
-                            using (var entryStream = reader.OpenEntryStream())
-                            using (var memoryStream = new MemoryStream())
-                            {
-                                entryStream.CopyTo(memoryStream);
-                                memoryStream.Seek(0, SeekOrigin.Begin);
-                                var bm = new Bitmap(memoryStream);
-                                var x = ConvertStreamToSource(bm);
-                                x.Freeze();
-                                Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
-                                { xBitmaps.Add(x); });
-                                i++;
-                            }
+                            using var entryStream = reader.OpenEntryStream();
+                            using var memoryStream = new MemoryStream();
+                            entryStream.CopyTo(memoryStream);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            var bm = new Bitmap(memoryStream);
+                            var x = ConvertStreamToSource(bm);
+                            x.Freeze();
+                            Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
+                            { xBitmaps.Add(x); });
+                            i++;
                         }
                     }
                 }
