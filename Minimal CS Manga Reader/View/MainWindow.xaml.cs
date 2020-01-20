@@ -25,7 +25,6 @@ namespace Minimal_CS_Manga_Reader
 
             ScrollViewer.Events().ScrollChanged.Subscribe(x =>
             {
-                x.Handled = true;
                 ViewModel._scrollHeight = ScrollViewer.VerticalOffset.Equals(double.NaN) ? 0 : ScrollViewer.VerticalOffset;
                 ViewModel.ScrollChanged();
             });
