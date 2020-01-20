@@ -30,6 +30,13 @@ namespace Minimal_CS_Manga_Reader
                 ViewModel.ScrollChanged();
             });
 
+            this.WhenAnyValue(x => x.ViewModel.ActiveIndex)
+                .Subscribe(_ =>
+                {
+                    Keyboard.Focus(ScrollViewer);
+                    ScrollViewer.Focus();
+                });
+
             this.Events().KeyDown.
                 Where(x => x.Key.Equals(Key.Enter)).
                 Subscribe(x =>
