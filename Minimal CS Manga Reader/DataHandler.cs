@@ -161,7 +161,8 @@ namespace Minimal_CS_Manga_Reader
 
             using Graphics gr = Graphics.FromImage(clone);
             gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            // gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            // gr.SmoothingMode = SmoothingMode.HighQuality;
             gr.Clear(Color.Transparent);
             gr.DrawImage(x, new Rectangle(0, 0, clone.Width, clone.Height));
             x.Dispose();
