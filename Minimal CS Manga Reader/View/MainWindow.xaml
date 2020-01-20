@@ -7,7 +7,6 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
         i:MouseWheel.Enhanced="True"
-        xmlns:local="clr-namespace:Minimal_CS_Manga_Reader"
         xmlns:scroll="clr-namespace:Minimal_CS_Manga_Reader.Helper"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="800" Width="1024"
@@ -142,14 +141,14 @@
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
                               FontSize="13" Width="100" />
                     <Separator />
-                    <ToggleButton Margin="8 0 16 0" IsChecked="{Binding isDark, Mode=TwoWay}" />
+                    <ToggleButton Margin="8 0 16 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
                     <Separator />
                 </ToolBar>
             </ToolBarTray>
         </Grid>
         <Grid Row="1">
             <ScrollViewer
-                x:Name="Scrollviewer"
+                x:Name="ScrollViewer"
                 Style="{StaticResource scrFocus}"
                 scroll:ScrollHelper.IsEnabled="True"
                 i:MouseWheel.Smoothing="None"

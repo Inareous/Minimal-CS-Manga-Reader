@@ -86,12 +86,12 @@ namespace Minimal_CS_Manga_Reader {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool isDark {
+        public bool IsDark {
             get {
-                return ((bool)(this["isDark"]));
+                return ((bool)(this["IsDark"]));
             }
             set {
-                this["isDark"] = value;
+                this["IsDark"] = value;
             }
         }
     }

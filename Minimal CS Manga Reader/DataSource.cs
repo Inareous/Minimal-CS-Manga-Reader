@@ -30,13 +30,12 @@ namespace Minimal_CS_Manga_Reader.Model
 
         public static string _imageCountShow { get; set; }
 
-        public static string _mangaTitle { get; set; }
+        public static string Title { get; set; }
 
         public static void Initialize()
         {
             bool notZip = true;
-            if (_path.Equals("FirstTimeNotSet") || _path.Equals(null))
-                _path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (_path.Equals("FirstTimeNotSet") || _path.Equals(null)) _path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (_args.Length >= 2)
             {
@@ -60,25 +59,24 @@ namespace Minimal_CS_Manga_Reader.Model
                 Settings.Default.Save();
             }
             //
-            var p = _path.Split('\\').ToArray();
-            _mangaTitle = p[p.Length - 1];
+            Title = _path.Split('\\').ToArray()[^1];
             //
             if (notZip) { _chapterList = DataHandler.FetchChapters(_path); } else { _chapterList.Add(_path); }
             if (_chapterList.Count.Equals(0)) return;
             _chapterListShow = SetChapters();
-            string _activeDirShow = _chapterListShow.Count == 0 ? "" : _chapterListShow[_chapterListShow.Count - 1];
+            string _activeDirShow = _chapterListShow.Count == 0 ? "" : _chapterListShow[^1];
             _activeDir = notZip ? _path + "\\" + _activeDirShow : _path.Replace("\\" + _activeDirShow, "");
         }
 
         public static List<string> SetChapters()
         {
-            List<string> c = new List<string>();
+            List<string> chapters = new List<string>();
             foreach (var chapter in _chapterList)
             {
                 var x = chapter.Split('\\').ToList();
-                c.Add(x[x.Count - 1]);
+                chapters.Add(x[^1]);
             }
-            return c;
+            return chapters;
         }
 
         public static Task DirUpdatedAsync(CancellationToken token)

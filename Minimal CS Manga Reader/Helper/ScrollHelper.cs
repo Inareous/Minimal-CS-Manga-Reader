@@ -79,7 +79,7 @@ namespace Minimal_CS_Manga_Reader.Helper
         public static void Helper()
         {
             if (Obj == null) return;
-            Obj.ScrollToHorizontalOffset(Math.Round(Obj.ScrollableWidth / 2 - 1));
+            Obj.ScrollToHorizontalOffset(Math.Round((Obj.ScrollableWidth / 2) - 1));
             Obj.ScrollToTop();
         }
 
@@ -104,14 +104,13 @@ namespace Minimal_CS_Manga_Reader.Helper
         public static void target_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             // Remove "|| e.ViewportHeightChange < 0 || e.ExtentHeightChange < 0" if you want it to only scroll to the bottom when it increases in size
-            if (!(e.ViewportHeightChange > 0) && !(e.ExtentHeightChange > 0) && !(e.ViewportHeightChange < 0) &&
-                !(e.ExtentHeightChange < 0)) return;
+            if (e.ViewportHeightChange <= 0 && e.ExtentHeightChange <= 0 && e.ViewportHeightChange >= 0 && e.ExtentHeightChange >= 0) return;
             var x = sender as ScrollViewer;
             // x?.ScrollToTop();
             if (x.ScrollableWidth != ScrollableWidthSaved)
             {
                 ScrollableWidthSaved = x.ScrollableWidth;
-                x?.ScrollToHorizontalOffset(Math.Round(x.ScrollableWidth / 2 - 1));
+                x?.ScrollToHorizontalOffset(Math.Round((x.ScrollableWidth / 2) - 1));
             }
         }
 

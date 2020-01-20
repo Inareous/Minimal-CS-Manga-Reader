@@ -120,7 +120,6 @@ namespace IntegrateContext
 
         private static bool CreateSubKeyValue()
         {
-
             if (CheckFile(programPath))
             {
                 if (CheckIcon(programPath))
@@ -137,7 +136,6 @@ namespace IntegrateContext
                     return false;
                 }
             }
-            
             else
             {
                 Console.WriteLine(

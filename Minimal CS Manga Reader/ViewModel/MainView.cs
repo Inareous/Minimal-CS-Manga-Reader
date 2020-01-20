@@ -24,8 +24,8 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #region INIT
 
             DataSource.Initialize();
-            WindowTitle = $"{DataSource._mangaTitle}  -  Minimal CS Manga Reader";
-            ActiveIndex = ChaptersList.Count <= 0 ? 0 : ChaptersList.Count - 1;
+            WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+            ActiveIndex = ChaptersList.Count == 0 ? 0 : ChaptersList.Count - 1;
             ImageMarginX = $"0,0,0,{ImageMargin}";
             ScrollIncrementX = ScrollIncrement.ToString();
             ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
@@ -38,7 +38,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             IncreaseZoom = ReactiveCommand.Create(() => ZoomScale += 10);
             DecreaseZoom = ReactiveCommand.Create(() => ZoomScale >= 11 ? ZoomScale -= 10 : 10);
             this.WhenAnyValue(x => x.ZoomScale)
-                .Subscribe(x =>
+                .Subscribe(_ =>
                 {
                     if (ZoomScale < 10) ZoomScale = 10;
                     ZoomScaleX = ZoomScale == 100 ? 1 : ZoomScale / 99.999999999999;
@@ -54,19 +54,19 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             NextClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex >= ChaptersList.Count - 1 ? ChaptersList.Count - 1 : ActiveIndex + 1);
             PreviousClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex <= 0 ? 0 : ActiveIndex - 1);
             this.WhenAnyValue(x => x.ActiveIndex)
-                .Subscribe(x =>
+                .Subscribe(_ =>
                 {
                     ActiveDirShow = DataSource._chapterListShow.Count != 0 ? DataSource._chapterListShow[ActiveIndex] : "";
                     UpdateAsync().ConfigureAwait(true);
-                    EnablePrevClick = ActiveIndex == 0 ? false : true;
-                    EnableNextClick = ActiveIndex == ChaptersList.Count - 1 ? false : true;
+                    EnablePrevClick = ActiveIndex != 0;
+                    EnableNextClick = ActiveIndex != ChaptersList.Count - 1;
                 });
             DataSource._imageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
                 {
-                    sum = ImageHeight.Count == 0 ? 0 : ImageHeight[ImageHeight.Count - 1];
-                    ImageHeight.Add(x.Height + sum);
-                    ImageHeightMod.Add(x.Height + sum);
+                    Sum = ImageHeight.Count == 0 ? 0 : ImageHeight[^1];
+                    ImageHeight.Add(x.Height + Sum);
+                    ImageHeightMod.Add(x.Height + Sum);
                     ImageCount = DataSource._imageList.Count;
                 }).Bind(out _imageList).DisposeMany().Subscribe();
 
@@ -75,7 +75,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
             #region Settings Change
 
             this.WhenAnyValue(x => x.ImageMargin)
-                .Subscribe(x =>
+                .Subscribe(_ =>
                 {
                     if (ImageMargin < 0) ImageMargin = 0;
                     ImageMarginX = $"0,0,0,{ImageMargin}";
@@ -84,44 +84,41 @@ namespace Minimal_CS_Manga_Reader.ViewModel
                     UpdateImageHeightMod();
                 });
             this.WhenAnyValue(x => x.ScrollIncrement)
-                .Subscribe(x =>
+                .Subscribe(_ =>
                 {
                     Settings.Default.ScrollIncrement = ScrollIncrement;
                     Settings.Default.Save();
                     ScrollIncrementX = ScrollIncrement.ToString();
                 });
             this.WhenAnyValue(x => x.ActiveBackgroundView)
-                .Subscribe(x =>
+                .Subscribe(_ =>
                 {
                     Settings.Default.Background = ActiveBackgroundView;
                     Settings.Default.Save();
                 });
 
-            this.WhenAnyValue(x => x.isDark)
-                .Subscribe(x =>
+            this.WhenAnyValue(x => x.IsDark)
+                .Subscribe(_ =>
                 {
-                    Settings.Default.isDark = isDark;
+                    Settings.Default.IsDark = IsDark;
                     Settings.Default.Save();
-                    ModifyTheme(theme => theme.SetBaseTheme(isDark ? Theme.Dark : Theme.Light));
+                    ModifyTheme(theme => theme.SetBaseTheme(IsDark ? Theme.Dark : Theme.Light));
                 });
 
             #endregion Settings Change
 
-            this.WhenAnyValue(x => x._activeImage).Subscribe(x =>
-            {
-                ActiveImage = _activeImage + 1;
-            });
+            this.WhenAnyValue(x => x._activeImage).Subscribe(x => ActiveImage = x + 1);
         }
 
         #region Scroll
 
         public void ScrollChanged()
         {
-            if (ImageList.Count <= 0 || _scrollHeight == 0) { _activeImage = 0; return; }
+            if (ImageList.Count == 0 || _scrollHeight == 0) { _activeImage = 0; return; }
 
-            while (_scrollHeight < ImageHeightMod.ElementAtOrDefault(_activeImage - 1) && _activeImage > 0) _activeImage -= 1;
+            while (_scrollHeight < ImageHeightMod.ElementAtOrDefault(_activeImage - 1) && _activeImage > 0) _activeImage--;
 
-            while (_scrollHeight > ImageHeightMod.ElementAtOrDefault(_activeImage) && ImageHeightMod.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeightMod.Count) _activeImage += 1;// scrolling down
+            while (_scrollHeight > ImageHeightMod.ElementAtOrDefault(_activeImage) && ImageHeightMod.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeightMod.Count) _activeImage++;
 
             if (_activeImage < 0) _activeImage = 0;
         }
@@ -151,7 +148,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
 
         public List<double> ImageHeight { get; set; } = new List<double>();
         public List<double> ImageHeightMod { get; set; } = new List<double>();
-        private double sum { get; set; }
+        private double Sum { get; set; }
         public string WindowTitle { get; set; }
 
         #region Toolbar Stuff
@@ -160,7 +157,7 @@ namespace Minimal_CS_Manga_Reader.ViewModel
         public string ActiveDirShow { get; set; }
 
         public int ActiveIndex { get; set; }
-        public bool isDark { get; set; } = Settings.Default.isDark;
+        public bool IsDark { get; set; } = Settings.Default.IsDark;
 
         public bool EnablePrevClick { get; set; }
 
