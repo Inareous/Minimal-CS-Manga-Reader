@@ -26,7 +26,7 @@ namespace Minimal_CS_Manga_Reader
             // TO DO -- OPTIMIZE
             var fileList = Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(s =>
                 s.EndsWith(".cbz") || s.EndsWith(".cbr") || s.EndsWith(".rar") || s.EndsWith(".zip"));
-            var directories = Directory.GetDirectories(path);
+            var directories = Directory.EnumerateDirectories(path);
             var returnList = new List<string>();
             returnList.AddRange(fileList);
             returnList.AddRange(directories);
@@ -55,10 +55,14 @@ namespace Minimal_CS_Manga_Reader
                         entryStream.CopyTo(memoryStream);
                         memoryStream.Seek(0, SeekOrigin.Begin);
                         token.ThrowIfCancellationRequested();
-                        var x = ConvertStreamToSource(new Bitmap(memoryStream));
-                        x.Freeze();
+                        var bitmap = new Bitmap(memoryStream);
+                        var bitmapSource = ConvertStreamToSource(bitmap);
+                        bitmapSource.Freeze();
                         Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
-                        { xBitmaps.Add(x); });
+                        {
+                            xBitmaps.Add(bitmapSource);
+                            bitmap.Dispose();
+                        });
                     }
                 }
             }
@@ -88,10 +92,14 @@ namespace Minimal_CS_Manga_Reader
                     stream.CopyTo(memoryStream);
                     memoryStream.Seek(0, SeekOrigin.Begin);
                     token.ThrowIfCancellationRequested();
-                    var x = ConvertStreamToSource(new Bitmap(memoryStream));
-                    x.Freeze();
+                    var bitmap = new Bitmap(memoryStream);
+                    var bitmapSource = ConvertStreamToSource(bitmap);
+                    bitmapSource.Freeze();
                     Application.Current.Dispatcher.Invoke(delegate // <--- Update from UI Thread
-                    { xBitmaps.Add(x); });
+                    {
+                      xBitmaps.Add(bitmapSource);
+                      bitmap.Dispose();
+                    });
                 }
             }
             catch (OperationCanceledException)
@@ -165,7 +173,6 @@ namespace Minimal_CS_Manga_Reader
             // gr.SmoothingMode = SmoothingMode.HighQuality;
             gr.Clear(Color.Transparent);
             gr.DrawImage(x, new Rectangle(0, 0, clone.Width, clone.Height));
-            x.Dispose();
             return Convert(clone);
         }
 

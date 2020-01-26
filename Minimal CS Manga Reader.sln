@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minimal CS Manga Reader", "Minimal CS Manga Reader\Minimal CS Manga Reader.csproj", "{3EA2BB8E-5B0E-46C2-85F0-98891C69C8B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrateContext", "IntegrateContext\IntegrateContext.csproj", "{01A1B996-5E34-441D-93C2-F7CA03BAFDC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrateContext", "IntegrateContext\IntegrateContext.csproj", "{01A1B996-5E34-441D-93C2-F7CA03BAFDC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minimal CS Manga", "Minimal CS Manga\Minimal CS Manga.csproj", "{35A647B1-DDFE-4742-86F4-3AF006C4DF4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{01A1B996-5E34-441D-93C2-F7CA03BAFDC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01A1B996-5E34-441D-93C2-F7CA03BAFDC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01A1B996-5E34-441D-93C2-F7CA03BAFDC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35A647B1-DDFE-4742-86F4-3AF006C4DF4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35A647B1-DDFE-4742-86F4-3AF006C4DF4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35A647B1-DDFE-4742-86F4-3AF006C4DF4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35A647B1-DDFE-4742-86F4-3AF006C4DF4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

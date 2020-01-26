@@ -1,0 +1,241 @@
+﻿<reactiveui:ReactiveWindow
+    x:Class="Minimal_CS_Manga.MainWindow"
+    x:TypeArguments="mangademo:AppViewModel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mangademo="clr-namespace:Minimal_CS_Manga"
+    xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
+    i:MouseWheel.Enhanced="True"
+    xmlns:scroll="clr-namespace:Minimal_CS_Manga.Helper"
+    xmlns:reactiveui="http://reactiveui.net"
+    Title="{Binding WindowTitle}" Height="800" Width="1024"
+    WindowState="Maximized"
+    AllowsTransparency="False"
+    TextElement.FontWeight="Regular"
+    TextElement.FontSize="13"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    BorderThickness="0">
+    <!--
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+    ShowIconOnTitleBar="False"
+    WindowTitleBrush="{DynamicResource MaterialDesignPaper}"
+    TitleBarHeight="24"
+    WindowTransitionsEnabled = "False"
+    TitleCharacterCasing="Normal"
+    -->
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisible" />
+        <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+        <Style TargetType="TextBox" x:Key="tBox">
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Bottom" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="tInsideBorder">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Row="0">
+            <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+                <ToolBar ClipToBounds="False" Height="30">
+                    <Border BorderBrush="{x:Null}" Margin="5,0,5,0">
+                        <TextBlock Style="{StaticResource tInsideBorder}" Text="Chapter :" />
+                    </Border>
+                    <ComboBox ItemsSource="{Binding ChaptersList}"  SelectedIndex="{Binding ActiveIndex}"
+                              FontSize="13" Width="350" MaxWidth="350" Padding="5 4 0 0" Margin="0,0,5,0"
+                              MinWidth="350"
+                              HorizontalAlignment="Left" FontFamily="Roboto" FontWeight="Normal">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Height" Value="23" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="SnapsToDevicePixels" Value="true" />
+                                <Setter Property="Padding" Value="5 0 0 0" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                                <Setter Property="VerticalContentAlignment"
+                                        Value="Center" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                Text="{Binding }" MaxWidth="600"
+                                TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <Button Width="25" Height="{Binding Width, RelativeSource={RelativeSource Self}}" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter" IsEnabled="{Binding EnablePrevClick}"
+                             Command="{Binding PreviousClick}" Margin="5 0 1 0">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
+                            </Canvas>
+                        </Grid>
+                    </Button>
+
+                    <Button Width="25" Height="{Binding Width, RelativeSource={RelativeSource Self}}" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter" IsEnabled="{Binding EnableNextClick}"
+                             Command="{Binding NextClick}" Margin="1 0 5 0">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
+                        </Canvas>
+                    </Button>
+                    <Separator />
+                    <TextBox Text="{Binding ActiveImage, Mode=OneWay}" Style="{StaticResource tBox}"
+                             Padding="0" Margin="5 0 4 0" Width="25" IsHitTestVisible="False" />
+                    <Border BorderBrush="{x:Null}" Margin="0">
+                        <TextBlock  Style="{StaticResource tInsideBorder}" Text="/" />
+                    </Border>
+                    <Border BorderBrush="{x:Null}" Margin="10,0,5,0">
+                        <TextBlock Name="ImageCount" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding ImageCount, Mode=TwoWay}" />
+                    </Border>
+                    <Separator />
+                    <Border BorderBrush="{x:Null}" Margin="5,0,5,0">
+                        <TextBlock  Style="{StaticResource tInsideBorder}">Margin :</TextBlock>
+                    </Border>
+                    <TextBox Text="{Binding ImageMarginSetter, Mode=TwoWay}"  Style="{StaticResource tBox}"
+                             ToolTip="Edit margin of each image" Width="40" Margin="0,0,5,0" />
+                    <Separator />
+                    <Border BorderBrush="{x:Null}" Margin="5,0,5,0">
+                        <TextBlock  Style="{StaticResource tInsideBorder}">Scroll Increment :</TextBlock>
+                    </Border>
+                    <TextBox Text="{Binding ScrollIncrement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource tBox}"
+                              Padding="0" Margin="0,0,5,0" Width="40" />
+                    <Separator />
+                    <Border BorderBrush="{x:Null}" Margin="5,0,5,0">
+                        <TextBlock  Style="{StaticResource tInsideBorder}">Zoom (%) :</TextBlock>
+                    </Border>
+                    <TextBox VerticalAlignment="Center" Text="{Binding ZoomScaleSetter, Mode=TwoWay}" Style="{StaticResource tBox}"
+                             Padding="0" Margin="0,0,5,0" Width="40" />
+                    <Button Width="25" Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Increase by 10%"
+                            Command="{Binding DecreaseZoom}" Margin="5 0 1 0">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M19,13H5V11H19V13Z" Fill="MediumPurple" />
+                            </Canvas>
+                        </Grid>
+                    </Button>
+                    <Button Width="25" Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Decrease by 10%"
+                            Command="{Binding IncreaseZoom}" Margin="1 0 5 0">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="MediumPurple" />
+                            </Canvas>
+                        </Grid>
+                    </Button>
+                    <Separator />
+                    <Border BorderBrush="{x:Null}" Margin="5,0,5,0">
+                        <TextBlock  Style="{StaticResource tInsideBorder}">Background :</TextBlock>
+                    </Border>
+                    <ComboBox ItemsSource="{Binding BackgroundViewList}"  SelectedItem="{Binding ActiveBackgroundView}"
+                              FontSize="13" Width="100" MaxWidth="350" Padding="5 4 0 0" Margin="0,0,5,0"
+                              HorizontalAlignment="Left" FontFamily="Roboto" FontWeight="Normal">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Height" Value="23" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="SnapsToDevicePixels" Value="true" />
+                                <Setter Property="Padding" Value="5 0 0 0" />
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                                <Setter Property="VerticalContentAlignment"
+                                        Value="Center" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel  VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <Separator />
+                    <ToggleButton Width="25" Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
+                    <Separator />
+                </ToolBar>
+            </ToolBarTray>
+        </Grid>
+        <Grid Row="1">
+            <ScrollViewer
+                x:Name="ScrollViewer"
+                Style="{StaticResource scrFocus}"
+                scroll:ScrollHelper.IsEnabled="True"
+                i:MouseWheel.Smoothing="None"
+                i:MouseWheel.Debouncing="None"
+                i:MouseWheel.ScrollSmoothing="None"
+                i:MouseWheel.ScrollMode="Auto"
+                i:MouseWheel.PhysicalVScrollIncrement="{Binding ScrollIncrement}"
+                PanningMode="Both"
+                HorizontalScrollBarVisibility="Auto"
+                Focusable="True"
+                Height="{Binding Path=ActualHeight,
+           RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
+                Width="{Binding Path=ActualWidth,
+           RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
+                IsManipulationEnabled="True">
+                <ItemsControl VirtualizingStackPanel.IsVirtualizing="True"
+                              Background="{
+                          Binding RelativeSource={
+                            RelativeSource FindAncestor,
+                            AncestorType={x:Type Window}},
+                          Path=DataContext.ActiveBackgroundView}"
+                              x:Name="ImageList" ItemsSource="{Binding ImageList}"
+                              Height="Auto" HorizontalContentAlignment="Center" Focusable="True"
+                              IsManipulationEnabled="True" FocusVisualStyle="{x:Null}"
+                              ScrollViewer.CanContentScroll="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}"
+                                   Stretch="Fill" Width="{Binding Width}" Height="{Binding Height}"
+                                   HorizontalAlignment="Center"
+                                   Margin="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},Path=DataContext.ImageMargin}"
+                                   VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality"
+                                   UseLayoutRounding="True" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased">
+                                <Image.LayoutTransform>
+                                    <ScaleTransform
+                                ScaleX="{
+                          Binding RelativeSource={
+                            RelativeSource FindAncestor,
+                            AncestorType={x:Type Window}},
+                          Path=DataContext.ZoomScale}"
+                                        ScaleY="{
+                          Binding RelativeSource={
+                            RelativeSource FindAncestor,
+                            AncestorType={x:Type Window}},
+                          Path=DataContext.ZoomScale}" />
+                                </Image.LayoutTransform>
+                            </Image>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</reactiveui:ReactiveWindow>

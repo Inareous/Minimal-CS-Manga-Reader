@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Minimal CS Manga": {
+      "commandName": "Project",
+      "commandLineArgs": "-path=\"D:\\Otome Game no Hametsu Flag shika nai Akuyaku Reijou ni Tensei shite shimatta\""
+    }
+  }
+}
