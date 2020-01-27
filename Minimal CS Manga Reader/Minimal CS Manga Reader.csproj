@@ -1,33 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿ <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Minimal_CS_Manga_Reader</RootNamespace>
     <UseWPF>true</UseWPF>
+    <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <ApplicationIcon>Minimal CS Manga Reader.ico</ApplicationIcon>
     <Win32Resource />
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <NeutralLanguage>en</NeutralLanguage>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>Minimal CS Manga Reader</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    
-    <None Remove="dll\WpfMouseWheelLib.dll" />
-    <None Remove="Helper\WpfMouseWheelLib.dll" />
+    <None Remove="MainWindow.xaml.bak" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
     <PackageReference Include="MaterialDesignColors" Version="1.2.2" />
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.4" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="11.1.12" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.1.12" />
     <PackageReference Include="ReactiveUI.WPF" Version="11.1.12" />
     <PackageReference Include="sharpcompress" Version="0.24.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
@@ -52,6 +48,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

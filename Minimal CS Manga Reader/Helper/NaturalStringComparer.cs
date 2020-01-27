@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace Minimal_CS_Manga_Reader
+namespace Minimal_CS_Manga_Reader.Helper
 {
     [SuppressUnmanagedCodeSecurity]
     internal static class SafeNativeMethods

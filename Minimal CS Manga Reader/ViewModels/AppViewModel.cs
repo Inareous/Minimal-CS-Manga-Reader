@@ -212,7 +212,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public bool EnableNextClick { get; set; }
         [Reactive] private int _activeImage { get; set; } = 0;
         [Reactive] public int ActiveImage { get; set; } = 0;
-        [Reactive] public List<string> ChaptersList { get; set; }
+        [Reactive] public List<string> ChaptersList { get; set; } = new List<string>();
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
         [Reactive] public int ImageCount { get; set; }
         [Reactive] public int ImageMarginSetter { get; set; } = Settings.Default.ImageMargin;
