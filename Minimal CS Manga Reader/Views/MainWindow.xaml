@@ -2,14 +2,12 @@
         x:Class="Minimal_CS_Manga_Reader.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
         i:MouseWheel.Enhanced="True"
         xmlns:scroll="clr-namespace:Minimal_CS_Manga_Reader.Helper"
-        mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="800" Width="1024"
+        AllowsTransparency="False"
         WindowState="Maximized"
         TitleBarHeight="24"
         TitleCharacterCasing="Normal"
@@ -49,13 +47,15 @@
       <Grid Row="0">
         <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
           <ToolBar ClipToBounds="False" Height="30">
-            <Label VerticalAlignment="Center">
+            <Label VerticalAlignment="Center" Padding="10 0 10 2">
               Chapter :
             </Label>
             <ComboBox ItemsSource="{Binding ChaptersList}" SelectedItem="{Binding ActiveDirShow}" SelectedIndex="{Binding ActiveIndex}"
-                  FontSize="13" Width="350" MaxWidth="350" Padding="5 1 0 0" Margin="0,0,5,0"
-                  MinWidth="350"
-                  HorizontalAlignment="Left" FontFamily="Roboto" FontWeight="Normal">
+                  FontSize="13" Width="350" MaxWidth="350" Margin="0,0,5,0" MinWidth="350"
+                 FontFamily="Roboto" FontWeight="Normal"
+                 Padding="5 5 0 2"
+                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
+                 HorizontalAlignment="Center">
               <ComboBox.ItemContainerStyle>
                 <Style TargetType="ComboBoxItem">
                   <Setter Property="Height" Value="23" />
@@ -84,52 +84,49 @@
                 </ItemsPanelTemplate>
               </ComboBox.ItemsPanel>
             </ComboBox>
-            <Button  Height="{Binding Width, RelativeSource={RelativeSource Self}}" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter" IsEnabled="{Binding EnablePrevClick}"
-                             Command="{Binding PreviousClick}" Margin="5 0 1 0">
-              <Grid HorizontalAlignment="Stretch">
-                <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                  <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
-                </Canvas>
-              </Grid>
-            </Button>
-
-            <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter" IsEnabled="{Binding EnableNextClick}"
-                     Command="{Binding NextClick}" Margin="1 0 5 0">
-              <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
-              </Canvas>
-            </Button>
-            <TextBox Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
-                 TextAlignment="Center"
-                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                 HorizontalAlignment="Center" Width="30" IsHitTestVisible="False" />
-            <Label VerticalAlignment="Center">/</Label>
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter" IsEnabled="{Binding EnablePrevClick}"
+                             Command="{Binding PreviousClick}" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
+                        </Canvas>
+                    </Button>
+                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter" IsEnabled="{Binding EnableNextClick}"
+                             Command="{Binding NextClick}" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
+                        </Canvas>
+                    </Button>
+                    <TextBox Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
+                             TextAlignment="Center" Padding="-1"
+                             VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
+                             HorizontalAlignment="Center" Width="30" IsHitTestVisible="False" />
+                    <Label VerticalAlignment="Center">/</Label>
 
             <Label Name="ImageCount"
                Content="{Binding ImageCount, Mode=TwoWay}"
                VerticalAlignment="Center" />
-            <Label  VerticalAlignment="Center">
+            <Label VerticalAlignment="Center">
               Margin :
             </Label>
             <TextBox Text="{Binding ImageMarginSetter, Mode=TwoWay}"
-                 FontSize="12" TextAlignment="Center"
+                 FontSize="12" TextAlignment="Center"  Padding="-1"
                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                  HorizontalAlignment="Center" ToolTip="Edit margin of each image" Width="40" />
             <Label VerticalAlignment="Center">
               Scroll Increment :
             </Label>
             <TextBox Text="{Binding ScrollIncrement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 FontSize="12" TextAlignment="Center"
+                 FontSize="12" TextAlignment="Center" Padding="-1"
                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                  HorizontalAlignment="Center" Width="40" />
             <Label  VerticalAlignment="Center">
               Zoom (%) :
             </Label>
-            <TextBox Text="{Binding ZoomScaleSetter, Mode=TwoWay}"
+                    <TextBox Text="{Binding ZoomScaleSetter, Mode=TwoWay}" Padding="-1"
                  FontSize="12" TextAlignment="Center"
                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                  HorizontalAlignment="Center" Width="40" />
-            <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Increase by 10%"
+                    <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Decrease by 10%"
                             Command="{Binding DecreaseZoom}" Margin="5 0 1 0">
               <Grid HorizontalAlignment="Stretch">
                 <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -137,7 +134,7 @@
                 </Canvas>
               </Grid>
             </Button>
-            <Button  Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Decrease by 10%"
+                    <Button  Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Increase by 10%"
                     Command="{Binding IncreaseZoom}" Margin="1 0 5 0">
               <Grid HorizontalAlignment="Stretch">
                 <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -148,7 +145,7 @@
             <Label VerticalAlignment="Center">
               Background :
             </Label>
-            <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
+                    <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}" Padding="-1"
                   FontSize="13" Width="100" />
             <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
           </ToolBar>
@@ -189,7 +186,7 @@
                                    HorizontalAlignment="Center"
                                    Margin="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},Path=DataContext.ImageMargin}"
                                    VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality"
-                                   UseLayoutRounding="True" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Aliased">
+                                   UseLayoutRounding="True" SnapsToDevicePixels="True" RenderOptions.EdgeMode="Unspecified">
                                 <Image.LayoutTransform>
                                     <ScaleTransform
                                 ScaleX="{

@@ -14,11 +14,8 @@ namespace Minimal_CS_Manga_Reader
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            Task.Run(() => {
-                var _args = System.Environment.GetCommandLineArgs();
-                DataSource.Initialize(_args);
-            }).ConfigureAwait(false);
-            base.OnStartup(e);
+           DataSource.Initialize(System.Environment.GetCommandLineArgs());
+           base.OnStartup(e);
         }
     }
 }

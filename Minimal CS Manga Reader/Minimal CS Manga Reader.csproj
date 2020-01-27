@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="MaterialDesignColors" Version="1.2.2" />
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="11.1.12" />
     <PackageReference Include="ReactiveUI.Fody" Version="11.1.12" />
