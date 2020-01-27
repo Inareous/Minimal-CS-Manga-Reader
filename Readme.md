@@ -22,10 +22,11 @@ A minimal program for your daily use of reading manga continously in one page. A
 
 * Download and extract the latest release build at [/Releases](https://github.com/Inareous/Minimal-CS-Manga-Reader/releases).
 * If you are going to integrate ReaderStylet with Windows Explorer, run IntegrateContext.exe as administrator and follow the instruction in the program.
-* If you are using [Free Manga Downloader](https://github.com/riderkick/FMD) or any other program that support opening app with custom parameter, target ReaderStylet.exe and add "-path=%PATH%" as parameter, where %PATH% is the folder path pattern of the manga.
+* If you are using [Free Manga Downloader](https://github.com/riderkick/FMD) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "-path=%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
 
 ## Known Issues/Bugs
 
+* Application Startup is slow, can take up to 1-3 second or more.
 * MCS Manga Reader consume a lot of memory when opening chapter with > 150 images, this is because all of those images are loaded instantly. I've been mitigating it by using 16bppBRG565 to display the images. Still looking for how to implement Mapping Virtualization to reduce memory footprint further.
 
 ## 3rd Party Libraries Used
