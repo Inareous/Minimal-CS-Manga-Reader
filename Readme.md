@@ -21,7 +21,7 @@ A minimal program for your daily use of reading manga continously in one page. A
 ## How To Use
 
 * Download and extract the latest release build at [/Releases](https://github.com/Inareous/Minimal-CS-Manga-Reader/releases).
-* If you are going to integrate ReaderStylet with Windows Explorer, run IntegrateContext.exe as administrator and follow the instruction in the program.
+* If you are going to integrate Minimal CS Manga Reader with Windows Explorer, run IntegrateContext.exe as administrator and follow the instruction in the program.
 * If you are using [Free Manga Downloader](https://github.com/riderkick/FMD) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "-path=%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
 
 ## Known Issues/Bugs
