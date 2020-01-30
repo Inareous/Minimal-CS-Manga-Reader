@@ -10,11 +10,11 @@ namespace Minimal_CS_Manga_Reader
     {
         public App()
         {
+            _ = Task.Run(() => DataSource.Initialize(System.Environment.GetCommandLineArgs()));
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-           DataSource.Initialize(System.Environment.GetCommandLineArgs());
            base.OnStartup(e);
         }
     }
