@@ -27,16 +27,26 @@ namespace Minimal_CS_Manga_Reader
 
             #endregion Scroll Change
 
+            #region ChapterList Change
+            DataSource.ChapterList.Connect().ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(_chapterList).Subscribe();
+            this.WhenAnyValue(x => x._chapterList.Count)
+                .Subscribe(_ =>
+                {
+                    CreateChapterListTrimmed();
+                    ActiveIndex = ChapterList.Count == 0 ? 0 : ChapterList.Count - 1;
+                });
+            #endregion
             #region Chapter Change
 
-            NextClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex >= ChaptersList.Count - 1 ? ChaptersList.Count - 1 : ActiveIndex + 1);
+            NextClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex >= ChapterList.Count - 1 ? ChapterList.Count - 1 : ActiveIndex + 1);
             PreviousClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex <= 0 ? 0 : ActiveIndex - 1);
             this.WhenAnyValue(x => x.ActiveIndex)
                 .Subscribe(_ =>
                 {
                     UpdateAsync().ConfigureAwait(false);
                     EnablePrevClick = ActiveIndex != 0;
-                    EnableNextClick = ActiveIndex != ChaptersList.Count - 1;
+                    EnableNextClick = ActiveIndex != ChapterList.Count - 1;
                 });
             DataSource.ImageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
@@ -47,7 +57,7 @@ namespace Minimal_CS_Manga_Reader
                     ImageHeightMod.Add(((x.Height + Sum) * ZoomScale) + (ImageMarginSetter * (HeightCount + 1)));
                     ImageCount = DataSource.ImageList.Count;
                 }).Bind(ImageList).DisposeMany().Subscribe();
-
+            
             #endregion Chapter Change
 
             #region Settings
@@ -139,9 +149,7 @@ namespace Minimal_CS_Manga_Reader
 
         private void InitializeWindow()
         {
-            CreateChapterListTrimmed();
             WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
-            ActiveIndex = ChaptersList.Count == 0 ? 0 : ChaptersList.Count - 1;
             ImageMargin = $"0,0,0,{ImageMarginSetter}";
             ScrollIncrement = _scrollIncrement.ToString();
             ZoomScale = ZoomScaleSetter == 100 ? 1 : ZoomScaleSetter / 99.999999999999;
@@ -150,7 +158,7 @@ namespace Minimal_CS_Manga_Reader
 
         private void CreateChapterListTrimmed()
         {
-            ChaptersList = DataSource.ChapterList?.Select(x => x.Split('\\')[^1]).ToList();
+            ChapterList = _chapterList?.Select(x => x.Split('\\')[^1]).ToList();
         }
 
         private void ModifyTheme(Action<ITheme> modificationAction)
@@ -179,7 +187,7 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task UpdateAsync()
         {
-            DataSource.ActiveChapterPath = ChaptersList.Count != 0 ? DataSource.ChapterList[ActiveIndex] : "\\";
+            DataSource.ActiveChapterPath = ChapterList.Count != 0 ? _chapterList[ActiveIndex] : "\\";
             Ts.Cancel();
             T?.Wait(Ts.Token);
             Ts = new CancellationTokenSource();
@@ -200,11 +208,13 @@ namespace Minimal_CS_Manga_Reader
         #region Property
 
         public IObservableCollection<BitmapSource> ImageList { get; } = new ObservableCollectionExtended<BitmapSource>();
+        [Reactive] public List<string> ChapterList { get; set; } = new List<string>();
+        private IObservableCollection<string> _chapterList { get;} = new ObservableCollectionExtended<string>();
 
         private List<double> ImageHeight { get; set; } = new List<double>();
         private List<double> ImageHeightMod { get; set; } = new List<double>();
         [Reactive] public string WindowTitle { get; set; } = "";
-        [Reactive] public int ActiveIndex { get; set; }
+        [Reactive] public int ActiveIndex { get; set; } = 0;
         [Reactive] public bool IsDark { get; set; } = Settings.Default.IsDark;
 
         [Reactive] public bool EnablePrevClick { get; set; }
@@ -212,7 +222,6 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public bool EnableNextClick { get; set; }
         [Reactive] private int _activeImage { get; set; } = 0;
         [Reactive] public int ActiveImage { get; set; } = 0;
-        [Reactive] public List<string> ChaptersList { get; set; } = new List<string>();
         public ReactiveCommand<Unit, int> DecreaseZoom { get; }
         [Reactive] public int ImageCount { get; set; }
         [Reactive] public int ImageMarginSetter { get; set; } = Settings.Default.ImageMargin;
