@@ -81,12 +81,20 @@ namespace Minimal_CS_Manga_Reader
                 ImageList.Clear();
             }
 
-            await Task.Run(() =>
+            var task = Task.Run(() =>
             {
-                var T = Task.Run(() => collector.GetImagesAsync(ActiveChapterPath, ImageList, token), token).ConfigureAwait(false);
+                collector.GetImagesAsync(ActiveChapterPath, ImageList, token).ConfigureAwait(false);
                 token.ThrowIfCancellationRequested();
-                return T;
-            });
+            }, token);
+
+            try
+            {
+                await Task.WhenAll(task);
+            }
+            catch (System.OperationCanceledException)
+            {
+                ImageList.Clear();
+            }
         }
         #endregion
     }

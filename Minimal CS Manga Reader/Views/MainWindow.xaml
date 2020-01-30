@@ -147,8 +147,8 @@
             </Label>
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}" Padding="-1"
                   FontSize="13" Width="100" />
-            <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
-          </ToolBar>
+                    <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
+                </ToolBar>
         </ToolBarTray>
       </Grid>
         <Grid Row="1">

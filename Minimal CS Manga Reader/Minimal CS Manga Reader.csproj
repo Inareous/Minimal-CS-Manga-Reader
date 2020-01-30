@@ -10,7 +10,7 @@
     <Win32Resource />
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-    <NeutralLanguage>en</NeutralLanguage>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyName>Minimal CS Manga Reader</AssemblyName>
   </PropertyGroup>
 
