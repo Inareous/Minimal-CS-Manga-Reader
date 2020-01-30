@@ -26,7 +26,6 @@ namespace Minimal_CS_Manga_Reader
             this.WhenAnyValue(x => x._activeImage).Subscribe(x => ActiveImage = x + 1);
 
             #endregion Scroll Change
-
             #region ChapterList Change
             DataSource.ChapterList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(_chapterList).Subscribe();
@@ -63,26 +62,30 @@ namespace Minimal_CS_Manga_Reader
                     var HeightCount = ImageHeight.Count;
                     var Sum = HeightCount == 0 ? 0 : ImageHeight[^1];
                     ImageHeight.Add(x.Height + Sum);
-                    ImageHeightMod.Add(((x.Height + Sum) * ZoomScale) + (ImageMarginSetter * (HeightCount + 1)));
+                    ImageHeightMod.Add(((x.Height + Sum) * ZoomScale) + (_imageMarginSetter * (HeightCount + 1)));
                     ImageCount = DataSource.ImageList.Count;
                 }).Bind(ImageList).DisposeMany().Subscribe();
             
             #endregion Chapter Change
-
             #region Settings
 
             #region Zoom
 
-            IncreaseZoom = ReactiveCommand.Create(() => ZoomScaleSetter += 10);
-            DecreaseZoom = ReactiveCommand.Create(() => ZoomScaleSetter >= 11 ? ZoomScaleSetter -= 10 : 10);
+            IncreaseZoom = ReactiveCommand.Create(() => ZoomScaleSetter = (_zoomScaleSetter+10).ToString());
+            DecreaseZoom = ReactiveCommand.Create(() => ZoomScaleSetter = _zoomScaleSetter >= 11 ? (_zoomScaleSetter - 10).ToString() : "10");
             this.WhenAnyValue(x => x.ZoomScaleSetter)
                 .Subscribe(_ =>
                 {
-                    if (ZoomScaleSetter < 10) ZoomScaleSetter = 10;
-                    ZoomScale = ZoomScaleSetter == 100 ? 1 : ZoomScaleSetter / 99.999999999999;
-                    Settings.Default.ZoomScale = ZoomScaleSetter;
-                    Settings.Default.Save();
-                    UpdateImageHeightMod();
+                    var succes = int.TryParse(ZoomScaleSetter, out int number);
+                    if (succes && number != _zoomScaleSetter)
+                    {
+                        _zoomScaleSetter = number;
+                        if (_zoomScaleSetter < 10) _zoomScaleSetter = 10;
+                        ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999,3);
+                        Settings.Default.ZoomScale = _zoomScaleSetter;
+                        Settings.Default.Save();
+                    }
+                    ZoomScaleSetter = _zoomScaleSetter.ToString();
                 });
 
             #endregion Zoom
@@ -92,11 +95,17 @@ namespace Minimal_CS_Manga_Reader
             this.WhenAnyValue(x => x.ImageMarginSetter)
                 .Subscribe(_ =>
                 {
-                    if (ImageMarginSetter < 0) ImageMarginSetter = 0;
-                    ImageMargin = $"0,0,0,{ImageMarginSetter}";
-                    Settings.Default.ImageMargin = ImageMarginSetter;
-                    Settings.Default.Save();
-                    UpdateImageHeightMod();
+                    var succes = int.TryParse(ImageMarginSetter, out int number);
+                    if (succes && number != _imageMarginSetter)
+                    {
+                        _imageMarginSetter = number;
+                        if (_imageMarginSetter < 0) _imageMarginSetter = 0;
+                        Settings.Default.ImageMargin = _imageMarginSetter;
+                        Settings.Default.Save();
+                        UpdateImageHeightMod();
+                    }
+                    ImageMarginSetter = _imageMarginSetter.ToString();
+                    ImageMargin = $"0,0,0,{_imageMarginSetter.ToString()}";
                 });
 
             #endregion Margin
@@ -106,9 +115,13 @@ namespace Minimal_CS_Manga_Reader
             this.WhenAnyValue(x => x.ScrollIncrement)
                 .Subscribe(_ =>
                 {
-                    Settings.Default.ScrollIncrement = _scrollIncrement;
-                    Settings.Default.Save();
-                    ScrollIncrement = ScrollIncrement.ToString();
+                    var succes = int.TryParse(ScrollIncrement, out int number);
+                    if (succes && number != _scrollIncrement)
+                    {
+                        _scrollIncrement = number;
+                        Settings.Default.ScrollIncrement = _scrollIncrement;
+                        Settings.Default.Save();
+                    }
                     ScrollIncrement = _scrollIncrement.ToString();
                 });
 
@@ -162,7 +175,7 @@ namespace Minimal_CS_Manga_Reader
             WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
             ImageMargin = $"0,0,0,{ImageMarginSetter}";
             ScrollIncrement = _scrollIncrement.ToString();
-            ZoomScale = ZoomScaleSetter == 100 ? 1 : ZoomScaleSetter / 99.999999999999;
+            ZoomScale = _zoomScaleSetter == 100 ? 1 : _zoomScaleSetter / 99.999999999999;
             ActiveBackgroundView = Settings.Default.Background;
         }
 
@@ -185,7 +198,7 @@ namespace Minimal_CS_Manga_Reader
         {
             for (int i = 0; i < ImageHeightMod.Count; ++i)
             {
-                ImageHeightMod[i] = (ImageHeight[i] * ZoomScale) + (ImageMarginSetter * (i + 1));
+                ImageHeightMod[i] = (ImageHeight[i] * ZoomScale) + (_imageMarginSetter * (i + 1));
             }
         }
 
@@ -232,17 +245,20 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public bool EnableNextClick { get; set; }
         [Reactive] private int _activeImage { get; set; } = 0;
         [Reactive] public int ActiveImage { get; set; } = 0;
-        public ReactiveCommand<Unit, int> DecreaseZoom { get; }
+        public ReactiveCommand<Unit, string> DecreaseZoom { get; }
         [Reactive] public int ImageCount { get; set; }
-        [Reactive] public int ImageMarginSetter { get; set; } = Settings.Default.ImageMargin;
+        [Reactive] public string ImageMarginSetter { get; set; }
         [Reactive] public string ImageMargin { get; set; }
-        public ReactiveCommand<Unit, int> IncreaseZoom { get; }
+        public ReactiveCommand<Unit, string> IncreaseZoom { get; }
         public ReactiveCommand<Unit, int> NextClick { get; }
         public ReactiveCommand<Unit, int> PreviousClick { get; }
-        public int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
+        private int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
+        private int _imageMarginSetter { get; set; } = Settings.Default.ImageMargin;
+        private int _zoomScaleSetter { get; set; } = Settings.Default.ZoomScale;
+
         public double _scrollHeight = 0;
         [Reactive] public string ScrollIncrement { get; set; }
-        [Reactive] public int ZoomScaleSetter { get; set; } = Settings.Default.ZoomScale;
+        [Reactive] public string ZoomScaleSetter { get; set; }
         [Reactive] public double ZoomScale { get; set; }
         [Reactive] public string ActiveBackgroundView { get; set; } = Settings.Default.Background;
         public List<string> BackgroundViewList { get; set; } = new List<string> { "Black", "White", "Silver" };
