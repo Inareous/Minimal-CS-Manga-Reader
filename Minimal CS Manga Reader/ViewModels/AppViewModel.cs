@@ -35,6 +35,12 @@ namespace Minimal_CS_Manga_Reader
                 {
                     CreateChapterListTrimmed();
                     ActiveIndex = ChapterList.Count == 0 ? 0 : ChapterList.Count - 1;
+                    if (ChapterList.Count > 0)
+                    {
+                        UpdateAsync().ConfigureAwait(false);
+                    }
+                    EnablePrevClick = ActiveIndex != 0;
+                    EnableNextClick = ActiveIndex != ChapterList.Count - 1;
                 });
             #endregion
             #region Chapter Change
@@ -214,7 +220,7 @@ namespace Minimal_CS_Manga_Reader
         private List<double> ImageHeight { get; set; } = new List<double>();
         private List<double> ImageHeightMod { get; set; } = new List<double>();
         [Reactive] public string WindowTitle { get; set; } = "";
-        [Reactive] public int ActiveIndex { get; set; } = 0;
+        [Reactive] public int ActiveIndex { get; set; }
         [Reactive] public bool IsDark { get; set; } = Settings.Default.IsDark;
 
         [Reactive] public bool EnablePrevClick { get; set; }
