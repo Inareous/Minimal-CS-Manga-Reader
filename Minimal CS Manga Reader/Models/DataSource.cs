@@ -13,6 +13,7 @@ namespace Minimal_CS_Manga_Reader
     public class DataSource : ReactiveObject
     {
         #region Property
+
         private static readonly DataCollector collector = new DataCollector();
         public static string Title { get; private set; } = "";
 
@@ -24,9 +25,11 @@ namespace Minimal_CS_Manga_Reader
         public static string ActiveChapterPath { get; set; }
 
         public static SourceList<BitmapSource> ImageList { get; private set; } = new SourceList<BitmapSource>();
-        #endregion
+
+        #endregion Property
 
         #region Method
+
         public static void Initialize(string[] args)
         {
             if (Path == "FirstTimeNotSet")
@@ -96,6 +99,7 @@ namespace Minimal_CS_Manga_Reader
                 ImageList.Clear();
             }
         }
-        #endregion
+
+        #endregion Method
     }
 }

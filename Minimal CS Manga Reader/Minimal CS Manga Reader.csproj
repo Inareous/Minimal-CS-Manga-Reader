@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Minimal_CS_Manga_Reader</RootNamespace>
+    <AssemblyName>Minimal CS Manga Reader</AssemblyName>
     <UseWPF>true</UseWPF>
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <ApplicationIcon>Minimal CS Manga Reader.ico</ApplicationIcon>
@@ -11,13 +12,11 @@
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyName>Minimal CS Manga Reader</AssemblyName>
+    <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishTrimmed>True</PublishTrimmed>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="MainWindow.xaml.bak" />
-  </ItemGroup>
-
+   
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />

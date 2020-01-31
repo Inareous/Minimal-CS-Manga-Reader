@@ -15,7 +15,7 @@ namespace Minimal_CS_Manga_Reader
 
         protected override void OnStartup(StartupEventArgs e)
         {
-           base.OnStartup(e);
+            base.OnStartup(e);
         }
     }
 }

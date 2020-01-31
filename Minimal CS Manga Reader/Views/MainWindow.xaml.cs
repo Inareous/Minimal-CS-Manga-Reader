@@ -11,6 +11,7 @@ namespace Minimal_CS_Manga_Reader
     public partial class MainWindow : MetroWindow
     {
         public AppViewModel ViewModel { get; private set; }
+
         public MainWindow()
         {
             ViewModel = new AppViewModel();
