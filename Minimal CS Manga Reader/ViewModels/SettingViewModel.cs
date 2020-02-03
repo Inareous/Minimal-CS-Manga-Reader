@@ -1,14 +1,11 @@
 ﻿using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Reactive;
-using System.Text;
 
 namespace Minimal_CS_Manga_Reader
 {
     public class SettingViewModel : ReactiveObject
     {
-
         private Action<SettingViewModel, bool> _closeCallback;
 
         public ReactiveCommand<Unit, Unit> Save { get; }
@@ -26,6 +23,5 @@ namespace Minimal_CS_Manga_Reader
 
             Close = ReactiveCommand.Create(() => _closeCallback(this, false));
         }
-
     }
 }

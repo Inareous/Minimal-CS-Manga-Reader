@@ -1,7 +1,5 @@
 ﻿using ReactiveUI;
-using System;
 using System.Reactive.Disposables;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Minimal_CS_Manga_Reader
@@ -21,6 +19,7 @@ namespace Minimal_CS_Manga_Reader
         }
 
         public SettingViewModel ViewModel { get; set; }
+
         object IViewFor.ViewModel
         {
             get => ViewModel;

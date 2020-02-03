@@ -11,8 +11,9 @@ using System.Windows.Input;
 namespace Minimal_CS_Manga_Reader
 {
     public partial class MainWindow : MetroWindow, IViewFor<AppViewModel>
-    { 
+    {
         public AppViewModel ViewModel { get; set; }
+
         object IViewFor.ViewModel
         {
             get => ViewModel;
@@ -70,13 +71,11 @@ namespace Minimal_CS_Manga_Reader
                     ViewModel.NextClick.Execute().Subscribe();
                 });
 
-            
-
             this.WhenActivated(d =>
             {
                 new DialogParticipationRegistration(this).DisposeWith(d);
 
-                this.ViewModel.SettingDialogInteraction.RegisterHandler(async interaction =>
+                ViewModel.SettingDialogInteraction.RegisterHandler(async interaction =>
                 {
                     var dlg = new CustomDialog();
 
@@ -87,6 +86,8 @@ namespace Minimal_CS_Manga_Reader
                     });
 
                     dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
+                    dlg.Background = System.Windows.Media.Brushes.Transparent;
+                    dlg.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 
                     await DialogCoordinator.Instance.ShowMetroDialogAsync(this, dlg);
 
@@ -94,6 +95,7 @@ namespace Minimal_CS_Manga_Reader
                 }).DisposeWith(d);
             });
         }
+
         private class DialogParticipationRegistration : IDisposable
         {
             private readonly MainWindow _view;

@@ -158,8 +158,10 @@ namespace Minimal_CS_Manga_Reader
             #endregion Settings
 
             #region dialog
+
             OpenSetting = ReactiveCommand.CreateFromTask(ShowSetting);
-            #endregion
+
+            #endregion dialog
         }
 
         #region Method
@@ -275,6 +277,7 @@ namespace Minimal_CS_Manga_Reader
         #endregion Property
 
         #region Dialog stuff
+
         public Interaction<Unit, bool> SettingDialogInteraction { get; protected set; } = new Interaction<Unit, bool>();
         public ReactiveCommand<Unit, Unit> OpenSetting { get; }
 
@@ -289,6 +292,7 @@ namespace Minimal_CS_Manga_Reader
                 System.Diagnostics.Debug.Print(e.ToString());
             }
         }
-        #endregion
+
+        #endregion Dialog stuff
     }
 }

@@ -148,7 +148,7 @@
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}" Padding="-1"
                   FontSize="13" Width="100" />
                     <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
-                    
+
                     <Button  Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Settings"
                     Command="{Binding OpenSetting}" Margin="1 0 5 0">
                         <Grid HorizontalAlignment="Stretch">
