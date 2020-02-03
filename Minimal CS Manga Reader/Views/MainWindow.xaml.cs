@@ -1,6 +1,8 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using ReactiveUI;
 using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,9 +10,14 @@ using System.Windows.Input;
 
 namespace Minimal_CS_Manga_Reader
 {
-    public partial class MainWindow : MetroWindow
-    {
-        public AppViewModel ViewModel { get; private set; }
+    public partial class MainWindow : MetroWindow, IViewFor<AppViewModel>
+    { 
+        public AppViewModel ViewModel { get; set; }
+        object IViewFor.ViewModel
+        {
+            get => ViewModel;
+            set => ViewModel = (AppViewModel)value;
+        }
 
         public MainWindow()
         {
@@ -62,6 +69,45 @@ namespace Minimal_CS_Manga_Reader
                     x.Handled = true;
                     ViewModel.NextClick.Execute().Subscribe();
                 });
+
+            
+
+            this.WhenActivated(d =>
+            {
+                new DialogParticipationRegistration(this).DisposeWith(d);
+
+                this.ViewModel.SettingDialogInteraction.RegisterHandler(async interaction =>
+                {
+                    var dlg = new CustomDialog();
+
+                    var dlgvm = new SettingViewModel((SettingViewModel vm, bool IsSaved) =>
+                    {
+                        DialogCoordinator.Instance.HideMetroDialogAsync(this, dlg);
+                        interaction.SetOutput(IsSaved);
+                    });
+
+                    dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
+
+                    await DialogCoordinator.Instance.ShowMetroDialogAsync(this, dlg);
+
+                    await dlg.WaitUntilUnloadedAsync();
+                }).DisposeWith(d);
+            });
+        }
+        private class DialogParticipationRegistration : IDisposable
+        {
+            private readonly MainWindow _view;
+
+            public DialogParticipationRegistration(MainWindow view)
+            {
+                _view = view;
+                DialogParticipation.SetRegister(view, view);
+            }
+
+            public void Dispose()
+            {
+                DialogParticipation.SetRegister(_view, null);
+            }
         }
     }
 }

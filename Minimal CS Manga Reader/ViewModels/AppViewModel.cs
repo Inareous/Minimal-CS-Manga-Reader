@@ -156,6 +156,10 @@ namespace Minimal_CS_Manga_Reader
             #endregion Dark Mode
 
             #endregion Settings
+
+            #region dialog
+            OpenSetting = ReactiveCommand.CreateFromTask(ShowSetting);
+            #endregion
         }
 
         #region Method
@@ -269,5 +273,22 @@ namespace Minimal_CS_Manga_Reader
         public List<string> BackgroundViewList { get; set; } = new List<string> { "Black", "White", "Silver" };
 
         #endregion Property
+
+        #region Dialog stuff
+        public Interaction<Unit, bool> SettingDialogInteraction { get; protected set; } = new Interaction<Unit, bool>();
+        public ReactiveCommand<Unit, Unit> OpenSetting { get; }
+
+        public async Task ShowSetting()
+        {
+            try
+            {
+                var fbb = await this.SettingDialogInteraction.Handle(Unit.Default);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.Print(e.ToString());
+            }
+        }
+        #endregion
     }
 }
