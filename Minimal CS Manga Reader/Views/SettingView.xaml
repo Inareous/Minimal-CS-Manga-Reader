@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Minimal_CS_Manga_Reader"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400">
+    <UserControl.Resources>
+        
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />
@@ -14,7 +19,40 @@
         </Grid.RowDefinitions>
 
         <Border Background="{DynamicResource MaterialDesignPaper}" CornerRadius="10">
-            <Button x:Name="Close">Cancel</Button>
+            <StackPanel Margin="30 30 30 30">
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="InterpolationMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0"/>
+                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Interpolation Mode</Label>
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="PixelOffsetMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0"/>
+                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Pixel Offset Mode</Label>
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0"/>
+                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Smoothing Mode</Label>
+                </Grid>
+                <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Margin="10 10 10 10" x:Name="Save">Save</Button>
+                    <Button Grid.Column="1" Margin="10 10 0 10" x:Name="Close">Cancel</Button>
+                </Grid>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>
