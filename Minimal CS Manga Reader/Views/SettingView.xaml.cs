@@ -16,6 +16,7 @@ namespace Minimal_CS_Manga_Reader
             {
                 this.BindCommand(ViewModel, vm => vm.Close, view => view.Close).DisposeWith(d);
                 this.BindCommand(ViewModel, vm => vm.Save, view => view.Save).DisposeWith(d);
+                this.BindCommand(ViewModel, vm => vm.SaveAndRefresh, view => view.SaveAndRefresh).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.SelectedPixelOffsetMode, view => view.PixelOffsetMode.SelectedItem).DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.PixelOffsetMode, view => view.PixelOffsetMode.ItemsSource).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.SelectedInterpolationMode, view => view.InterpolationMode.SelectedItem).DisposeWith(d);

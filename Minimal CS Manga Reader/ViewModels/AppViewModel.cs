@@ -285,7 +285,12 @@ namespace Minimal_CS_Manga_Reader
         {
             try
             {
-                var fbb = await this.SettingDialogInteraction.Handle(Unit.Default);
+                var saveAndRefresh = await this.SettingDialogInteraction.Handle(Unit.Default);
+
+                if (saveAndRefresh)
+                {
+                    _ = UpdateAsync().ConfigureAwait(false);
+                }
             }
             catch (Exception e)
             {

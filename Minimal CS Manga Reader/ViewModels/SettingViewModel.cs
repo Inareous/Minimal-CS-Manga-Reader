@@ -13,6 +13,7 @@ namespace Minimal_CS_Manga_Reader
         private Action<SettingViewModel, bool> _closeCallback;
 
         public ReactiveCommand<Unit, Unit> Save { get; }
+        public ReactiveCommand<Unit, Unit> SaveAndRefresh { get; }
         public ReactiveCommand<Unit, Unit> Close { get; }
 
         public IEnumerable<System.Drawing.Drawing2D.InterpolationMode> InterpolationMode
@@ -47,15 +48,19 @@ namespace Minimal_CS_Manga_Reader
 
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback)
         {
-            
             _closeCallback = closeCallback;
 
             Save = ReactiveCommand.Create(() =>
             {
                 Settings.Default.Save();
-                _closeCallback(this, true);
+                _closeCallback(this, false);
             });
 
+            SaveAndRefresh = ReactiveCommand.Create(() =>
+            {
+                Settings.Default.Save();
+                _closeCallback(this, true);
+            });
 
             Close = ReactiveCommand.Create(() => _closeCallback(this, false));
         }
