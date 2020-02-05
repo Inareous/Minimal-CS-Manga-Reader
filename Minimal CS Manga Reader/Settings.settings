@@ -20,5 +20,14 @@
     <Setting Name="IsDark" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="InterpolationMode" Type="System.Drawing.Drawing2D.InterpolationMode" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="SmoothingMode" Type="System.Drawing.Drawing2D.SmoothingMode" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="PixelOffsetMode" Type="System.Drawing.Drawing2D.PixelOffsetMode" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

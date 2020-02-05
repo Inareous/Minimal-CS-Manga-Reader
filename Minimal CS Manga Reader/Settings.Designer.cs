@@ -94,5 +94,41 @@ namespace Minimal_CS_Manga_Reader {
                 this["IsDark"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::System.Drawing.Drawing2D.InterpolationMode InterpolationMode {
+            get {
+                return ((global::System.Drawing.Drawing2D.InterpolationMode)(this["InterpolationMode"]));
+            }
+            set {
+                this["InterpolationMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::System.Drawing.Drawing2D.SmoothingMode SmoothingMode {
+            get {
+                return ((global::System.Drawing.Drawing2D.SmoothingMode)(this["SmoothingMode"]));
+            }
+            set {
+                this["SmoothingMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::System.Drawing.Drawing2D.PixelOffsetMode PixelOffsetMode {
+            get {
+                return ((global::System.Drawing.Drawing2D.PixelOffsetMode)(this["PixelOffsetMode"]));
+            }
+            set {
+                this["PixelOffsetMode"] = value;
+            }
+        }
     }
 }

@@ -7,9 +7,6 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400">
-    <UserControl.Resources>
-        
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />

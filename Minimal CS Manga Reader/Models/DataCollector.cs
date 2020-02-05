@@ -123,9 +123,9 @@ namespace Minimal_CS_Manga_Reader
             Bitmap clone = new Bitmap(x.Width, x.Height, PixelFormat);
 
             using Graphics gr = Graphics.FromImage(clone);
-            gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            // gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            // gr.SmoothingMode = SmoothingMode.HighQuality;
+            gr.InterpolationMode = Settings.Default.InterpolationMode;
+            gr.PixelOffsetMode = Settings.Default.PixelOffsetMode;
+            gr.SmoothingMode = Settings.Default.SmoothingMode;
             gr.Clear(Color.Transparent);
             gr.DrawImage(x, new Rectangle(0, 0, clone.Width, clone.Height));
             return Convert(clone);
