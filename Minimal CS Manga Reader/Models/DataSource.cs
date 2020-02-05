@@ -84,14 +84,13 @@ namespace Minimal_CS_Manga_Reader
                 ImageList.Clear();
             }
 
-            var task = Task.Run(() =>
+            try
+            {
+                var task = Task.Run(() =>
             {
                 collector.GetImagesAsync(ActiveChapterPath, ImageList, token).ConfigureAwait(false);
                 token.ThrowIfCancellationRequested();
             }, token);
-
-            try
-            {
                 await Task.WhenAll(task);
             }
             catch (System.OperationCanceledException)

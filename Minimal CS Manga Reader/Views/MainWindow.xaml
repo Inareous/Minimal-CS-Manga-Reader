@@ -50,7 +50,7 @@
                     <Label VerticalAlignment="Center" Padding="10 0 10 2">
                         Chapter :
                     </Label>
-                    <ComboBox ItemsSource="{Binding ChapterList}" SelectedItem="{Binding ActiveDirShow}" SelectedIndex="{Binding ActiveIndex}"
+                    <ComboBox ItemsSource="{Binding ChapterList}" SelectedIndex="{Binding ActiveIndex}"
                   FontSize="13" Width="350" MaxWidth="350" Margin="0,0,5,0" MinWidth="350"
                  FontFamily="Roboto" FontWeight="Normal"
                  Padding="5 5 0 2"

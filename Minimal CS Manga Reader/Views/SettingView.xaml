@@ -19,37 +19,37 @@
             <StackPanel Margin="30 30 30 30">
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="InterpolationMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0"/>
+                    <ComboBox x:Name="InterpolationMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Interpolation Mode</Label>
                 </Grid>
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="PixelOffsetMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0"/>
+                    <ComboBox x:Name="PixelOffsetMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Pixel Offset Mode</Label>
                 </Grid>
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0"/>
+                    <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Smoothing Mode</Label>
                 </Grid>
                 <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Margin="10 10 10 10" x:Name="SaveAndRefresh" Content="Save &amp; Refresh"/>
-                    <Button Grid.Column="1" Margin="10 10 10 10" x:Name="Save" Content="Save"/>
-                    <Button Grid.Column="2" Margin="10 10 0 10" x:Name="Close" Content="Cancel"/>
+                    <Button Grid.Column="0" Margin="10 10 10 10" x:Name="SaveAndRefresh" Content="Save &amp; Refresh" />
+                    <Button Grid.Column="1" Margin="10 10 10 10" x:Name="Save" Content="Save" />
+                    <Button Grid.Column="2" Margin="10 10 0 10" x:Name="Close" Content="Cancel" />
                 </Grid>
             </StackPanel>
         </Border>

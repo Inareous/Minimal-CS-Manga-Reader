@@ -24,6 +24,7 @@ namespace Minimal_CS_Manga_Reader
                     .Cast<System.Drawing.Drawing2D.InterpolationMode>().Where(x => x != System.Drawing.Drawing2D.InterpolationMode.Invalid);
             }
         }
+
         [Reactive] public System.Drawing.Drawing2D.InterpolationMode SelectedInterpolationMode { get; set; }
 
         public IEnumerable<System.Drawing.Drawing2D.SmoothingMode> SmoothingMode
@@ -34,6 +35,7 @@ namespace Minimal_CS_Manga_Reader
                     .Cast<System.Drawing.Drawing2D.SmoothingMode>().Where(x => x != System.Drawing.Drawing2D.SmoothingMode.Invalid);
             }
         }
+
         [Reactive] public System.Drawing.Drawing2D.SmoothingMode SelectedSmoothingMode { get; set; } = System.Drawing.Drawing2D.SmoothingMode.Default;
 
         public IEnumerable<System.Drawing.Drawing2D.PixelOffsetMode> PixelOffsetMode
@@ -44,6 +46,7 @@ namespace Minimal_CS_Manga_Reader
                     .Cast<System.Drawing.Drawing2D.PixelOffsetMode>().Where(x => x != System.Drawing.Drawing2D.PixelOffsetMode.Invalid);
             }
         }
+
         [Reactive] public System.Drawing.Drawing2D.PixelOffsetMode SelectedPixelOffsetMode { get; set; } = System.Drawing.Drawing2D.PixelOffsetMode.Default;
 
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback)
@@ -56,7 +59,6 @@ namespace Minimal_CS_Manga_Reader
             }
             catch (Exception)
             {
-
                 SelectedInterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
                 SelectedSmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
                 SelectedPixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Default;

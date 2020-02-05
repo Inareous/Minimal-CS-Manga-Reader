@@ -5,13 +5,11 @@ using SharpCompress.Archives.Zip;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Color = System.Drawing.Color;
@@ -58,21 +56,17 @@ namespace Minimal_CS_Manga_Reader
                     using var memoryStream = new MemoryStream();
                     stream.CopyTo(memoryStream);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    token.ThrowIfCancellationRequested();
+                    token.ThrowIfCancellationRequested(); // start of expensive operation
                     Bitmap bitmap = new Bitmap(memoryStream);
                     BitmapSource bitmapSource = ConvertStreamToSource(bitmap);
                     bitmapSource.Freeze();
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        imageList.Add(bitmapSource);
-                        bitmap.Dispose();
-                    });
+                    token.ThrowIfCancellationRequested(); // end
+                    imageList.Add(bitmapSource);
+                    bitmap.Dispose();
                 }
             }
             catch (OperationCanceledException)
             {
-                Application.Current.Dispatcher.Invoke(delegate
-                { imageList.Clear(); });
             }
             catch (Exception)
             {
@@ -94,21 +88,17 @@ namespace Minimal_CS_Manga_Reader
                     using var memoryStream = new MemoryStream();
                     entryStream.CopyTo(memoryStream);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    token.ThrowIfCancellationRequested();
+                    token.ThrowIfCancellationRequested(); // start of expensive operation
                     var bitmap = new Bitmap(memoryStream);
                     var bitmapSource = ConvertStreamToSource(bitmap);
                     bitmapSource.Freeze();
-                    Application.Current.Dispatcher.Invoke(delegate
-                    {
-                        imageList.Add(bitmapSource);
-                        bitmap.Dispose();
-                    });
+                    token.ThrowIfCancellationRequested(); // end
+                    imageList.Add(bitmapSource);
+                    bitmap.Dispose();
                 }
             }
             catch (OperationCanceledException)
             {
-                Application.Current.Dispatcher.Invoke(delegate
-                { imageList.Clear(); });
             }
             catch (Exception)
             {
