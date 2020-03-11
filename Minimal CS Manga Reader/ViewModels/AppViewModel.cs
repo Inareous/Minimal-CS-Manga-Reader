@@ -89,6 +89,7 @@ namespace Minimal_CS_Manga_Reader
                         ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
                         Settings.Default.ZoomScale = _zoomScaleSetter;
                         Settings.Default.Save();
+                        UpdateImageHeightMod();
                     }
                     ZoomScaleSetter = _zoomScaleSetter.ToString();
                 });
