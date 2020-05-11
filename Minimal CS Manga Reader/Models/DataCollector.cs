@@ -21,13 +21,15 @@ namespace Minimal_CS_Manga_Reader
     {
         internal async Task<IEnumerable<string>> GetChapterListAsync(string Path, bool IsArchive)
         {
+            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             if (IsArchive) return new List<string> { Path };
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
                     .Where(s => s.EndsWith(".cbz") || s.EndsWith(".cbr") || s.EndsWith(".rar") || s.EndsWith(".zip")));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
-            await Task.WhenAll(Files, Folders).ConfigureAwait(false);
+            await Task.WhenAll(Files, Folders, FilesInFolder).ConfigureAwait(false);
             var ReturnList = (Files.Result ?? Enumerable.Empty<string>()).Concat(Folders.Result ?? Enumerable.Empty<string>()).ToList();
             ReturnList.Sort(new NaturalStringComparer());
+            if (FilesInFolder.Result.Any()) ReturnList.Insert(0, Path);
             return ReturnList;
         }
 
