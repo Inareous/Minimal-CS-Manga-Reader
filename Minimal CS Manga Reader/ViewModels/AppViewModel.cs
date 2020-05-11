@@ -87,8 +87,6 @@ namespace Minimal_CS_Manga_Reader
                         _zoomScaleSetter = number;
                         if (_zoomScaleSetter < 10) _zoomScaleSetter = 10;
                         ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
-                        Settings.Default.ZoomScale = _zoomScaleSetter;
-                        Settings.Default.Save();
                         UpdateImageHeightMod();
                     }
                     ZoomScaleSetter = _zoomScaleSetter.ToString();
@@ -266,7 +264,7 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, int> PreviousClick { get; }
         private int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
         private int _imageMarginSetter { get; set; } = Settings.Default.ImageMargin;
-        private int _zoomScaleSetter { get; set; } = Settings.Default.ZoomScale;
+        private int _zoomScaleSetter { get; set; } = 100;
 
         public double _scrollHeight = 0;
         [Reactive] public string ScrollIncrement { get; set; }
