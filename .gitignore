@@ -15,6 +15,7 @@ WpfMouseWheelLib.dll
 # Build results
 [Pp]ublishProfiles
 [Dd]ebug/
+_manual_test_/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/

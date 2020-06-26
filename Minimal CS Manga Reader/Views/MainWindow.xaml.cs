@@ -77,7 +77,12 @@ namespace Minimal_CS_Manga_Reader
 
                 ViewModel.SettingDialogInteraction.RegisterHandler(async interaction =>
                 {
-                    var dlg = new CustomDialog();
+                    var metroDialogSettings = new MetroDialogSettings()
+                    {
+                        AnimateHide = false,
+                        AnimateShow = true,
+                    };
+                    var dlg = new CustomDialog(metroDialogSettings);
 
                     var dlgvm = new SettingViewModel((SettingViewModel vm, bool IsSaved) =>
                     {

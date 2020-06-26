@@ -3,11 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Minimal_CS_Manga_Reader"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400">
+    <UserControl.Resources>
+            <Storyboard x:Key="OverlayFastSemiFadeIn" 
+             AccelerationRatio="1" 
+             BeginTime="0:0:0" 
+             SpeedRatio="50" 
+             Storyboard.TargetProperty="Opacity">
+                <DoubleAnimation To="50" />
+            </Storyboard>
+            <Storyboard x:Key="OverlayFastSemiFadeOut" 
+             AccelerationRatio="0" 
+             BeginTime="0:0:0" 
+             SpeedRatio="5" 
+             Storyboard.TargetProperty="Opacity">
+                <DoubleAnimation To="60" />
+            </Storyboard>
+    </UserControl.Resources>
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />
         </Grid.ColumnDefinitions>
@@ -53,5 +69,6 @@
                 </Grid>
             </StackPanel>
         </Border>
+        
     </Grid>
 </UserControl>

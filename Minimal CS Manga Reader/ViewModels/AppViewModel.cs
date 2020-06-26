@@ -2,6 +2,7 @@
 using DynamicData.Binding;
 using MaterialDesignThemes.Wpf;
 using Minimal_CS_Manga_Reader.Helper;
+using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -34,7 +35,7 @@ namespace Minimal_CS_Manga_Reader
             this.WhenAnyValue(x => x._chapterList.Count)
                 .Subscribe(_ =>
                 {
-                    CreateChapterListTrimmed();
+                    ChapterList = _chapterList?.Select(x => x.Name).ToList();
                     if (ChapterList.Count > 0)
                     {
                         ActiveIndex = ChapterList.Count - 1;
@@ -189,11 +190,6 @@ namespace Minimal_CS_Manga_Reader
             ActiveBackgroundView = Settings.Default.Background;
         }
 
-        private void CreateChapterListTrimmed()
-        {
-            ChapterList = _chapterList?.Select(x => x.Split('\\')[^1]).ToList();
-        }
-
         private void ModifyTheme(Action<ITheme> modificationAction)
         {
             PaletteHelper paletteHelper = new PaletteHelper();
@@ -220,7 +216,7 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task UpdateAsync()
         {
-            DataSource.ActiveChapterPath = ChapterList.Count != 0 ? _chapterList[ActiveIndex] : "\\";
+            DataSource.ActiveChapterPath = ChapterList.Count != 0 ? _chapterList[ActiveIndex].AbsolutePath : "\\";
             Ts.Cancel();
             T?.Wait(Ts.Token);
             Ts = new CancellationTokenSource();
@@ -242,7 +238,7 @@ namespace Minimal_CS_Manga_Reader
 
         public IObservableCollection<BitmapSource> ImageList { get; } = new ObservableCollectionExtended<BitmapSource>();
         [Reactive] public List<string> ChapterList { get; set; } = new List<string>();
-        private IObservableCollection<string> _chapterList { get; } = new ObservableCollectionExtended<string>();
+        private IObservableCollection<Entry> _chapterList { get; } = new ObservableCollectionExtended<Entry>();
 
         private List<double> ImageHeight { get; set; } = new List<double>();
         private List<double> ImageHeightMod { get; set; } = new List<double>();

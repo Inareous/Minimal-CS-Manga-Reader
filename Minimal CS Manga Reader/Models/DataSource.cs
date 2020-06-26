@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
@@ -19,7 +20,7 @@ namespace Minimal_CS_Manga_Reader
 
         private static bool IsArgsPathArchiveFile { get; set; } = false;
 
-        public static SourceList<string> ChapterList { get; private set; } = new SourceList<string>();
+        public static SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
         public static string Path { get; private set; } = Settings.Default.Path;
 
         public static string ActiveChapterPath { get; set; }
@@ -73,7 +74,7 @@ namespace Minimal_CS_Manga_Reader
             {
                 var list = collector.GetChapterListAsync(Path, IsArgsPathArchiveFile).Result;
                 ChapterList.AddRange(list);
-                ActiveChapterPath = ChapterList.Count != 0 ? list.Last() : "\\";
+                ActiveChapterPath = ChapterList.Count != 0 ? list.Last().AbsolutePath : "\\";
             });
         }
 

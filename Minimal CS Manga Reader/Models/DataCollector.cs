@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Helper;
+using Minimal_CS_Manga_Reader.Models;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System;
@@ -19,10 +20,10 @@ namespace Minimal_CS_Manga_Reader
 {
     internal class DataCollector
     {
-        internal async Task<IEnumerable<string>> GetChapterListAsync(string Path, bool IsArchive)
+        internal async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
             var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
-            if (IsArchive) return new List<string> { Path };
+            if (IsArchive) return new List<Entry> { new Entry(Path) };
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
                     .Where(s => s.EndsWith(".cbz") || s.EndsWith(".cbr") || s.EndsWith(".rar") || s.EndsWith(".zip")));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
@@ -30,7 +31,9 @@ namespace Minimal_CS_Manga_Reader
             var ReturnList = (Files.Result ?? Enumerable.Empty<string>()).Concat(Folders.Result ?? Enumerable.Empty<string>()).ToList();
             ReturnList.Sort(new NaturalStringComparer());
             if (FilesInFolder.Result.Any()) ReturnList.Insert(0, Path);
-            return ReturnList;
+            var ReturnEntry = ReturnList.Select(x => new Entry(x)).ToList();
+
+            return ReturnEntry;
         }
 
         internal async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
