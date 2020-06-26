@@ -57,6 +57,12 @@
                     <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Smoothing Mode</Label>
                 </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="ContextIntegrated" Content="Integrate Minimal CS Manga Reader with File Explorer Context"  FontSize="13" Margin="0 0 15 0" />
+                </Grid>
                 <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
