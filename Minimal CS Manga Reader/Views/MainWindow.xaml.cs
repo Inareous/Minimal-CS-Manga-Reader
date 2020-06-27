@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls.Dialogs;
 using ReactiveUI;
 using System;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Controls;
@@ -97,6 +98,19 @@ namespace Minimal_CS_Manga_Reader
                     await DialogCoordinator.Instance.ShowMetroDialogAsync(this, dlg);
 
                     await dlg.WaitUntilUnloadedAsync();
+                }).DisposeWith(d);
+
+                ViewModel.FolderDialogInteraction.RegisterHandler(interaction =>
+                {
+                    CommonOpenFileDialog dialog = new CommonOpenFileDialog
+                    {
+                        InitialDirectory = interaction.Input,
+                        IsFolderPicker = true
+                    };
+                    if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                    {
+                        interaction.SetOutput(dialog.FileName);
+                    }
                 }).DisposeWith(d);
             });
         }

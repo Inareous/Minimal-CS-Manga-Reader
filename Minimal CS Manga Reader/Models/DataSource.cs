@@ -45,14 +45,14 @@ namespace Minimal_CS_Manga_Reader
                     if (argument.Contains("-path="))
                     {
                         var ArgPath = argument.Replace("-path=", "");
-                        ConfigureProgramBasedOnPath(ArgPath);
+                        SetChapter(ArgPath);
                         break;
                     }
                 }
             }
         }
 
-        private static void ConfigureProgramBasedOnPath(string path)
+        public static void SetChapter(string path)
         {
             if (Directory.Exists(path))
             {
@@ -72,6 +72,7 @@ namespace Minimal_CS_Manga_Reader
             Title = Path.Split('\\').ToArray()[^1];
             _ = Task.Run(() =>
             {
+                ChapterList.Clear();
                 var list = collector.GetChapterListAsync(Path, IsArgsPathArchiveFile).Result;
                 ChapterList.AddRange(list);
                 ActiveChapterPath = ChapterList.Count != 0 ? list.Last().AbsolutePath : "\\";

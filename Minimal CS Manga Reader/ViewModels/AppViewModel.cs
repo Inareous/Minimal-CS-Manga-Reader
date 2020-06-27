@@ -159,7 +159,8 @@ namespace Minimal_CS_Manga_Reader
 
             #region dialog
 
-            OpenSetting = ReactiveCommand.CreateFromTask(ShowSetting);
+            OpenSetting = ReactiveCommand.CreateFromTask(ShowSettingDialog);
+            OpenFolder = ReactiveCommand.CreateFromTask(OpenFolderDialog);
 
             #endregion dialog
         }
@@ -274,13 +275,16 @@ namespace Minimal_CS_Manga_Reader
         #region Dialog stuff
 
         public Interaction<Unit, bool> SettingDialogInteraction { get; protected set; } = new Interaction<Unit, bool>();
+
+        public Interaction<string, string> FolderDialogInteraction { get; protected set; } = new Interaction<string, string>();
         public ReactiveCommand<Unit, Unit> OpenSetting { get; }
 
-        public async Task ShowSetting()
+        public ReactiveCommand<Unit, Unit> OpenFolder { get; }
+        public async Task ShowSettingDialog()
         {
             try
             {
-                var saveAndRefresh = await this.SettingDialogInteraction.Handle(Unit.Default);
+                var saveAndRefresh = await SettingDialogInteraction.Handle(Unit.Default);
 
                 if (saveAndRefresh)
                 {
@@ -289,6 +293,21 @@ namespace Minimal_CS_Manga_Reader
             }
             catch (Exception e)
             {
+                System.Diagnostics.Debug.Print(e.ToString());
+            }
+        }
+
+        public async Task OpenFolderDialog()
+        {
+            try
+            {
+                var openChapterPath = await FolderDialogInteraction.Handle(DataSource.Path);
+                DataSource.SetChapter(openChapterPath);
+                WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+            }
+            catch (Exception e)
+            {
+
                 System.Diagnostics.Debug.Print(e.ToString());
             }
         }

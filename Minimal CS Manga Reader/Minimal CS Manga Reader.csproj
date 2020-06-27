@@ -20,10 +20,11 @@
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
     <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
-    <PackageReference Include="ReactiveUI.Events.WPF" Version="11.1.23" />
-    <PackageReference Include="ReactiveUI.Fody" Version="11.1.23" />
-    <PackageReference Include="ReactiveUI.WPF" Version="11.1.23" />
-    <PackageReference Include="sharpcompress" Version="0.24.0" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+    <PackageReference Include="ReactiveUI.Events.WPF" Version="11.4.17" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.4.17" />
+    <PackageReference Include="ReactiveUI.WPF" Version="11.4.17" />
+    <PackageReference Include="sharpcompress" Version="0.25.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 
