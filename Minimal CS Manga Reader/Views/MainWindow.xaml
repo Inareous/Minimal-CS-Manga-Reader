@@ -45,7 +45,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Row="0">
-            <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
+            <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Height="{Binding ToolbarHeight}">
                 <ToolBar ClipToBounds="False" Height="30">
                     <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  ToolTip="Open Folder"
                     Command="{Binding OpenFolder}" Margin="1 0 0 0">
@@ -155,7 +155,14 @@
                     <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}" Padding="-1"
                   FontSize="13" Width="100" />
                     <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
-
+                    <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Fullscreen mode (F5)"
+                    Command="{Binding ToggleFullscreen}" Margin="1 0 5 0">
+                        <Grid HorizontalAlignment="Center">
+                            <Canvas Margin="-24,-28,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z" Fill="MediumPurple" />
+                            </Canvas>
+                        </Grid>
+                    </Button>
                     <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Image Settings"
                     Command="{Binding OpenSetting}" Margin="1 0 5 0">
                         <Grid HorizontalAlignment="Center">

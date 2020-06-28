@@ -42,6 +42,39 @@ namespace Minimal_CS_Manga_Reader
                     ScrollViewer.Focus();
                 });
 
+            this.WhenAnyValue(x => x.ViewModel.IsFullscreen)
+                .Subscribe(x =>
+                {
+                    if (x)
+                    {
+                        WindowStyle = System.Windows.WindowStyle.None;
+                        IgnoreTaskbarOnMaximize = true;
+                        ShowTitleBar = false;
+                        ShowCloseButton = false;
+                        ViewModel.ToolbarHeight = 0;
+                        ResizeMode = System.Windows.ResizeMode.NoResize;
+
+                        WindowState = System.Windows.WindowState.Maximized;
+                    }
+                    else
+                    {
+                        WindowStyle = System.Windows.WindowStyle.SingleBorderWindow;
+                        IgnoreTaskbarOnMaximize = false;
+                        ShowTitleBar = true;
+                        ShowCloseButton = true;
+                        ViewModel.ToolbarHeight = 30;
+                        ResizeMode = System.Windows.ResizeMode.CanResize;
+                    }
+                });
+
+            this.Events().KeyDown.
+                Where(x => x.Key.Equals(Key.F5)).
+                Subscribe(x =>
+                {
+                    x.Handled = true;
+                    ViewModel.IsFullscreen = !ViewModel.IsFullscreen;
+                });
+
             this.Events().KeyDown.
                 Where(x => x.Key.Equals(Key.Enter)).
                 Subscribe(x =>

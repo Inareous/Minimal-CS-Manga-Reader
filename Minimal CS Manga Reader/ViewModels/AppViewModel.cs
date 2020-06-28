@@ -22,6 +22,14 @@ namespace Minimal_CS_Manga_Reader
         {
             InitializeWindow();
 
+            #region Toggle Fullscreen
+
+            ToggleFullscreen = ReactiveCommand.Create(() => IsFullscreen = !IsFullscreen);
+
+            this.WhenAnyValue(x => x._toolbarheight).Subscribe(x => ToolbarHeight = x);
+
+            #endregion
+
             #region Scroll Change
 
             this.WhenAnyValue(x => x._activeImage).Subscribe(x => ActiveImage = x + 1);
@@ -165,6 +173,7 @@ namespace Minimal_CS_Manga_Reader
             #endregion dialog
         }
 
+
         #region Method
 
         #region Scroll
@@ -259,9 +268,16 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, string> IncreaseZoom { get; }
         public ReactiveCommand<Unit, int> NextClick { get; }
         public ReactiveCommand<Unit, int> PreviousClick { get; }
+        public ReactiveCommand<Unit, bool> ToggleFullscreen { get; }
         private int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
         private int _imageMarginSetter { get; set; } = Settings.Default.ImageMargin;
         private int _zoomScaleSetter { get; set; } = 100;
+
+        public int _toolbarheight = 30;
+
+        [Reactive] public int ToolbarHeight { get; set; } = 30;
+
+        [Reactive] public bool IsFullscreen { get; set; } = false;
 
         public double _scrollHeight = 0;
         [Reactive] public string ScrollIncrement { get; set; }
