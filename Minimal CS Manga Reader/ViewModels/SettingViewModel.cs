@@ -78,45 +78,35 @@ namespace Minimal_CS_Manga_Reader
 
             Save = ReactiveCommand.Create(() =>
             {
-                Settings.Default.InterpolationMode = SelectedInterpolationMode;
-                Settings.Default.SmoothingMode = SelectedSmoothingMode;
-                Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
-                Settings.Default.Save();
-                if (_initialContextIntegrated != ContextIntegrated)
-                {
-                    try
-                    {
-                        RegistryContextManager.ChangeContextIntegrated(ContextIntegrated);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.Print(e.ToString());
-                    }
-                }
+                SaveSettings();
                 _closeCallback(this, false);
             });
 
             SaveAndRefresh = ReactiveCommand.Create(() =>
             {
-                Settings.Default.InterpolationMode = SelectedInterpolationMode;
-                Settings.Default.SmoothingMode = SelectedSmoothingMode;
-                Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
-                Settings.Default.Save();
-                if (_initialContextIntegrated != ContextIntegrated)
-                {
-                    try
-                    {
-                        RegistryContextManager.ChangeContextIntegrated(ContextIntegrated);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.Print(e.ToString());
-                    }
-                }
+                SaveSettings();
                 _closeCallback(this, true);
             });
 
             Close = ReactiveCommand.Create(() => _closeCallback(this, false));
+        }
+
+        private void SaveSettings(){
+            Settings.Default.InterpolationMode = SelectedInterpolationMode;
+            Settings.Default.SmoothingMode = SelectedSmoothingMode;
+            Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
+            Settings.Default.Save();
+            if (_initialContextIntegrated != ContextIntegrated)
+            {
+                try
+                {
+                    RegistryContextManager.ChangeContextIntegrated(ContextIntegrated);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.Print(e.ToString());
+                }
+            }
         }
     }
 }

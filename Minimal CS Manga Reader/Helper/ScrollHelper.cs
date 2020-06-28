@@ -150,11 +150,11 @@ namespace Minimal_CS_Manga_Reader.Helper
                     break;
 
                 case Key.Home:
-                    target.ScrollToHome();
+                    target.ScrollToVerticalOffset(0);
                     break;
 
                 case Key.End:
-                    target.ScrollToBottom();
+                    target.ScrollToVerticalOffset(target.ExtentHeight);
                     break;
             }
         }
