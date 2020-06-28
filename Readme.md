@@ -2,8 +2,6 @@
 
 A minimal program for your daily use of reading manga continously in one page. An alternative to the popular DomDomSoft Manga Reader.
 
-**_MCS Manga Reader is not a stand-alone program_**, please refer to ``How To Use`` to integrate it with other programs.
-
 ![Demo](https://cdn.discordapp.com/attachments/578057213084434433/668406622632280094/unknown.png)
 
 ## Features
@@ -21,8 +19,12 @@ A minimal program for your daily use of reading manga continously in one page. A
 ## How To Use
 
 * Download and extract the latest release build at [/Releases](https://github.com/Inareous/Minimal-CS-Manga-Reader/releases).
-* If you are going to integrate Minimal CS Manga Reader with Windows Explorer, run IntegrateContext.exe as administrator and follow the instruction in the program.
-* If you are using [Free Manga Downloader](https://github.com/riderkick/FMD) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "-path=%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
+* Open Minimal CS Manga Reader.exe
+
+## Integrate With Other Programs
+
+* Enable/check "Integrate Minimal CS Manga Reader with File Explorer Context" in Setting to integrate MCS Manga Reader with Windows Explorer, adding a context menu whenever you right-click on a folder. 
+* If you are using [Free Manga Downloader](https://github.com/fmd-project-team) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "-path=%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
 
 ## Known Issues/Bugs
 
