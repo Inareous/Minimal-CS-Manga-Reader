@@ -76,6 +76,14 @@ namespace Minimal_CS_Manga_Reader
                 });
 
             this.Events().KeyDown.
+                Where(x => x.Key.Equals(Key.Escape) && ViewModel.IsFullscreen).
+                Subscribe(x =>
+                {
+                    x.Handled = true;
+                    ViewModel.IsFullscreen = !ViewModel.IsFullscreen;
+                });
+
+            this.Events().KeyDown.
                 Where(x => x.Key.Equals(Key.Enter)).
                 Subscribe(x =>
                 {
