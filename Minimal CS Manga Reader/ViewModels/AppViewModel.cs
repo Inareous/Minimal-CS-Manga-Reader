@@ -296,6 +296,8 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, Unit> OpenSetting { get; }
 
         public ReactiveCommand<Unit, Unit> OpenFolder { get; }
+        [Reactive] public double ViewportWidth { get; set; }
+
         public async Task ShowSettingDialog()
         {
             try

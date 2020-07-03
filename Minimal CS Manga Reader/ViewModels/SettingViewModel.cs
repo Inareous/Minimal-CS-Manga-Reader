@@ -19,6 +19,8 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, Unit> SaveAndRefresh { get; }
         public ReactiveCommand<Unit, Unit> Close { get; }
         [Reactive] public bool ContextIntegrated { get; set; }
+
+        [Reactive] public bool FitImagesToScreen { get; set; }
         public IEnumerable<System.Drawing.Drawing2D.InterpolationMode> InterpolationMode
         {
             get
@@ -54,18 +56,18 @@ namespace Minimal_CS_Manga_Reader
 
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback)
         {
+            ContextIntegrated = RegistryContextManager.IsContextRegistry();
+            _initialContextIntegrated = ContextIntegrated;
+            FitImagesToScreen = Settings.Default.FitImagesToScreen;
+
             try
             {
-                ContextIntegrated = RegistryContextManager.IsContextRegistry();
-                _initialContextIntegrated = ContextIntegrated;
                 SelectedInterpolationMode = Settings.Default.InterpolationMode;
                 SelectedSmoothingMode = Settings.Default.SmoothingMode;
                 SelectedPixelOffsetMode = Settings.Default.PixelOffsetMode;
             }
             catch (Exception)
             {
-                ContextIntegrated = RegistryContextManager.IsContextRegistry();
-                _initialContextIntegrated = ContextIntegrated;
                 SelectedInterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
                 SelectedSmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
                 SelectedPixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Default;
@@ -95,6 +97,7 @@ namespace Minimal_CS_Manga_Reader
             Settings.Default.InterpolationMode = SelectedInterpolationMode;
             Settings.Default.SmoothingMode = SelectedSmoothingMode;
             Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
+            Settings.Default.FitImagesToScreen = FitImagesToScreen;
             Settings.Default.Save();
             if (_initialContextIntegrated != ContextIntegrated)
             {

@@ -46,7 +46,7 @@
         </Grid.RowDefinitions>
         <Grid Row="0">
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Height="{Binding ToolbarHeight}">
-                <ToolBar ClipToBounds="False" Height="30">
+                <ToolBar ClipToBounds="True" Height="30">
                     <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  ToolTip="Open Folder"
                     Command="{Binding OpenFolder}" Margin="1 0 0 0">
                         <Canvas Margin="-25,-30,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -205,7 +205,12 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Image Source="{Binding}"
-                                   Stretch="Fill" Width="{Binding Width}" Height="{Binding Height}"
+                                   Stretch="Fill" Width="{Binding Width}"
+                                   MaxWidth="{
+                          Binding RelativeSource={
+                            RelativeSource FindAncestor,
+                            AncestorType={x:Type Window}},
+                          Path=DataContext.ViewportWidth}"
                                    HorizontalAlignment="Center"
                                    Margin="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},Path=DataContext.ImageMargin}"
                                    VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality"

@@ -118,5 +118,21 @@ namespace Minimal_CS_Manga_Reader {
                 this["PixelOffsetMode"] = value;
             }
         }
+
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FitImagesToScreen
+        {
+            get
+            {
+                return ((bool)(this["FitImagesToScreen"]));
+            }
+            set
+            {
+                this["FitImagesToScreen"] = value;
+            }
+        }
     }
 }

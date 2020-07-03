@@ -31,6 +31,7 @@ namespace Minimal_CS_Manga_Reader
 
             ScrollViewer.Events().ScrollChanged.Subscribe(x =>
             {
+                ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? ScrollViewer.ViewportWidth : int.MaxValue;
                 ViewModel._scrollHeight = ScrollViewer.VerticalOffset.Equals(double.NaN) ? 0 : ScrollViewer.VerticalOffset;
                 ViewModel.ScrollChanged();
             });
