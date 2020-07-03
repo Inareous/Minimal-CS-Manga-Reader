@@ -1,8 +1,7 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
-using SharpCompress.Archives.Rar;
-using SharpCompress.Archives.Zip;
+using SharpCompress.Archives;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,7 +24,12 @@ namespace Minimal_CS_Manga_Reader
             var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             if (IsArchive) return new List<Entry> { new Entry(Path) };
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
-                    .Where(s => s.EndsWith(".cbz") || s.EndsWith(".cbr") || s.EndsWith(".rar") || s.EndsWith(".zip")));
+                    .Where(s => s.EndsWith(".cbz", StringComparison.OrdinalIgnoreCase) ||
+                    s.EndsWith(".cbr", StringComparison.OrdinalIgnoreCase) ||
+                    s.EndsWith(".rar", StringComparison.OrdinalIgnoreCase) ||
+                    s.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ||
+                    s.EndsWith(".7z", StringComparison.OrdinalIgnoreCase) ||
+                    s.EndsWith(".tar", StringComparison.OrdinalIgnoreCase)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
             await Task.WhenAll(Files, Folders, FilesInFolder).ConfigureAwait(false);
             var ReturnList = (Files.Result ?? Enumerable.Empty<string>()).Concat(Folders.Result ?? Enumerable.Empty<string>()).ToList();
@@ -38,13 +42,17 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
         {
-            if (!ZipArchive.IsZipFile(Path) && !RarArchive.IsRarFile(Path))
+            if (SharpCompress.Archives.Zip.ZipArchive.IsZipFile(Path) ||
+                 SharpCompress.Archives.Rar.RarArchive.IsRarFile(Path) ||
+                 SharpCompress.Archives.SevenZip.SevenZipArchive.IsSevenZipFile(Path) ||
+                 SharpCompress.Archives.Tar.TarArchive.IsTarFile(Path)
+                )
             {
-                await Task.Run(() => GetImagesFromDirectory(Path, imageList, token), token).ConfigureAwait(false);
+                await Task.Run(() => GetImagesFromArchive(Path, imageList, token), token).ConfigureAwait(false);
             }
             else
             {
-                await Task.Run(() => GetImagesFromArchive(Path, imageList, token), token).ConfigureAwait(false);
+                await Task.Run(() => GetImagesFromDirectory(Path, imageList, token), token).ConfigureAwait(false);
             }
         }
 
@@ -75,13 +83,13 @@ namespace Minimal_CS_Manga_Reader
         {
             try
             {
-                using Stream stream = File.Open(Path, FileMode.Open);
-                using var reader = SharpCompress.Readers.ReaderFactory.Open(stream);
-                while (reader.MoveToNextEntry())
+                using var archive = ArchiveFactory.Open(Path);
+                var oderedArchive = archive.Entries.OrderBy(x => x.Key, new NaturalStringComparer());
+                foreach (var entry in oderedArchive)
                 {
-                    if (reader.Entry.IsDirectory || (!reader.Entry.Key.EndsWith("jpg") && !reader.Entry.Key.EndsWith("png") && !reader.Entry.Key.EndsWith("jpeg"))) continue;
+                    if (entry.IsDirectory || (!entry.Key.EndsWith("jpg") && !entry.Key.EndsWith("png") && !entry.Key.EndsWith("jpeg"))) continue;
                     token.ThrowIfCancellationRequested();
-                    using var entryStream = reader.OpenEntryStream();
+                    using var entryStream = entry.OpenEntryStream();
                     GetImageFromStream(entryStream, imageList, token);
                 }
             }

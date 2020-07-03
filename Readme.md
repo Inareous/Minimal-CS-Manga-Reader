@@ -7,11 +7,12 @@ A minimal program for your daily use of reading manga continously in one page. A
 ## Features
 
 * Continous-scrolling one page reader.
-* Support chapter as folder, rar, zip, cbz, and cbr.
+* Support chapter as folder and archive file (rar, zip, cbz, cbr, tar, and 7zip)*.
 * Fast zooming capability.
 * Faster performance.
 * Configurable (Scrolling speed, background, margin per images, etc).
 
+<sup>\* 7zip performance is significantly slower compared to other archive types</sup>
 ## Requirement (Build)
 
 .Net Core 3.1 or later.
