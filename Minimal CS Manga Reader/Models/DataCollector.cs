@@ -18,9 +18,9 @@ using PixelFormat = System.Windows.Media.PixelFormat;
 
 namespace Minimal_CS_Manga_Reader
 {
-    internal class DataCollector
+    public class DataCollector
     {
-        internal async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
+        public async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
             var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             if (IsArchive) return new List<Entry> { new Entry(Path) };
@@ -36,7 +36,7 @@ namespace Minimal_CS_Manga_Reader
             return ReturnEntry;
         }
 
-        internal async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
+        public async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
         {
             if (!ZipArchive.IsZipFile(Path) && !RarArchive.IsRarFile(Path))
             {
@@ -59,15 +59,7 @@ namespace Minimal_CS_Manga_Reader
                     token.ThrowIfCancellationRequested();
                     using Stream stream = File.Open(enumerable[i], FileMode.Open);
                     using var memoryStream = new MemoryStream();
-                    stream.CopyTo(memoryStream);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    token.ThrowIfCancellationRequested(); // start of expensive operation
-                    Bitmap bitmap = new Bitmap(memoryStream);
-                    BitmapSource bitmapSource = ConvertStreamToSource(bitmap);
-                    bitmapSource.Freeze();
-                    token.ThrowIfCancellationRequested(); // end
-                    imageList.Add(bitmapSource);
-                    bitmap.Dispose();
+                    GetImageFromStream(stream, imageList, token);
                 }
             }
             catch (OperationCanceledException)
@@ -90,20 +82,12 @@ namespace Minimal_CS_Manga_Reader
                     if (reader.Entry.IsDirectory || (!reader.Entry.Key.EndsWith("jpg") && !reader.Entry.Key.EndsWith("png") && !reader.Entry.Key.EndsWith("jpeg"))) continue;
                     token.ThrowIfCancellationRequested();
                     using var entryStream = reader.OpenEntryStream();
-                    using var memoryStream = new MemoryStream();
-                    entryStream.CopyTo(memoryStream);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    token.ThrowIfCancellationRequested(); // start of expensive operation
-                    var bitmap = new Bitmap(memoryStream);
-                    var bitmapSource = ConvertStreamToSource(bitmap);
-                    bitmapSource.Freeze();
-                    token.ThrowIfCancellationRequested(); // end
-                    imageList.Add(bitmapSource);
-                    bitmap.Dispose();
+                    GetImageFromStream(entryStream, imageList, token);
                 }
             }
             catch (OperationCanceledException)
             {
+                // Continue
             }
             catch (Exception)
             {
@@ -111,7 +95,29 @@ namespace Minimal_CS_Manga_Reader
             }
         }
 
-        private BitmapSource ConvertStreamToSource(Bitmap x)
+        private void GetImageFromStream(Stream stream, SourceList<BitmapSource> imageList, CancellationToken token)
+        {
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            token.ThrowIfCancellationRequested(); // start of expensive operation
+            var bitmap = new Bitmap(memoryStream);
+            var bitmapSource = ConvertStreamToSource(bitmap);
+            bitmapSource.Freeze();
+            token.ThrowIfCancellationRequested(); // end
+            imageList.Add(bitmapSource);
+            bitmap.Dispose();
+        }
+    
+
+        private BitmapSource ConvertStreamToSource(Bitmap bitmap)
+        {
+            bitmap = CloneBitmap(bitmap);
+            var bitmapsource = Convert(bitmap);
+            return bitmapsource;
+        }
+
+        private Bitmap CloneBitmap(Bitmap x)
         {
             var PixelFormat = System.Drawing.Imaging.PixelFormat.Format16bppRgb555;
 
@@ -123,10 +129,10 @@ namespace Minimal_CS_Manga_Reader
             gr.SmoothingMode = Settings.Default.SmoothingMode;
             gr.Clear(Color.Transparent);
             gr.DrawImage(x, new Rectangle(0, 0, clone.Width, clone.Height));
-            return Convert(clone);
+            return clone;
         }
 
-        private static BitmapSource Convert(Bitmap bitmap)
+        private BitmapSource Convert(Bitmap bitmap)
         {
             var bitmapData = bitmap.LockBits(
                 new Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -143,7 +149,7 @@ namespace Minimal_CS_Manga_Reader
             return bitmapSource;
         }
 
-        private static PixelFormat ConvertPixelFormat(System.Drawing.Imaging.PixelFormat sourceFormat)
+        private PixelFormat ConvertPixelFormat(System.Drawing.Imaging.PixelFormat sourceFormat)
         {
             switch (sourceFormat)
             {
