@@ -76,8 +76,13 @@ namespace Minimal_CS_Manga_Reader
                     var Sum = HeightCount == 0 ? 0 : ImageHeight[^1];
                     ImageHeight.Add(x.Height + Sum);
                     ImageHeightMod.Add(((x.Height + Sum) * ZoomScale) + (_imageMarginSetter * (HeightCount + 1)));
-                    ImageCount = DataSource.ImageList.Count;
                 }).Bind(ImageList).DisposeMany().Subscribe();
+
+            this.WhenAnyValue(x => x.ImageList.Count)
+                .Subscribe(x =>
+                {
+                    ImageCount = x;
+                });
 
             #endregion Chapter Change
 
