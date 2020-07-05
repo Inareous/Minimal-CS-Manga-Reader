@@ -36,7 +36,7 @@
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="InterpolationMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Interpolation Mode</Label>
@@ -44,7 +44,7 @@
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="PixelOffsetMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Pixel Offset Mode</Label>
@@ -52,7 +52,7 @@
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Smoothing Mode</Label>
@@ -68,6 +68,18 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <CheckBox x:Name="FitImagesToScreen" Content="Resize image to fit screen horizontally"  FontSize="13" Margin="0 0 15 0" />
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="OpenChapterOnLoadList" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
+                    <Label Grid.Column="1" Width="290" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                        <TextBlock TextWrapping="WrapWithOverflow">
+                                Open selected chapter when program is loaded
+                        </TextBlock>
+                    </Label>
                 </Grid>
                 <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>

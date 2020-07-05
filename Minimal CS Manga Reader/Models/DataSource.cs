@@ -22,7 +22,7 @@ namespace Minimal_CS_Manga_Reader
         public static SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
         public static string Path { get; private set; } = Settings.Default.Path;
 
-        public static string ActiveChapterPath { get; set; }
+        public static string ActiveChapterPath { get; set; } = System.IO.Path.DirectorySeparatorChar.ToString();
 
         public static SourceList<BitmapSource> ImageList { get; private set; } = new SourceList<BitmapSource>();
 
@@ -74,7 +74,6 @@ namespace Minimal_CS_Manga_Reader
                 ChapterList.Clear();
                 var list = collector.GetChapterListAsync(Path, IsArgsPathArchiveFile).Result;
                 ChapterList.AddRange(list);
-                ActiveChapterPath = ChapterList.Count != 0 ? list.Last().AbsolutePath : System.IO.Path.DirectorySeparatorChar.ToString();
             });
         }
 

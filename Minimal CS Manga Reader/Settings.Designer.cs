@@ -130,5 +130,17 @@ namespace Minimal_CS_Manga_Reader {
                 this["FitImagesToScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Last")]
+        public string OpenChapterOnLoadChoice {
+            get {
+                return ((string)(this["OpenChapterOnLoadChoice"]));
+            }
+            set {
+                this["OpenChapterOnLoadChoice"] = value;
+            }
+        }
     }
 }

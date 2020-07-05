@@ -26,6 +26,8 @@ namespace Minimal_CS_Manga_Reader
                 this.OneWayBind(ViewModel, vm => vm.SmoothingMode, view => view.SmoothingMode.ItemsSource).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.ContextIntegrated, view => view.ContextIntegrated.IsChecked).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.FitImagesToScreen, view => view.FitImagesToScreen.IsChecked).DisposeWith(d);
+                this.Bind(ViewModel, vm => vm.OpenChapterOnLoad, view => view.OpenChapterOnLoadList.SelectedItem).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.OpenChapterOnLoadList, view => view.OpenChapterOnLoadList.ItemsSource).DisposeWith(d);
             });
         }
 

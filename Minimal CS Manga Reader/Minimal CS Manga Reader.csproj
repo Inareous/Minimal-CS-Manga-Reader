@@ -5,15 +5,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Minimal_CS_Manga_Reader</RootNamespace>
     <AssemblyName>Minimal CS Manga Reader</AssemblyName>
-    <UseWPF>true</UseWPF>
+    <UseWPF>True</UseWPF>
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <ApplicationIcon>Minimal CS Manga Reader.ico</ApplicationIcon>
     <Win32Resource />
     <StartupObject>Minimal_CS_Manga_Reader.App</StartupObject>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
-    <PublishReadyToRun>true</PublishReadyToRun>
+    <TieredCompilationQuickJitForLoops>True</TieredCompilationQuickJitForLoops>
+    <PublishReadyToRun>True</PublishReadyToRun>
   </PropertyGroup>
    
   <ItemGroup>

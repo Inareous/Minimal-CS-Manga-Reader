@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Helper;
+using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
@@ -14,13 +15,13 @@ namespace Minimal_CS_Manga_Reader
     {
         private Action<SettingViewModel, bool> _closeCallback;
         private bool _initialContextIntegrated { get; set; }
-
         public ReactiveCommand<Unit, Unit> Save { get; }
         public ReactiveCommand<Unit, Unit> SaveAndRefresh { get; }
         public ReactiveCommand<Unit, Unit> Close { get; }
         [Reactive] public bool ContextIntegrated { get; set; }
-
         [Reactive] public bool FitImagesToScreen { get; set; }
+        [Reactive] public Array OpenChapterOnLoadList { get; set; } = Enum.GetNames(typeof(Enums.OpenChapterOnLoad));
+        [Reactive] public string OpenChapterOnLoad { get; set; }
         public IEnumerable<System.Drawing.Drawing2D.InterpolationMode> InterpolationMode
         {
             get
@@ -59,6 +60,7 @@ namespace Minimal_CS_Manga_Reader
             ContextIntegrated = RegistryContextManager.IsContextRegistry();
             _initialContextIntegrated = ContextIntegrated;
             FitImagesToScreen = Settings.Default.FitImagesToScreen;
+            OpenChapterOnLoad = Settings.Default.OpenChapterOnLoadChoice;
 
             try
             {
@@ -98,6 +100,7 @@ namespace Minimal_CS_Manga_Reader
             Settings.Default.SmoothingMode = SelectedSmoothingMode;
             Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
             Settings.Default.FitImagesToScreen = FitImagesToScreen;
+            Settings.Default.OpenChapterOnLoadChoice = OpenChapterOnLoad;
             Settings.Default.Save();
             if (_initialContextIntegrated != ContextIntegrated)
             {

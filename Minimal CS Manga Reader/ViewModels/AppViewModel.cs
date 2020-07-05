@@ -42,11 +42,8 @@ namespace Minimal_CS_Manga_Reader
                 .Subscribe(_ =>
                 {
                     ChapterList = _chapterList?.Select(x => x.File).ToList();
-                    if (ChapterList.Count > 0)
-                    {
-                        ActiveIndex = ChapterList.Count - 1;
-                        if (ActiveIndex == 0) { UpdateAsync().ConfigureAwait(false); }
-                    }
+                    ActiveIndex = ChapterList.Count > 0 && Settings.Default.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last.ToString() ? ChapterList.Count-1 : 0;
+                    if (ActiveIndex == 0) { UpdateAsync().ConfigureAwait(false); }
                     EnablePrevClick = ActiveIndex != 0;
                     EnableNextClick = ActiveIndex != ChapterList.Count - 1;
                 });
@@ -229,18 +226,27 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task UpdateAsync()
         {
-            DataSource.ActiveChapterPath = ChapterList.Count != 0 ? _chapterList[ActiveIndex].AbsolutePath : System.IO.Path.DirectorySeparatorChar.ToString();
-            Ts.Cancel();
-            T?.Wait(Ts.Token);
-            Ts = new CancellationTokenSource();
-            ImageHeight.Clear();
-            ImageHeightMod.Clear();
-            ScrollHelper.Helper();
-            T = await Task.Run(async () =>
+            if (ChapterList.Count > 0)
             {
-                await DataSource.PopulateImageAsync(Ts.Token).ConfigureAwait(false);
-                return T;
-            }).ConfigureAwait(false);
+                DataSource.ActiveChapterPath = _chapterList[ActiveIndex].AbsolutePath;
+                Ts.Cancel();
+                T?.Wait(Ts.Token);
+                Ts = new CancellationTokenSource();
+                ImageHeight.Clear();
+                ImageHeightMod.Clear();
+                ScrollHelper.Helper();
+                T = await Task.Run(async () =>
+                {
+                    await DataSource.PopulateImageAsync(Ts.Token).ConfigureAwait(false);
+                    return T;
+                }).ConfigureAwait(false);
+            }
+            else
+            {
+                DataSource.ImageList.Clear();
+                ImageHeight.Clear();
+                ImageHeightMod.Clear();
+            }
         }
 
         #endregion Chapter Updater
@@ -285,7 +291,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public string ZoomScaleSetter { get; set; }
         [Reactive] public double ZoomScale { get; set; }
         [Reactive] public string ActiveBackgroundView { get; set; } = Settings.Default.Background;
-        public List<string> BackgroundViewList { get; set; } = new List<string> { "Black", "White", "Silver" };
+        public Array BackgroundViewList { get; set; } = Enum.GetNames(typeof(Enums.ReaderBackground));
 
         #endregion Property
 
