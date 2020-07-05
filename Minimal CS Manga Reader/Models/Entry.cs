@@ -10,10 +10,12 @@ namespace Minimal_CS_Manga_Reader.Models
         public Entry(string absolutePath)
         {
             AbsolutePath = absolutePath;
-            Name = absolutePath.Split('\\')[^1];
+            File = absolutePath.Split(Path.DirectorySeparatorChar)[^1];
+            Name = Path.GetFileNameWithoutExtension(File);
         }
 
         public string AbsolutePath { get; set; }
+        public string File { get; set; }
         public string Name { get; set; }
 
     }

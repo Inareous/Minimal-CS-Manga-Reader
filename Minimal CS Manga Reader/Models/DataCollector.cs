@@ -32,12 +32,12 @@ namespace Minimal_CS_Manga_Reader
                     s.EndsWith(".tar", StringComparison.OrdinalIgnoreCase)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
             await Task.WhenAll(Files, Folders, FilesInFolder).ConfigureAwait(false);
-            var ReturnList = (Files.Result ?? Enumerable.Empty<string>()).Concat(Folders.Result ?? Enumerable.Empty<string>()).ToList();
-            ReturnList.Sort(new NaturalStringComparer());
-            if (FilesInFolder.Result.Any()) ReturnList.Insert(0, Path);
-            var ReturnEntry = ReturnList.Select(x => new Entry(x)).ToList();
 
-            return ReturnEntry;
+            var ReturnList = (Files.Result ?? Enumerable.Empty<string>()).Concat(Folders.Result ?? Enumerable.Empty<string>());
+            var Entries = ReturnList.Select(x => new Entry(x));
+            var OrderedEntries = Entries.OrderBy(x => x.Name, new NaturalSortComparer(StringComparison.OrdinalIgnoreCase)).ToList();
+            if (FilesInFolder.Result.Any()) OrderedEntries.Insert(0, new Entry(Path));
+            return OrderedEntries;
         }
 
         public async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
@@ -61,7 +61,7 @@ namespace Minimal_CS_Manga_Reader
             try
             {
                 var enumerable = Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")).ToList();
-                enumerable.Sort(new NaturalStringComparer());
+                enumerable.Sort(new NaturalSortComparer(StringComparison.OrdinalIgnoreCase));
                 for (var i = 0; i < enumerable.Count; i++)
                 {
                     token.ThrowIfCancellationRequested();
@@ -84,7 +84,7 @@ namespace Minimal_CS_Manga_Reader
             try
             {
                 using var archive = ArchiveFactory.Open(Path);
-                var oderedArchive = archive.Entries.OrderBy(x => x.Key, new NaturalStringComparer());
+                var oderedArchive = archive.Entries.OrderBy(x => x.Key, new NaturalSortComparer(StringComparison.OrdinalIgnoreCase));
                 foreach (var entry in oderedArchive)
                 {
                     if (entry.IsDirectory || (!entry.Key.EndsWith("jpg") && !entry.Key.EndsWith("png") && !entry.Key.EndsWith("jpeg"))) continue;

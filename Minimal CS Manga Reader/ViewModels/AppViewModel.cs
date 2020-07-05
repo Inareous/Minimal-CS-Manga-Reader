@@ -41,7 +41,7 @@ namespace Minimal_CS_Manga_Reader
             this.WhenAnyValue(x => x._chapterList.Count)
                 .Subscribe(_ =>
                 {
-                    ChapterList = _chapterList?.Select(x => x.Name).ToList();
+                    ChapterList = _chapterList?.Select(x => x.File).ToList();
                     if (ChapterList.Count > 0)
                     {
                         ActiveIndex = ChapterList.Count - 1;
