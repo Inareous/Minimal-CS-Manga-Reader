@@ -14,7 +14,6 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
     <PublishReadyToRun>true</PublishReadyToRun>
-    <PublishTrimmed>True</PublishTrimmed>
   </PropertyGroup>
    
   <ItemGroup>

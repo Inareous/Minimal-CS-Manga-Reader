@@ -2,23 +2,21 @@
 
 A minimal program for your daily use of reading manga continously in one page. An alternative to the popular DomDomSoft Manga Reader.
 
-![Demo](https://cdn.discordapp.com/attachments/578057213084434433/668406622632280094/unknown.png)
+![Demo](https://user-images.githubusercontent.com/18087264/86542571-e93b2100-bf40-11ea-9823-6546fb2cc2c5.PNG)
 
 ## Features
 
 * Continous-scrolling one page reader.
-* Support chapter as folder and archive file (rar, zip, cbz, cbr, tar, and 7zip)*.
+* Support chapter as folder and archive file (rar, zip, cbz, cbr, tar, and 7zip*).
 * Fast zooming capability.
 * Faster performance.
 * Configurable (Scrolling speed, background, margin per images, etc).
 
 <sup>\* 7zip performance is significantly slower compared to other archive types</sup>
-## Requirement (Build)
-
-.Net Core 3.1 or later.
 
 ## How To Use
 
+* **Required** : Download and Install [.NET Core 3.1 Runtime](https://dotnet.microsoft.com/download/dotnet-core/current/runtime) for your OS architecture.
 * Download and extract the latest release build at [/Releases](https://github.com/Inareous/Minimal-CS-Manga-Reader/releases).
 * Open Minimal CS Manga Reader.exe
 
@@ -26,6 +24,11 @@ A minimal program for your daily use of reading manga continously in one page. A
 
 * Enable/check "Integrate Minimal CS Manga Reader with File Explorer Context" in Setting to integrate MCS Manga Reader with Windows Explorer, adding a context menu whenever you right-click on a folder. 
 * If you are using [Free Manga Downloader](https://github.com/fmd-project-team) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "-path=%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
+
+
+## Build Requirement
+
+.NET Core 3.1 or later.
 
 ## Known Issues/Bugs
 
