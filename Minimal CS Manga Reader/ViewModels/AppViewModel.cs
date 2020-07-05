@@ -26,8 +26,6 @@ namespace Minimal_CS_Manga_Reader
 
             ToggleFullscreen = ReactiveCommand.Create(() => IsFullscreen = !IsFullscreen);
 
-            this.WhenAnyValue(x => x._toolbarheight).Subscribe(x => ToolbarHeight = x);
-
             #endregion
 
             #region Scroll Change
@@ -123,7 +121,7 @@ namespace Minimal_CS_Manga_Reader
                         UpdateImageHeightMod();
                     }
                     ImageMarginSetter = _imageMarginSetter.ToString();
-                    ImageMargin = $"0,0,0,{_imageMarginSetter.ToString()}";
+                    ImageMargin = $"0,0,0,{_imageMarginSetter}";
                 });
 
             #endregion Margin
@@ -231,7 +229,7 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task UpdateAsync()
         {
-            DataSource.ActiveChapterPath = ChapterList.Count != 0 ? _chapterList[ActiveIndex].AbsolutePath : "\\";
+            DataSource.ActiveChapterPath = ChapterList.Count != 0 ? _chapterList[ActiveIndex].AbsolutePath : System.IO.Path.DirectorySeparatorChar.ToString();
             Ts.Cancel();
             T?.Wait(Ts.Token);
             Ts = new CancellationTokenSource();
@@ -277,8 +275,6 @@ namespace Minimal_CS_Manga_Reader
         private int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
         private int _imageMarginSetter { get; set; } = Settings.Default.ImageMargin;
         private int _zoomScaleSetter { get; set; } = 100;
-
-        public int _toolbarheight = 30;
 
         [Reactive] public int ToolbarHeight { get; set; } = 30;
 

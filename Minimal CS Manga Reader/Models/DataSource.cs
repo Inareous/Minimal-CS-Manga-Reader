@@ -1,6 +1,5 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Models;
-using ReactiveUI;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
 using System.IO;
@@ -11,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace Minimal_CS_Manga_Reader
 {
-    public class DataSource : ReactiveObject
+    public class DataSource
     {
         #region Property
 
@@ -69,13 +68,13 @@ namespace Minimal_CS_Manga_Reader
             Path = path;
             Settings.Default.Path = Path;
             Settings.Default.Save();
-            Title = Path.Split('\\').ToArray()[^1];
+            Title = Path.Split(System.IO.Path.DirectorySeparatorChar).ToArray()[^1];
             _ = Task.Run(() =>
             {
                 ChapterList.Clear();
                 var list = collector.GetChapterListAsync(Path, IsArgsPathArchiveFile).Result;
                 ChapterList.AddRange(list);
-                ActiveChapterPath = ChapterList.Count != 0 ? list.Last().AbsolutePath : "\\";
+                ActiveChapterPath = ChapterList.Count != 0 ? list.Last().AbsolutePath : System.IO.Path.DirectorySeparatorChar.ToString();
             });
         }
 
@@ -88,11 +87,7 @@ namespace Minimal_CS_Manga_Reader
 
             try
             {
-                var task = Task.Run(() =>
-            {
-                collector.GetImagesAsync(ActiveChapterPath, ImageList, token).ConfigureAwait(false);
-            }, token);
-                await Task.WhenAll(task);
+                await Task.Run(() => collector.GetImagesAsync(ActiveChapterPath, ImageList, token)).ConfigureAwait(false);
             }
             catch (System.OperationCanceledException)
             {
