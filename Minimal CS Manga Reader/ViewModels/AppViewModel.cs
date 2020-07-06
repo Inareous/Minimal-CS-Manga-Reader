@@ -44,8 +44,8 @@ namespace Minimal_CS_Manga_Reader
                     ChapterList = _chapterList?.Select(x => x.File).ToList();
                     ActiveIndex = ChapterList.Count > 0 && Settings.Default.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last.ToString() ? ChapterList.Count-1 : 0;
                     if (ActiveIndex == 0) { UpdateAsync().ConfigureAwait(false); }
-                    EnablePrevClick = ActiveIndex != 0;
-                    EnableNextClick = ActiveIndex != ChapterList.Count - 1;
+                    EnablePrevClick = ActiveIndex > 0;
+                    EnableNextClick = ActiveIndex < ChapterList.Count - 1;
                 });
 
             #endregion ChapterList Change
@@ -61,8 +61,8 @@ namespace Minimal_CS_Manga_Reader
                     {
                         UpdateAsync().ConfigureAwait(false);
                     }
-                    EnablePrevClick = ActiveIndex != 0;
-                    EnableNextClick = ActiveIndex != ChapterList.Count - 1;
+                    EnablePrevClick = ActiveIndex > 0;
+                    EnableNextClick = ActiveIndex < ChapterList.Count - 1;
                 });
             DataSource.ImageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
