@@ -16,7 +16,7 @@ A minimal program for your daily use of reading manga continously in one page. A
 
 ## How To Use
 
-* **Required** : Download and Install [.NET Core 3.1 Runtime](https://dotnet.microsoft.com/download/dotnet-core/current/runtime) for your OS architecture.
+* **Required** : Download and Install [.NET Core 3.1 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet-core/3.1) for your OS architecture.
 * Download and extract the latest release build at [/Releases](https://github.com/Inareous/Minimal-CS-Manga-Reader/releases).
 * Open Minimal CS Manga Reader.exe
 
@@ -32,8 +32,7 @@ A minimal program for your daily use of reading manga continously in one page. A
 
 ## Known Issues/Bugs
 
-* Application Startup is slow, can take up to 1-3 second or more.
-* MCS Manga Reader consume a lot of memory when opening chapter with > 150 images, this is because all of those images are loaded instantly. I've been mitigating it by using 16bppBRG565 to display the images. Still looking for how to implement Mapping Virtualization to reduce memory footprint further.
+* Application Startup is slow, can take up to 1-3 second or more ([_reference_](https://github.com/dotnet/runtime/issues/13339)).
 
 ## 3rd Party Libraries Used
 
