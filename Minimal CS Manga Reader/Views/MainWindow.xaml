@@ -26,6 +26,18 @@
         <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
+
+        <Style x:Key="WindowsButton"
+           BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Dark}"
+           TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+        </Style>
+        
+        <Style TargetType="{x:Type Controls:WindowButtonCommands}" BasedOn="{StaticResource {x:Type Controls:WindowButtonCommands}}">
+            <Setter Property="LightMinButtonStyle" Value="{StaticResource WindowsButton}" />
+            <Setter Property="LightMaxButtonStyle" Value="{StaticResource WindowsButton}" />
+            <Setter Property="LightCloseButtonStyle" Value="{StaticResource WindowsButton}" />
+        </Style>
     </Window.Resources>
     <Controls:MetroWindow.TitleTemplate>
         <DataTemplate>
