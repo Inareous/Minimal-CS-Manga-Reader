@@ -149,9 +149,15 @@ namespace Minimal_CS_Manga_Reader
                         InitialDirectory = interaction.Input,
                         IsFolderPicker = true
                     };
-                    if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                    var callback = dialog.ShowDialog();
+
+                    if (callback == CommonFileDialogResult.Ok)
                     {
-                        interaction.SetOutput(dialog.FileName);
+                        interaction.SetOutput((callback, dialog.FileName));
+                    }
+                    else
+                    {
+                        interaction.SetOutput((callback, ""));
                     }
                 }).DisposeWith(d);
             });

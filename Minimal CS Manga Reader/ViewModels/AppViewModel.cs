@@ -299,7 +299,8 @@ namespace Minimal_CS_Manga_Reader
 
         public Interaction<Unit, bool> SettingDialogInteraction { get; protected set; } = new Interaction<Unit, bool>();
 
-        public Interaction<string, string> FolderDialogInteraction { get; protected set; } = new Interaction<string, string>();
+        public Interaction<string, ValueTuple<Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult, string>> FolderDialogInteraction { get; protected set; } =
+                new Interaction<string, ValueTuple<Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult, string>>();
         public ReactiveCommand<Unit, Unit> OpenSetting { get; }
 
         public ReactiveCommand<Unit, Unit> OpenFolder { get; }
@@ -326,9 +327,12 @@ namespace Minimal_CS_Manga_Reader
         {
             try
             {
-                var openChapterPath = await FolderDialogInteraction.Handle(DataSource.Path);
-                DataSource.SetChapter(openChapterPath);
-                WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+                var (callback, openChapterPath) = await FolderDialogInteraction.Handle(DataSource.Path);
+                if (callback == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
+                {
+                    DataSource.SetChapter(openChapterPath);
+                    WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+                }
             }
             catch (Exception e)
             {
