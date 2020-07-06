@@ -47,126 +47,182 @@
         <Grid Row="0">
             <ToolBarTray DockPanel.Dock="Top" IsLocked="True" Height="{Binding ToolbarHeight}">
                 <ToolBar ClipToBounds="True" Height="30">
-                    <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  ToolTip="Open Folder"
+                    <Button ToolTip="Open Folder"
                     Command="{Binding OpenFolder}" Margin="1 0 0 0">
-                        <Canvas Margin="-25,-30,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Canvas Margin="-25,-28,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Path Fill="MediumPurple" Data="M19,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10L12,6H19A2,2 0 0,1 21,8H21L4,8V18L6.14,10H23.21L20.93,18.5C20.7,19.37 19.92,20 19,20Z" />
                         </Canvas>
                     </Button>
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    <Label VerticalAlignment="Center" Padding="10 0 10 2">
-                        Chapter :
-                    </Label>
-                    <ComboBox ItemsSource="{Binding ChapterList}" SelectedIndex="{Binding ActiveIndex}"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" VerticalAlignment="Center" Padding="10 0 10 2">
+                            Chapter :
+                        </Label>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding ChapterList}" SelectedIndex="{Binding ActiveIndex}"
                   FontSize="13" Width="350" MaxWidth="350" Margin="0,0,5,0" MinWidth="350"
                  FontFamily="Roboto" FontWeight="Normal"
                  Padding="5 5 0 2"
                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
                  HorizontalAlignment="Center">
-                        <ComboBox.ItemContainerStyle>
-                            <Style TargetType="ComboBoxItem">
-                                <Setter Property="Height" Value="23" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="SnapsToDevicePixels" Value="true" />
-                                <Setter Property="Padding" Value="5 0 0 0" />
-                                <Setter Property="HorizontalContentAlignment"
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Height" Value="23" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="SnapsToDevicePixels" Value="true" />
+                                    <Setter Property="Padding" Value="5 0 0 0" />
+                                    <Setter Property="HorizontalContentAlignment"
                       Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                                <Setter Property="VerticalContentAlignment"
+                                    <Setter Property="VerticalContentAlignment"
                       Value="Center" />
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                                <Setter Property="BorderThickness" Value="0" />
-                            </Style>
-                        </ComboBox.ItemContainerStyle>
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock
                   Text="{Binding }" MaxWidth="600"
                   TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                        <ComboBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel />
-                            </ItemsPanelTemplate>
-                        </ComboBox.ItemsPanel>
-                    </ComboBox>
-                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter (Insert)" IsEnabled="{Binding EnablePrevClick}"
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                        <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Previous Chapter (Insert)" IsEnabled="{Binding EnablePrevClick}"
                              Command="{Binding PreviousClick}" Style="{DynamicResource MaterialDesignFlatButton}">
-                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
-                        </Canvas>
-                    </Button>
-                    <Button  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter (Delete)" IsEnabled="{Binding EnableNextClick}"
+                            <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" Fill="MediumPurple" />
+                            </Canvas>
+                        </Button>
+                        <Button Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Next Chapter (Delete)" IsEnabled="{Binding EnableNextClick}"
                              Command="{Binding NextClick}" Style="{DynamicResource MaterialDesignFlatButton}">
+                            <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
+                            </Canvas>
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
+                                 TextAlignment="Center" Margin="3" Padding="-0.5"
+                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                 HorizontalAlignment="Center" Width="30" IsHitTestVisible="False" />
+                        <Label Grid.Column="1" VerticalAlignment="Center">/</Label>
+                        <Label Grid.Column="2" Name="ImageCount"
+                               Content="{Binding ImageCount, Mode=TwoWay}"
+                               VerticalAlignment="Center" />
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" VerticalAlignment="Center">Margin :</Label>
+                        <TextBox Grid.Column="1" Text="{Binding ImageMarginSetter, Mode=TwoWay}"
+                                 FontSize="12" TextAlignment="Center" Margin="3" Padding="-0.5"
+                                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
+                                 HorizontalAlignment="Center" ToolTip="Edit margin of each image" Width="40" />
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" VerticalAlignment="Center">Scroll Increment :</Label>
+                        <TextBox Grid.Column="1" Text="{Binding ScrollIncrement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 FontSize="12" TextAlignment="Center" Margin="3" Padding="-0.5"
+                                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
+                                 HorizontalAlignment="Center" Width="40" />
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" VerticalAlignment="Center">Zoom (%) :</Label>
+                        <TextBox Grid.Column="1" Text="{Binding ZoomScaleSetter, Mode=TwoWay}"
+                                 FontSize="12" TextAlignment="Center" Margin="3" Padding="-0.5"
+                                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
+                                 HorizontalAlignment="Center" Width="40" />
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Decrease by 10%"
+                                Command="{Binding DecreaseZoom}" Margin="5 0 1 0" Style="{DynamicResource MaterialDesignFlatButton}">
+                                <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Path Data="M19,13H5V11H19V13Z" Fill="MediumPurple" />
+                                </Canvas>
+                        </Button>
+                        <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Increase by 10%"
+                                Command="{Binding IncreaseZoom}" Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}">
+                                <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="MediumPurple" />
+                                </Canvas>
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" VerticalAlignment="Center">Background :</Label>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
+                                  FontSize="13" Width="70" Margin="3,0,3,0"
+                                  Padding="2"
+                                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
+                                  HorizontalAlignment="Center"/>
+                    </Grid>
+                    <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Fullscreen mode (F5)"
+                            Command="{Binding ToggleFullscreen}" Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}">
                         <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Path Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" Fill="MediumPurple" />
+                            <Path Data="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z" Fill="MediumPurple" />
                         </Canvas>
                     </Button>
-                    <TextBox Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
-                             TextAlignment="Center" Padding="-1"
-                             VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                             HorizontalAlignment="Center" Width="30" IsHitTestVisible="False" />
-                    <Label VerticalAlignment="Center">/</Label>
-
-                    <Label Name="ImageCount"
-               Content="{Binding ImageCount, Mode=TwoWay}"
-               VerticalAlignment="Center" />
-                    <Label VerticalAlignment="Center">
-                        Margin :
-                    </Label>
-                    <TextBox Text="{Binding ImageMarginSetter, Mode=TwoWay}"
-                 FontSize="12" TextAlignment="Center"  Padding="-1"
-                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                 HorizontalAlignment="Center" ToolTip="Edit margin of each image" Width="40" />
-                    <Label VerticalAlignment="Center">
-                        Scroll Increment :
-                    </Label>
-                    <TextBox Text="{Binding ScrollIncrement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 FontSize="12" TextAlignment="Center" Padding="-1"
-                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                 HorizontalAlignment="Center" Width="40" />
-                    <Label  VerticalAlignment="Center">
-                        Zoom (%) :
-                    </Label>
-                    <TextBox Text="{Binding ZoomScaleSetter, Mode=TwoWay}" Padding="-1"
-                 FontSize="12" TextAlignment="Center"
-                 VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
-                 HorizontalAlignment="Center" Width="40" />
-                    <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Decrease by 10%"
-                            Command="{Binding DecreaseZoom}" Margin="5 0 1 0">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Canvas Margin="-23,-27,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Path Data="M19,13H5V11H19V13Z" Fill="MediumPurple" />
-                            </Canvas>
-                        </Grid>
-                    </Button>
-                    <Button  Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Increase by 10%"
-                    Command="{Binding IncreaseZoom}" Margin="1 0 5 0">
-                            <Canvas Margin="-23,-27,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="MediumPurple" />
-                            </Canvas>
-                    </Button>
-                    <Label VerticalAlignment="Center">
-                        Background :
-                    </Label>
-                    <ComboBox ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
-                              FontSize="13" Width="70" Margin="3,0,3,0"
-                              Padding="2"
-                              VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
-                              HorizontalAlignment="Center"/>
-                    <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" />
-                    <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Fullscreen mode (F5)"
-                    Command="{Binding ToggleFullscreen}" Margin="1 0 5 0">
-                            <Canvas Margin="-24,-28,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Path Data="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z" Fill="MediumPurple" />
-                            </Canvas>
-                    </Button>
-                    <Button Height="{Binding Width, RelativeSource={RelativeSource Self}}"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Image Settings"
-                    Command="{Binding OpenSetting}" Margin="1 0 5 0">
-                            <Canvas Margin="-24,-28,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Path Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Fill="MediumPurple" />
-                            </Canvas>
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Image Settings"
+                            Command="{Binding OpenSetting}" Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Fill="MediumPurple" />
+                        </Canvas>
                     </Button>
                 </ToolBar>
             </ToolBarTray>
