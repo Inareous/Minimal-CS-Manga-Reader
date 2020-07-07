@@ -23,7 +23,7 @@ A minimal program for your daily use of reading manga continously in one page. A
 ## Integrate With Other Programs
 
 * Enable/check "Integrate Minimal CS Manga Reader with File Explorer Context" in Setting to integrate MCS Manga Reader with Windows Explorer, adding a context menu whenever you right-click on a folder. 
-* If you are using [Free Manga Downloader](https://github.com/fmd-project-team) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "-path=%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
+* If you are using [Free Manga Downloader](https://github.com/fmd-project-team) or any other program that support opening app with custom parameter, target to "Minimal CS Manga Reader.exe" in the extracted folder, then add "%PATH%" as parameter (%PATH% is the folder path pattern of the manga).
 
 
 ## Build Requirement

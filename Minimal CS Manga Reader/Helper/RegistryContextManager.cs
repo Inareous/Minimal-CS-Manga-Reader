@@ -22,7 +22,7 @@ namespace Minimal_CS_Manga_Reader.Helper
             {
                 var str = registryKey?.GetValue(null).ToString();
                 registryKey.Close();
-                return str.Equals($"\"{programPath}Minimal CS Manga Reader.exe\" \"-path=%L\" ");
+                return str.Equals($"\"{programPath}Minimal CS Manga Reader.exe\" \"%L\" ");
             }
             else
             {
@@ -54,7 +54,7 @@ namespace Minimal_CS_Manga_Reader.Helper
 
             using (RegistryKey registryKey = Registry.CurrentUser.CreateSubKey($@"{keyPath}\{commandSubDir}", true))
             {
-                registryKey?.SetValue(null, $"\"{programPath}{fileExe}\" \"-path=%L\" ");
+                registryKey?.SetValue(null, $"\"{programPath}{fileExe}\" \"%L\" ");
                 registryKey?.Close();
             }
 

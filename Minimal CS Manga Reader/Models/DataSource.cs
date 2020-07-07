@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.Zip;
@@ -32,23 +33,22 @@ namespace Minimal_CS_Manga_Reader
 
         public static void Initialize(string[] args)
         {
+            if (args.Length > 1)
+            {
+                for (int i = 1; i < args.Length; i++)
+                {
+                    var argument = args[i];
+                    if (argument.Contains("-path=")) argument = argument.Replace("-path=", ""); // Relic from old context integrate (maintain compatibility for now) :(
+                    if (PathHelper.EnsureValidPath(argument)) Path = argument;
+                }
+            }
+
             if (Path == "FirstTimeNotSet")
             {
                 Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
 
-            if (args.Length >= 2)
-            {
-                foreach (var argument in args)
-                {
-                    if (argument.Contains("-path="))
-                    {
-                        var ArgPath = argument.Replace("-path=", "");
-                        SetChapter(ArgPath);
-                        break;
-                    }
-                }
-            }
+            SetChapter(Path);
         }
 
         public static void SetChapter(string path)

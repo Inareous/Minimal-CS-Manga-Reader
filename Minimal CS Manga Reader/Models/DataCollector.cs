@@ -24,12 +24,7 @@ namespace Minimal_CS_Manga_Reader
             var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             if (IsArchive) return new List<Entry> { new Entry(Path) };
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
-                    .Where(s => s.EndsWith(".cbz", StringComparison.OrdinalIgnoreCase) ||
-                    s.EndsWith(".cbr", StringComparison.OrdinalIgnoreCase) ||
-                    s.EndsWith(".rar", StringComparison.OrdinalIgnoreCase) ||
-                    s.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ||
-                    s.EndsWith(".7z", StringComparison.OrdinalIgnoreCase) ||
-                    s.EndsWith(".tar", StringComparison.OrdinalIgnoreCase)));
+                    .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
             await Task.WhenAll(Files, Folders, FilesInFolder).ConfigureAwait(false);
 
