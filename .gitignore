@@ -7,13 +7,11 @@
 *.userosscache
 *.sln.docstates
 *.bak
-WpfMouseWheelLib.dll
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
 # Build results
-[Pp]ublishProfiles
 [Dd]ebug/
 _manual_test_/
 [Dd]ebugPublic/
