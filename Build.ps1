@@ -8,7 +8,7 @@ function Build-NetCore {
 
 	Write-Host "Building .NET Core $arch binaries"
 
-	dotnet publish -v:m $project\$project.csproj -c $configuration /p:PublishProfile=`"$project\Properties\\PublishProfiles\\$arch.pubxml`"
+	dotnet publish -v:m $project\$project.csproj -c $configuration /p:PublishProfile=`"$project\Properties\PublishProfiles\$arch.pubxml`"
 	Copy-Item "$project\$project.ico" "$project\Release\$project $arch"
 
 	if ($LASTEXITCODE) { exit $LASTEXITCODE }

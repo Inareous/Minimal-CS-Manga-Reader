@@ -1,0 +1,72 @@
+name: Build Action
+
+on:
+  create
+
+jobs:
+
+  build:
+
+    name: Build
+    runs-on: windows-latest 
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Get tag name
+      uses: olegtarasov/get-tag@v2
+      id: tagName
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
+
+    - name: Build (.NET Core x64)
+      shell: pwsh
+      run: |
+        .\build.ps1 x64
+        New-Item -ItemType Directory -Path C:\builtfiles -Force > $null
+        Compress-Archive -Path "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x64" -DestinationPath C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x64.zip
+
+    - name: Build (.NET Core x86)
+      shell: pwsh
+      run: |
+        .\build.ps1 x86
+        New-Item -ItemType Directory -Path C:\builtfiles -Force > $null
+        Compress-Archive -Path "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x86" -DestinationPath C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x86.zip
+
+    - name: Upload Artifact (.NET Core x64)
+      uses: actions/upload-artifact@v2
+      with:
+        name: MCS-artifact-x64
+        path: C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x64.zip
+
+    - name: Upload Artifact (.NET Core x86)
+      uses: actions/upload-artifact@v2
+      with:
+        name: MCS-artifact-x86
+        path: C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x86.zip
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x86.zip
+          C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x64.zip
+        body: |
+            This release requires .NET Core 3.1 Desktop Runtime or later.
+            
+            If the program fails to start, try:
+            
+            - Install .NET Core 3.1 Desktop Runtime: https://dotnet.microsoft.com/download/dotnet-core/3.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
