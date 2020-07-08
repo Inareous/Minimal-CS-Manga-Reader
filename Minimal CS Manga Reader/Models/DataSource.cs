@@ -18,7 +18,6 @@ namespace Minimal_CS_Manga_Reader
         private static readonly DataCollector collector = new DataCollector();
         public static string Title { get; private set; } = "";
 
-        private static bool IsArgsPathArchiveFile { get; set; } = false;
 
         public static SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
         public static string Path { get; private set; } = Settings.Default.Path;
@@ -53,18 +52,12 @@ namespace Minimal_CS_Manga_Reader
 
         public static void SetChapter(string path)
         {
-            if (Directory.Exists(path))
-            {
-                IsArgsPathArchiveFile = false;
-            }
-            else if (ZipArchive.IsZipFile(path) || RarArchive.IsRarFile(path))
-            {
-                IsArgsPathArchiveFile = true;
-            }
-            else
-            {
-                return;
-            }
+            bool IsPathArchiveFile;
+
+            if (Directory.Exists(path)) IsPathArchiveFile = false;
+            else if (PathHelper.EnsureValidArchives(path)) IsPathArchiveFile = true;
+            else return;
+
             Path = path;
             Settings.Default.Path = Path;
             Settings.Default.Save();
@@ -72,7 +65,7 @@ namespace Minimal_CS_Manga_Reader
             _ = Task.Run(() =>
             {
                 ChapterList.Clear();
-                var list = collector.GetChapterListAsync(Path, IsArgsPathArchiveFile).Result;
+                var list = collector.GetChapterListAsync(Path, IsPathArchiveFile).Result;
                 ChapterList.AddRange(list);
             });
         }

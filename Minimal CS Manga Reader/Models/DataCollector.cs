@@ -21,8 +21,8 @@ namespace Minimal_CS_Manga_Reader
     {
         public async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
-            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             if (IsArchive) return new List<Entry> { new Entry(Path) };
+            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
                     .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
@@ -37,11 +37,7 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
         {
-            if (SharpCompress.Archives.Zip.ZipArchive.IsZipFile(Path) ||
-                 SharpCompress.Archives.Rar.RarArchive.IsRarFile(Path) ||
-                 SharpCompress.Archives.SevenZip.SevenZipArchive.IsSevenZipFile(Path) ||
-                 SharpCompress.Archives.Tar.TarArchive.IsTarFile(Path)
-                )
+            if (PathHelper.EnsureValidArchives(Path))
             {
                 await Task.Run(() => GetImagesFromArchive(Path, imageList, token), token).ConfigureAwait(false);
             }
