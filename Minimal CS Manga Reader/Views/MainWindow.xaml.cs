@@ -21,6 +21,10 @@ namespace Minimal_CS_Manga_Reader
             set => ViewModel = (AppViewModel)value;
         }
 
+        private System.Timers.Timer ChapterComboBoxCooldownTimer;
+
+        private bool _isChapterComboBoxOnCooldown = false;
+
         public MainWindow()
         {
             ViewModel = new AppViewModel();
@@ -34,6 +38,16 @@ namespace Minimal_CS_Manga_Reader
                 ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? ScrollViewer.ViewportWidth : int.MaxValue;
                 ViewModel._scrollHeight = ScrollViewer.VerticalOffset.Equals(double.NaN) ? 0 : ScrollViewer.VerticalOffset;
                 ViewModel.ScrollChanged();
+            });
+
+            ChapterComboBox.Events().MouseWheel.Subscribe(x =>
+            {
+                if (!_isChapterComboBoxOnCooldown)
+                {
+                    SetComboBoxCooldown();
+                    if (x.Delta >= 120) ViewModel.PreviousClick.Execute().Subscribe();
+                    else if (x.Delta <= -120) ViewModel.NextClick.Execute().Subscribe();
+                }
             });
 
             this.WhenAnyValue(x => x.ViewModel.ActiveIndex)
@@ -177,6 +191,15 @@ namespace Minimal_CS_Manga_Reader
             {
                 DialogParticipation.SetRegister(_view, null);
             }
+        }
+
+        private void SetComboBoxCooldown()
+        {
+            _isChapterComboBoxOnCooldown = true;
+            ChapterComboBoxCooldownTimer = new System.Timers.Timer(100); // Arbitrary, 100ms is good enough to stop incidental massive scroll
+            ChapterComboBoxCooldownTimer.Elapsed += (_, err) => _isChapterComboBoxOnCooldown = false;
+            ChapterComboBoxCooldownTimer.AutoReset = false;
+            ChapterComboBoxCooldownTimer.Start();
         }
     }
 }
