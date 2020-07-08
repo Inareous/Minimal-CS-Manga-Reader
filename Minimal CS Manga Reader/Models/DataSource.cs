@@ -1,8 +1,6 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
-using SharpCompress.Archives.Rar;
-using SharpCompress.Archives.Zip;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -79,7 +77,7 @@ namespace Minimal_CS_Manga_Reader
 
             try
             {
-                await Task.Run(() => collector.GetImagesAsync(ActiveChapterPath, ImageList, token)).ConfigureAwait(false);
+                await Task.Run(() => collector.GetImages(ActiveChapterPath, ImageList, token)).ConfigureAwait(false);
             }
             catch (System.OperationCanceledException)
             {

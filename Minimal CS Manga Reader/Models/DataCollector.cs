@@ -22,9 +22,10 @@ namespace Minimal_CS_Manga_Reader
         public async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
             if (IsArchive) return new List<Entry> { new Entry(Path) };
-            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
+            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
+                                                        .Where(s => PathHelper.EnsureAcceptedImageTypes(s)));
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
-                    .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
+                                                .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
             await Task.WhenAll(Files, Folders, FilesInFolder).ConfigureAwait(false);
 
@@ -35,15 +36,15 @@ namespace Minimal_CS_Manga_Reader
             return OrderedEntries;
         }
 
-        public async Task GetImagesAsync(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
+        public void GetImages(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
         {
             if (PathHelper.EnsureValidArchives(Path))
             {
-                await Task.Run(() => GetImagesFromArchive(Path, imageList, token), token).ConfigureAwait(false);
+                GetImagesFromArchive(Path, imageList, token);
             }
             else
             {
-                await Task.Run(() => GetImagesFromDirectory(Path, imageList, token), token).ConfigureAwait(false);
+                GetImagesFromDirectory(Path, imageList, token);
             }
         }
 
@@ -51,7 +52,7 @@ namespace Minimal_CS_Manga_Reader
         {
             try
             {
-                var enumerable = Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")).ToList();
+                var enumerable = Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => PathHelper.EnsureAcceptedImageTypes(s)).ToList();
                 enumerable.Sort(new NaturalSortComparer(StringComparison.OrdinalIgnoreCase));
                 for (var i = 0; i < enumerable.Count; i++)
                 {
@@ -78,7 +79,7 @@ namespace Minimal_CS_Manga_Reader
                 var oderedArchive = archive.Entries.OrderBy(x => x.Key, new NaturalSortComparer(StringComparison.OrdinalIgnoreCase));
                 foreach (var entry in oderedArchive)
                 {
-                    if (entry.IsDirectory || (!entry.Key.EndsWith("jpg") && !entry.Key.EndsWith("png") && !entry.Key.EndsWith("jpeg"))) continue;
+                    if (entry.IsDirectory || !PathHelper.EnsureAcceptedImageTypes(entry.Key)) continue;
                     token.ThrowIfCancellationRequested();
                     using var entryStream = entry.OpenEntryStream();
                     GetImageFromStream(entryStream, imageList, token);
