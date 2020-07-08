@@ -21,8 +21,8 @@ namespace Minimal_CS_Manga_Reader
     {
         public async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
-            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             if (IsArchive) return new List<Entry> { new Entry(Path) };
+            var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".jpg") || s.EndsWith(".png")));
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
                     .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));

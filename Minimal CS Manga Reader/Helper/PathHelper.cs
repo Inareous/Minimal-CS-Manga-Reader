@@ -1,5 +1,9 @@
-﻿using System;
+﻿using SharpCompress.Archives.Rar;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Archives.Tar;
 using System.IO;
+using System;
+using SharpCompress.Archives.SevenZip;
 
 namespace Minimal_CS_Manga_Reader.Helper
 {
@@ -18,6 +22,12 @@ namespace Minimal_CS_Manga_Reader.Helper
                 filePath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ||
                 filePath.EndsWith(".7z", StringComparison.OrdinalIgnoreCase) ||
                 filePath.EndsWith(".tar", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool EnsureValidArchives(string filePath)
+        {
+            return ZipArchive.IsZipFile(filePath) || RarArchive.IsRarFile(filePath)
+                || SevenZipArchive.IsSevenZipFile(filePath) || TarArchive.IsTarFile(filePath);
         }
     }
 }
