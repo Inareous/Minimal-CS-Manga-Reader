@@ -35,9 +35,14 @@ namespace Minimal_CS_Manga_Reader
 
             ScrollViewer.Events().ScrollChanged.Subscribe(x =>
             {
-                ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? ScrollViewer.ViewportWidth : int.MaxValue;
                 ViewModel._scrollHeight = ScrollViewer.VerticalOffset.Equals(double.NaN) ? 0 : ScrollViewer.VerticalOffset;
                 ViewModel.ScrollChanged();
+            });
+
+            ScrollViewer.WhenAnyValue(x => x.ViewportWidth).Subscribe(x=>
+            {
+                // To fix : This part got hit twice when changing to fullscreen
+                ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? ScrollViewer.ViewportWidth : int.MaxValue;
             });
 
             ChapterComboBox.Events().MouseWheel.Subscribe(x =>
@@ -48,6 +53,16 @@ namespace Minimal_CS_Manga_Reader
                     if (x.Delta >= 120) ViewModel.PreviousClick.Execute().Subscribe();
                     else if (x.Delta <= -120) ViewModel.NextClick.Execute().Subscribe();
                 }
+            });
+
+            ActiveIndexBox.Events().LostKeyboardFocus.Subscribe(_ =>
+            {
+                var validInput = int.TryParse(ActiveIndexBox.Text, out int newVal);
+                if (validInput && newVal != ViewModel.ActiveImage && newVal > 0 && newVal <= ViewModel.ImageHeight.Count)
+                {
+                    ScrollViewer.ScrollToVerticalOffset(ViewModel.ImageHeight[newVal-1] - ViewModel.ImageDimension[newVal-1].Item2 - int.Parse(ViewModel.ImageMarginSetter) + 0.1);
+                }
+                this.OneWayBind(ViewModel, vm => vm.ActiveImage, view => view.ActiveIndexBox.Text);
             });
 
             this.WhenAnyValue(x => x.ViewModel.ActiveIndex)

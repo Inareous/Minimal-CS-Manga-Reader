@@ -67,10 +67,12 @@ namespace Minimal_CS_Manga_Reader
             DataSource.ImageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
                 {
-                    var HeightCount = ImageHeight.Count;
-                    var Sum = HeightCount == 0 ? 0 : ImageHeight[^1];
-                    ImageHeight.Add(x.Height + Sum);
-                    ImageHeightMod.Add(((x.Height + Sum) * ZoomScale) + (_imageMarginSetter * (HeightCount + 1)));
+                    var sum = ImageDimension.Count == 0 ? 0 : ImageHeight.Last();
+                    var width = Math.Min(x.Width, ViewportWidth);
+                    var height = x.Width < ViewportWidth ? x.Height : x.Height * (ViewportWidth / x.Width);
+                    sum += (height * ZoomScale) + _imageMarginSetter;
+                    ImageDimension.Add((width, height));
+                    ImageHeight.Add(sum);
                 }).Bind(ImageList).DisposeMany().Subscribe();
 
             this.WhenAnyValue(x => x.ImageList.Count)
@@ -80,6 +82,20 @@ namespace Minimal_CS_Manga_Reader
                 });
 
             #endregion Chapter Change
+
+            #region Viewport Change
+
+            this.WhenAnyValue(x => x.ViewportWidth).Subscribe(newViewport =>
+            {
+                for (int i = 0; i < ImageDimension.Count; i++)
+                {
+                    var width = Math.Min(ImageList[i].Width, newViewport);
+                    var height = ImageList[i].Width < newViewport ? ImageList[i].Height : ImageList[i].Height * (newViewport / ImageList[i].Width);
+                    ImageDimension[i] = (width, height);
+                }
+                UpdateImageHeight();
+            });
+            #endregion
 
             #region Settings
 
@@ -96,7 +112,7 @@ namespace Minimal_CS_Manga_Reader
                         _zoomScaleSetter = number;
                         if (_zoomScaleSetter < 10) _zoomScaleSetter = 10;
                         ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
-                        UpdateImageHeightMod();
+                        UpdateImageHeight();
                     }
                     ZoomScaleSetter = _zoomScaleSetter.ToString();
                 });
@@ -115,7 +131,7 @@ namespace Minimal_CS_Manga_Reader
                         if (_imageMarginSetter < 0) _imageMarginSetter = 0;
                         Settings.Default.ImageMargin = _imageMarginSetter;
                         Settings.Default.Save();
-                        UpdateImageHeightMod();
+                        UpdateImageHeight();
                     }
                     ImageMarginSetter = _imageMarginSetter.ToString();
                     ImageMargin = $"0,0,0,{_imageMarginSetter}";
@@ -182,9 +198,9 @@ namespace Minimal_CS_Manga_Reader
         {
             if (ImageList.Count == 0 || _scrollHeight == 0) { _activeImage = 0; return; }
 
-            while (_scrollHeight < ImageHeightMod.ElementAtOrDefault(_activeImage - 1) && _activeImage > 0) _activeImage--;
+            while (_scrollHeight < ImageHeight.ElementAtOrDefault(_activeImage - 1) && _activeImage > 0) _activeImage--;
 
-            while (_scrollHeight > ImageHeightMod.ElementAtOrDefault(_activeImage) && ImageHeightMod.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeightMod.Count) _activeImage++;
+            while (_scrollHeight > ImageHeight.ElementAtOrDefault(_activeImage) && ImageHeight.ElementAtOrDefault(_activeImage) != default && _activeImage <= ImageHeight.Count) _activeImage++;
 
             if (_activeImage < 0) _activeImage = 0;
         }
@@ -210,11 +226,14 @@ namespace Minimal_CS_Manga_Reader
             paletteHelper.SetTheme(theme);
         }
 
-        private void UpdateImageHeightMod()
+        private void UpdateImageHeight()
         {
-            for (int i = 0; i < ImageHeightMod.Count; ++i)
+            double sum = 0;
+            for (int i = 0; i < ImageHeight.Count; i++)
             {
-                ImageHeightMod[i] = (ImageHeight[i] * ZoomScale) + (_imageMarginSetter * (i + 1));
+                var currHeight = ImageDimension[i].Item2 * ZoomScale;
+                sum += currHeight + _imageMarginSetter;
+                ImageHeight[i] = sum;
             }
         }
 
@@ -233,7 +252,7 @@ namespace Minimal_CS_Manga_Reader
                 T?.Wait(Ts.Token);
                 Ts = new CancellationTokenSource();
                 ImageHeight.Clear();
-                ImageHeightMod.Clear();
+                ImageDimension.Clear();
                 ScrollHelper.Helper();
                 T = await Task.Run(async () =>
                 {
@@ -245,7 +264,7 @@ namespace Minimal_CS_Manga_Reader
             {
                 DataSource.ImageList.Clear();
                 ImageHeight.Clear();
-                ImageHeightMod.Clear();
+                ImageDimension.Clear();
             }
         }
 
@@ -258,9 +277,8 @@ namespace Minimal_CS_Manga_Reader
         public IObservableCollection<BitmapSource> ImageList { get; } = new ObservableCollectionExtended<BitmapSource>();
         [Reactive] public List<string> ChapterList { get; set; } = new List<string>();
         private IObservableCollection<Entry> _chapterList { get; } = new ObservableCollectionExtended<Entry>();
-
-        private List<double> ImageHeight { get; set; } = new List<double>();
-        private List<double> ImageHeightMod { get; set; } = new List<double>();
+        public List<double> ImageHeight { get; set; } = new List<double>();
+        [Reactive] public List<ValueTuple<double, double>> ImageDimension { get; set; } = new List<ValueTuple<double, double>>();
         [Reactive] public string WindowTitle { get; set; } = "";
         [Reactive] public int ActiveIndex { get; set; } = 0;
         [Reactive] public bool IsDark { get; set; } = Settings.Default.IsDark;

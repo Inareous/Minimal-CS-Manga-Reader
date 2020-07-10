@@ -132,13 +132,13 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />  
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
+                        <TextBox x:Name="ActiveIndexBox" Grid.Column="0" Text="{Binding ActiveImage, Mode=OneWay}" FontSize="12"
                                  TextAlignment="Center" Margin="3" Padding="-0.5"
                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                                 HorizontalAlignment="Center" Width="30" IsHitTestVisible="False" />
+                                 HorizontalAlignment="Center" Width="30" />
                         <Label Grid.Column="1" VerticalAlignment="Center">/</Label>
                         <Label Grid.Column="2" Name="ImageCount"
                                Content="{Binding ImageCount, Mode=TwoWay}"
