@@ -33,16 +33,16 @@ namespace Minimal_CS_Manga_Reader
 
             ScrollViewer.Focus();
 
-            ScrollViewer.Events().ScrollChanged.Subscribe(x =>
+            ScrollViewer.Events().ScrollChanged.Subscribe(_ =>
             {
                 ViewModel._scrollHeight = ScrollViewer.VerticalOffset.Equals(double.NaN) ? 0 : ScrollViewer.VerticalOffset;
                 ViewModel.ScrollChanged();
             });
 
-            ScrollViewer.WhenAnyValue(x => x.ViewportWidth).Subscribe(x=>
+            ScrollViewer.WhenAnyValue(x => x.ViewportWidth).Subscribe(x =>
             {
                 // To fix : This part got hit twice when changing to fullscreen
-                ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? ScrollViewer.ViewportWidth : int.MaxValue;
+                ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? x : int.MaxValue;
             });
 
             ChapterComboBox.Events().MouseWheel.Subscribe(x =>

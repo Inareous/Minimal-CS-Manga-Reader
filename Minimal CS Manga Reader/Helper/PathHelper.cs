@@ -1,9 +1,10 @@
 ﻿using SharpCompress.Archives.Rar;
-using SharpCompress.Archives.Zip;
+using SharpCompress.Archives.SevenZip;
 using SharpCompress.Archives.Tar;
+using SharpCompress.Archives.Zip;
 using System.IO;
 using System;
-using SharpCompress.Archives.SevenZip;
+using Minimal_CS_Manga_Reader.Models;
 
 namespace Minimal_CS_Manga_Reader.Helper
 {
@@ -24,11 +25,13 @@ namespace Minimal_CS_Manga_Reader.Helper
                 || file.EndsWith(".tar", StringComparison.OrdinalIgnoreCase);
         }
 
-        public static bool EnsureAcceptedImageTypes(string file)
+        public static Enums.ImageType EnsureAcceptedImageTypes(string file)
         {
-            return file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
+            if (file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
                 || file.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
-                || file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase);
+                || file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)) return Enums.ImageType.Default;
+            if (file.EndsWith(".webp", StringComparison.OrdinalIgnoreCase)) return Enums.ImageType.WebP;
+            return Enums.ImageType.NotImage;
         }
 
         public static bool EnsureValidArchives(string filePath)

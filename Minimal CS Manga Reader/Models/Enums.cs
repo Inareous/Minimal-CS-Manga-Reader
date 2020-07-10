@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Minimal_CS_Manga_Reader.Models
 {
-    class Enums
+    public class Enums
     {
         public enum OpenChapterOnLoad
         {
@@ -17,6 +14,13 @@ namespace Minimal_CS_Manga_Reader.Models
             Black,
             White,
             Silver
+        }
+
+        public enum ImageType
+        {
+            Default,
+            WebP,
+            NotImage
         }
     }
 }

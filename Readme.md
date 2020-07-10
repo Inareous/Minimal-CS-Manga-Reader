@@ -28,7 +28,7 @@ A minimal program for your daily use of reading manga continously in one page. A
 
 ## Build Requirement
 
-.NET Core 3.1 or later.
+.NET Core 3.1 SDK or later.
 
 ## Known Issues/Bugs
 

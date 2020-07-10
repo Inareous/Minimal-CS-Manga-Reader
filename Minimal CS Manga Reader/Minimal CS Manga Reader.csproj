@@ -29,10 +29,10 @@
 
   <ItemGroup>
     <Reference Include="WpfMouseWheelLib">
-      <HintPath>Helper\WpfMouseWheelLib.dll</HintPath>
+      <HintPath>dlls\WpfMouseWheelLib.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+	 
   <ItemGroup>
     <Compile Update="Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

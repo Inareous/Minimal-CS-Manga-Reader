@@ -10,6 +10,7 @@ function Build-NetCore {
 
 	dotnet publish -v:m $project\$project.csproj -c $configuration /p:PublishProfile=`"$project\Properties\PublishProfiles\$arch.pubxml`"
 	Copy-Item "$project\$project.ico" "$project\Release\$project $arch"
+	Copy-Item "$project\dlls\libwebp_$arch.dll" "$project\Release\$project $arch"
 
 	if ($LASTEXITCODE) { exit $LASTEXITCODE }
 }

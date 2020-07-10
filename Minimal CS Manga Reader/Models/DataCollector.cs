@@ -23,7 +23,7 @@ namespace Minimal_CS_Manga_Reader
         {
             if (IsArchive) return new List<Entry> { new Entry(Path) };
             var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
-                                                        .Where(s => PathHelper.EnsureAcceptedImageTypes(s)));
+                                                        .Where(s => PathHelper.EnsureAcceptedImageTypes(s) != Enums.ImageType.NotImage));
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
                                                 .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
             var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
@@ -52,22 +52,23 @@ namespace Minimal_CS_Manga_Reader
         {
             try
             {
-                var enumerable = Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly).Where(s => PathHelper.EnsureAcceptedImageTypes(s)).ToList();
+                var enumerable = Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
+                                          .Where(s => PathHelper.EnsureAcceptedImageTypes(s) != Enums.ImageType.NotImage).ToList();
                 enumerable.Sort(new NaturalSortComparer(StringComparison.OrdinalIgnoreCase));
                 for (var i = 0; i < enumerable.Count; i++)
                 {
+                    var imageType = PathHelper.EnsureAcceptedImageTypes(enumerable[i]);
                     token.ThrowIfCancellationRequested();
                     using Stream stream = File.Open(enumerable[i], FileMode.Open);
-                    using var memoryStream = new MemoryStream();
-                    GetImageFromStream(stream, imageList, token);
+                    GetImageFromStream(stream, imageType, imageList, token);
                 }
             }
             catch (OperationCanceledException)
             {
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Uncatched error in FetchImagesFromDirectory() function");
+                Console.WriteLine($"Uncatched error in FetchImagesFromDirectory() function ({e})");
             }
         }
 
@@ -79,29 +80,42 @@ namespace Minimal_CS_Manga_Reader
                 var oderedArchive = archive.Entries.OrderBy(x => x.Key, new NaturalSortComparer(StringComparison.OrdinalIgnoreCase));
                 foreach (var entry in oderedArchive)
                 {
-                    if (entry.IsDirectory || !PathHelper.EnsureAcceptedImageTypes(entry.Key)) continue;
+                    var imageType = PathHelper.EnsureAcceptedImageTypes(entry.Key);
+                    if (entry.IsDirectory || imageType == Enums.ImageType.NotImage) continue;
                     token.ThrowIfCancellationRequested();
                     using var entryStream = entry.OpenEntryStream();
-                    GetImageFromStream(entryStream, imageList, token);
+                    GetImageFromStream(entryStream, imageType, imageList, token);
                 }
             }
             catch (OperationCanceledException)
             {
                 // Continue
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Uncatched error in FetchImages() function");
+                Console.WriteLine($"Uncatched error in GetImagesFromArchive() function ({e})");
             }
         }
 
-        private void GetImageFromStream(Stream stream, SourceList<BitmapSource> imageList, CancellationToken token)
+        private void GetImageFromStream(Stream stream, Enums.ImageType imageType, SourceList<BitmapSource> imageList, CancellationToken token)
         {
             using var memoryStream = new MemoryStream();
             stream.CopyTo(memoryStream);
             memoryStream.Seek(0, SeekOrigin.Begin);
             token.ThrowIfCancellationRequested(); // start of expensive operation
-            var bitmap = new Bitmap(memoryStream);
+            Bitmap bitmap;
+            switch (imageType)
+            {
+                case Enums.ImageType.Default:
+                    bitmap = new Bitmap(memoryStream);
+                    break;
+                case Enums.ImageType.WebP:
+                    byte[] b = memoryStream.ToArray();
+                    using (WebP webp = new WebP())
+                        bitmap = webp.Decode(b);
+                    break;
+                default: throw new BadImageFormatException();
+            }
             var bitmapSource = ConvertStreamToSource(bitmap);
             bitmapSource.Freeze();
             token.ThrowIfCancellationRequested(); // end
@@ -109,7 +123,6 @@ namespace Minimal_CS_Manga_Reader
             bitmap.Dispose();
         }
     
-
         private BitmapSource ConvertStreamToSource(Bitmap bitmap)
         {
             bitmap = CloneBitmap(bitmap);
