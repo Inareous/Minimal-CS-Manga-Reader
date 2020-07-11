@@ -230,6 +230,12 @@
                             <Path Data="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z" Fill="MediumPurple" />
                         </Canvas>
                     </Button>
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Bookmarks (F2)"
+                            Command="{Binding OpenBookmark}" Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}">
+                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Fill="MediumPurple" Data="M17,3H7A2,2 0 0,0 5,5V21L12,18L19,21V5C19,3.89 18.1,3 17,3Z" />
+                        </Canvas>
+                    </Button>
                     <Button VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Image Settings"
                             Command="{Binding OpenSetting}" Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}">
                         <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">

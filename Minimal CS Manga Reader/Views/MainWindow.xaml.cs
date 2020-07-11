@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Minimal_CS_Manga_Reader.Models;
 
 namespace Minimal_CS_Manga_Reader
 {
@@ -106,6 +107,14 @@ namespace Minimal_CS_Manga_Reader
                 });
 
             this.Events().KeyDown.
+                Where(x => x.Key.Equals(Key.F2)).
+                Subscribe(x =>
+                {
+                    x.Handled = true;
+                    ViewModel.OpenBookmark.Execute().Subscribe();
+                });
+
+            this.Events().KeyDown.
                 Where(x => x.Key.Equals(Key.Escape) && ViewModel.IsFullscreen).
                 Subscribe(x =>
                 {
@@ -141,6 +150,15 @@ namespace Minimal_CS_Manga_Reader
                 {
                     x.Handled = true;
                     ViewModel.NextClick.Execute().Subscribe();
+                });
+
+
+            this.Events().KeyDown.
+                Where(x => x.Key.Equals(Key.F1)).
+                Subscribe(x =>
+                {
+                    x.Handled = true;
+                    BookmarksSource.Add(new Bookmark(DataSource.Path, ViewModel._chapterList[ViewModel.ActiveIndex]));
                 });
 
             this.WhenActivated(d =>
@@ -188,6 +206,30 @@ namespace Minimal_CS_Manga_Reader
                     {
                         interaction.SetOutput((callback, ""));
                     }
+                }).DisposeWith(d);
+
+                ViewModel.BookmarkDialogInteraction.RegisterHandler(async interaction =>
+                {
+                    var metroDialogSettings = new MetroDialogSettings()
+                    {
+                        AnimateHide = false,
+                        AnimateShow = true,
+                    };
+                    var dlg = new CustomDialog(metroDialogSettings);
+
+                    var dlgvm = new BookmarkViewModel((BookmarkViewModel vm, Bookmark bookmarkItem) =>
+                    {
+                        DialogCoordinator.Instance.HideMetroDialogAsync(this, dlg);
+                        interaction.SetOutput(bookmarkItem);
+                    });
+
+                    dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
+                    dlg.Background = System.Windows.Media.Brushes.Transparent;
+                    dlg.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+
+                    await DialogCoordinator.Instance.ShowMetroDialogAsync(this, dlg);
+
+                    await dlg.WaitUntilUnloadedAsync();
                 }).DisposeWith(d);
             });
         }

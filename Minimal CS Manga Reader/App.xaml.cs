@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Minimal_CS_Manga_Reader.Models;
+using ReactiveUI;
 using Splat;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,13 +13,21 @@ namespace Minimal_CS_Manga_Reader
     {
         public App()
         {
-            Locator.CurrentMutable.Register(() => new SettingView(), typeof(IViewFor<SettingViewModel>));
-            _ = Task.Run(() => DataSource.Initialize(System.Environment.GetCommandLineArgs()));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new BookmarkView(), typeof(IViewFor<BookmarkViewModel>));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new SettingView(), typeof(IViewFor<SettingViewModel>));
+            _ = DataSource.InitializeAsync(System.Environment.GetCommandLineArgs());
+            _ = BookmarksSource.LoadAsync();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            _ = BookmarksSource.SaveAsync();
         }
     }
 }

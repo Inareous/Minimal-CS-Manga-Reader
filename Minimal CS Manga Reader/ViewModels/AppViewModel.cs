@@ -36,8 +36,7 @@ namespace Minimal_CS_Manga_Reader
 
             #region ChapterList Change
 
-            DataSource.ChapterList.Connect().ObserveOn(RxApp.MainThreadScheduler)
-                .Bind(_chapterList).Subscribe();
+            DataSource.ChapterList.Connect().Bind(_chapterList).Subscribe();
             this.WhenAnyValue(x => x._chapterList.Count)
                 .Subscribe(_ =>
                 {
@@ -185,6 +184,7 @@ namespace Minimal_CS_Manga_Reader
 
             OpenSetting = ReactiveCommand.CreateFromTask(ShowSettingDialog);
             OpenFolder = ReactiveCommand.CreateFromTask(OpenFolderDialog);
+            OpenBookmark = ReactiveCommand.CreateFromTask(OpenBookmarkDialog);
 
             #endregion dialog
         }
@@ -276,7 +276,7 @@ namespace Minimal_CS_Manga_Reader
 
         public IObservableCollection<BitmapSource> ImageList { get; } = new ObservableCollectionExtended<BitmapSource>();
         [Reactive] public List<string> ChapterList { get; set; } = new List<string>();
-        private IObservableCollection<Entry> _chapterList { get; } = new ObservableCollectionExtended<Entry>();
+        public IObservableCollection<Entry> _chapterList { get; } = new ObservableCollectionExtended<Entry>();
         public List<double> ImageHeight { get; set; } = new List<double>();
         [Reactive] public List<ValueTuple<double, double>> ImageDimension { get; set; } = new List<ValueTuple<double, double>>();
         [Reactive] public string WindowTitle { get; set; } = "";
@@ -317,10 +317,12 @@ namespace Minimal_CS_Manga_Reader
 
         public Interaction<Unit, bool> SettingDialogInteraction { get; protected set; } = new Interaction<Unit, bool>();
 
+        public Interaction<Unit, Bookmark> BookmarkDialogInteraction { get; protected set; } = new Interaction<Unit, Bookmark>();
+
         public Interaction<string, ValueTuple<Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult, string>> FolderDialogInteraction { get; protected set; } =
                 new Interaction<string, ValueTuple<Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult, string>>();
         public ReactiveCommand<Unit, Unit> OpenSetting { get; }
-
+        public ReactiveCommand<Unit, Unit> OpenBookmark { get; }
         public ReactiveCommand<Unit, Unit> OpenFolder { get; }
         [Reactive] public double ViewportWidth { get; set; }
 
@@ -348,17 +350,38 @@ namespace Minimal_CS_Manga_Reader
                 var (callback, openChapterPath) = await FolderDialogInteraction.Handle(DataSource.Path);
                 if (callback == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
                 {
-                    DataSource.SetChapter(openChapterPath);
+                    await DataSource.SetChapter(openChapterPath);
                     WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
                 }
             }
             catch (Exception e)
             {
-
                 System.Diagnostics.Debug.Print(e.ToString());
             }
         }
 
+        public async Task OpenBookmarkDialog()
+        {
+            try
+            {
+                var callback = await BookmarkDialogInteraction.Handle(Unit.Default);
+                if (callback == null) return; // Allow null but discard (for 'Cancel')
+                if (callback.ChapterPath != DataSource.Path) await DataSource.SetChapter(callback.ChapterPath);
+                if (callback.ActiveChapterEntry.AbsolutePath == DataSource.ActiveChapterPath) return;
+                for (int i = 0; i < _chapterList.Count; i++)
+                {
+                    if (_chapterList[i].AbsolutePath == callback.ActiveChapterEntry.AbsolutePath)
+                    {
+                        ActiveIndex = i;
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.Print(e.ToString());
+            }
+        }
         #endregion Dialog stuff
     }
 }

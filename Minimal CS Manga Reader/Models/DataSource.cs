@@ -28,7 +28,7 @@ namespace Minimal_CS_Manga_Reader
 
         #region Method
 
-        public static void Initialize(string[] args)
+        public static async Task InitializeAsync(string[] args)
         {
             if (args.Length > 1)
             {
@@ -45,10 +45,10 @@ namespace Minimal_CS_Manga_Reader
                 Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
 
-            SetChapter(Path);
+            await SetChapter(Path);
         }
 
-        public static void SetChapter(string path)
+        public static async Task SetChapter(string path)
         {
             bool IsPathArchiveFile;
 
@@ -60,12 +60,9 @@ namespace Minimal_CS_Manga_Reader
             Settings.Default.Path = Path;
             Settings.Default.Save();
             Title = Path.Split(System.IO.Path.DirectorySeparatorChar).ToArray()[^1];
-            _ = Task.Run(() =>
-            {
-                ChapterList.Clear();
-                var list = collector.GetChapterListAsync(Path, IsPathArchiveFile).Result;
-                ChapterList.AddRange(list);
-            });
+            ChapterList.Clear();
+            var list = await collector.GetChapterListAsync(Path, IsPathArchiveFile);
+            ChapterList.AddRange(list);
         }
 
         public static async Task PopulateImageAsync(CancellationToken token)

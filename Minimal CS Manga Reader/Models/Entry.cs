@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace Minimal_CS_Manga_Reader.Models
 {
-    public class Entry
+    public class Entry : IEquatable<Entry>
     {
+        public Entry() {}
         public Entry(string absolutePath)
         {
             AbsolutePath = absolutePath;
@@ -15,5 +18,9 @@ namespace Minimal_CS_Manga_Reader.Models
         public string File { get; set; }
         public string Name { get; set; }
 
+        public bool Equals([AllowNull] Entry other)
+        {
+            return AbsolutePath.Equals(other.AbsolutePath);
+        }
     }
 }
