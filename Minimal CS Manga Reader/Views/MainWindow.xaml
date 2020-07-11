@@ -5,7 +5,7 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
         i:MouseWheel.Enhanced="True"
-        xmlns:scroll="clr-namespace:Minimal_CS_Manga_Reader.Helper"
+        xmlns:helper="clr-namespace:Minimal_CS_Manga_Reader.Helper"
         Title="{Binding WindowTitle}" Height="800" Width="1024"
         AllowsTransparency="False"
         WindowState="Maximized"
@@ -22,7 +22,8 @@
         BorderThickness="0">
 
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisible" />
+        <helper:BoolToHorizontalScrollBarVisibilityConverter x:Key="HConverter"/>
+        <helper:BoolToVerticalScrollBarVisibilityConverter x:Key="VConverter"/>
         <Style x:Key="scrFocus" TargetType="{x:Type ScrollViewer}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
@@ -249,14 +250,15 @@
             <ScrollViewer
                 x:Name="ScrollViewer"
                 Style="{StaticResource scrFocus}"
-                scroll:ScrollHelper.IsEnabled="True"
+                helper:ScrollHelper.IsEnabled="True"
                 i:MouseWheel.Smoothing="None"
                 i:MouseWheel.Debouncing="None"
                 i:MouseWheel.ScrollSmoothing="None"
                 i:MouseWheel.ScrollMode="Auto"
                 i:MouseWheel.PhysicalVScrollIncrement="{Binding ScrollIncrement}"
                 PanningMode="Both"
-                HorizontalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="{Binding IsScrollBarVisible, Converter={StaticResource HConverter}}"
+                VerticalScrollBarVisibility="{Binding IsScrollBarVisible, Converter={StaticResource VConverter}}"
                 Focusable="True"
                 Height="{Binding Path=ActualHeight,
            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"

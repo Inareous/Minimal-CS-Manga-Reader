@@ -32,5 +32,8 @@
     <Setting Name="OpenChapterOnLoadChoice" Type="System.String" Scope="User">
       <Value Profile="(Default)">Last</Value>
     </Setting>
+    <Setting Name="IsScrollBarVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

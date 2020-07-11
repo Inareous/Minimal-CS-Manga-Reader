@@ -142,5 +142,17 @@ namespace Minimal_CS_Manga_Reader {
                 this["OpenChapterOnLoadChoice"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsScrollBarVisible {
+            get {
+                return ((bool)(this["IsScrollBarVisible"]));
+            }
+            set {
+                this["IsScrollBarVisible"] = value;
+            }
+        }
     }
 }

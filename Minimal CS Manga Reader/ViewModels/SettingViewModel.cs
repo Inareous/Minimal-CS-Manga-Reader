@@ -20,6 +20,7 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, Unit> Close { get; }
         [Reactive] public bool ContextIntegrated { get; set; }
         [Reactive] public bool FitImagesToScreen { get; set; }
+        [Reactive] public bool IsScrollBarVisible { get; set; }
         [Reactive] public Array OpenChapterOnLoadList { get; set; } = Enum.GetNames(typeof(Enums.OpenChapterOnLoad));
         [Reactive] public string OpenChapterOnLoad { get; set; }
         public IEnumerable<System.Drawing.Drawing2D.InterpolationMode> InterpolationMode
@@ -60,6 +61,7 @@ namespace Minimal_CS_Manga_Reader
             ContextIntegrated = RegistryContextManager.IsContextRegistry();
             _initialContextIntegrated = ContextIntegrated;
             FitImagesToScreen = Settings.Default.FitImagesToScreen;
+            IsScrollBarVisible = Settings.Default.IsScrollBarVisible;
             OpenChapterOnLoad = Settings.Default.OpenChapterOnLoadChoice;
 
             try
@@ -100,6 +102,7 @@ namespace Minimal_CS_Manga_Reader
             Settings.Default.SmoothingMode = SelectedSmoothingMode;
             Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
             Settings.Default.FitImagesToScreen = FitImagesToScreen;
+            Settings.Default.IsScrollBarVisible = IsScrollBarVisible;
             Settings.Default.OpenChapterOnLoadChoice = OpenChapterOnLoad;
             Settings.Default.Save();
             if (_initialContextIntegrated != ContextIntegrated)

@@ -86,13 +86,20 @@ namespace Minimal_CS_Manga_Reader
 
             this.WhenAnyValue(x => x.ViewportWidth).Subscribe(newViewport =>
             {
-                for (int i = 0; i < ImageDimension.Count; i++)
+                try
                 {
-                    var width = Math.Min(ImageList[i].Width, newViewport);
-                    var height = ImageList[i].Width < newViewport ? ImageList[i].Height : ImageList[i].Height * (newViewport / ImageList[i].Width);
-                    ImageDimension[i] = (width, height);
+                    for (int i = 0; i < ImageDimension.Count; i++)
+                    {
+                        var width = Math.Min(ImageList[i].Width, newViewport);
+                        var height = ImageList[i].Width < newViewport ? ImageList[i].Height : ImageList[i].Height * (newViewport / ImageList[i].Width);
+                        ImageDimension[i] = (width, height);
+                    }
+                    UpdateImageHeight();
                 }
-                UpdateImageHeight();
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.Print(e.ToString()); // to do : fix here
+                }
             });
             #endregion
 
@@ -283,6 +290,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public int ActiveIndex { get; set; } = 0;
         [Reactive] public bool IsDark { get; set; } = Settings.Default.IsDark;
 
+        [Reactive] public bool IsScrollBarVisible { get; set; } = Settings.Default.IsScrollBarVisible;
         [Reactive] public bool EnablePrevClick { get; set; }
 
         [Reactive] public bool EnableNextClick { get; set; }
@@ -331,6 +339,7 @@ namespace Minimal_CS_Manga_Reader
             try
             {
                 var saveAndRefresh = await SettingDialogInteraction.Handle(Unit.Default);
+                IsScrollBarVisible = Settings.Default.IsScrollBarVisible; //refresh
 
                 if (saveAndRefresh)
                 {
