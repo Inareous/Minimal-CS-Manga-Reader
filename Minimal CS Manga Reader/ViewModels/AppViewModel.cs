@@ -383,7 +383,11 @@ namespace Minimal_CS_Manga_Reader
             {
                 var callback = await BookmarkDialogInteraction.Handle(Unit.Default);
                 if (callback == null) return; // Allow null but discard (for 'Cancel')
-                if (callback.ChapterPath != DataSource.Path) await DataSource.SetChapter(callback.ChapterPath);
+                if (callback.ChapterPath != DataSource.Path)
+                {
+                    await DataSource.SetChapter(callback.ChapterPath);
+                    WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+                }
                 if (callback.ActiveChapterEntry.AbsolutePath == DataSource.ActiveChapterPath) return;
                 for (int i = 0; i < _chapterList.Count; i++)
                 {
