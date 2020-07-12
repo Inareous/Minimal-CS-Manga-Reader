@@ -96,6 +96,7 @@ namespace Minimal_CS_Manga_Reader
                 {
                     for (int i = 0; i < ImageDimension.Count; i++)
                     {
+                        if (Ts.IsCancellationRequested) return;
                         var width = Math.Min(ImageList[i].Width, newViewport);
                         var height = ImageList[i].Width < newViewport ? ImageList[i].Height : ImageList[i].Height * (newViewport / ImageList[i].Width);
                         ImageDimension[i] = (width, height);
@@ -265,7 +266,6 @@ namespace Minimal_CS_Manga_Reader
         {
             if (ChapterList.Count > 0)
             {
-                DataSource.ActiveChapterPath = _chapterList[ActiveIndex].AbsolutePath;
                 Ts.Cancel();
                 T?.Wait(Ts.Token);
                 Ts = new CancellationTokenSource();
@@ -274,7 +274,7 @@ namespace Minimal_CS_Manga_Reader
                 ScrollHelper.Helper();
                 T = await Task.Run(async () =>
                 {
-                    await DataSource.PopulateImageAsync(Ts.Token).ConfigureAwait(false);
+                    await DataSource.PopulateImageAsync(_chapterList[ActiveIndex], Ts.Token).ConfigureAwait(false);
                     return T;
                 }).ConfigureAwait(false);
             }
@@ -352,10 +352,7 @@ namespace Minimal_CS_Manga_Reader
                 var saveAndRefresh = await SettingDialogInteraction.Handle(Unit.Default);
                 IsScrollBarVisible = Settings.Default.IsScrollBarVisible; //refresh
 
-                if (saveAndRefresh)
-                {
-                    _ = UpdateAsync().ConfigureAwait(false);
-                }
+                if (saveAndRefresh) _ = UpdateAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {

@@ -15,7 +15,7 @@ namespace Minimal_CS_Manga_Reader
         string Title { get; }
 
         Task InitializeAsync(string[] args);
-        Task PopulateImageAsync(CancellationToken token);
+        Task PopulateImageAsync(Entry entry, CancellationToken token);
         Task SetChapter(string path);
     }
 }

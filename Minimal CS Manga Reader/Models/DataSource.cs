@@ -65,8 +65,10 @@ namespace Minimal_CS_Manga_Reader
             ChapterList.AddRange(list);
         }
 
-        public async Task PopulateImageAsync(CancellationToken token)
+        public async Task PopulateImageAsync(Entry entry, CancellationToken token)
         {
+            ActiveChapterPath = entry.AbsolutePath;
+
             if (ImageList.Count > 0)
             {
                 ImageList.Clear();

@@ -30,8 +30,8 @@ namespace Minimal_CS_Manga_Reader
 
         public MainWindow()
         {
-            DataContext = ViewModel;
             InitializeComponent();
+            DataContext = ViewModel;
             ScrollViewer.Focus();
 
             ScrollViewer.Events().ScrollChanged.Subscribe(_ =>
