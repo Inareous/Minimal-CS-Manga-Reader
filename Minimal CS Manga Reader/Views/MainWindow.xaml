@@ -143,7 +143,7 @@
                         <Label Grid.Column="1" VerticalAlignment="Center">/</Label>
                         <Label Grid.Column="2" Name="ImageCount"
                                Content="{Binding ImageCount, Mode=TwoWay}"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center" MinWidth="23"/>
                     </Grid>
                     <Grid>
                         <Grid.RowDefinitions>
