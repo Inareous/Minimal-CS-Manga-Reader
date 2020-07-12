@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Minimal_CS_Manga_Reader.Models
 {
-    public class BookmarksSource
+    public class BookmarksSource : IBookmarksSource
     {
         private const string fileName = "bookmarks.json";
-        public static SourceList<Bookmark> Bookmarks { get; set; } = new SourceList<Bookmark>();
-        public static async Task LoadAsync()
+        public SourceList<Bookmark> Bookmarks { get; set; } = new SourceList<Bookmark>();
+        public async Task LoadAsync()
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Minimal_CS_Manga_Reader.Models
                 Console.WriteLine(e);
             }
         }
-        public static async Task SaveAsync()
+        public async Task SaveAsync()
         {
             var options = new JsonSerializerOptions
             {
@@ -42,7 +42,7 @@ namespace Minimal_CS_Manga_Reader.Models
             await File.WriteAllTextAsync(fileName, jsonString);
             x.Dispose();
         }
-        public static void Add(Bookmark bookmark)
+        public void Add(Bookmark bookmark)
         {
             var x = Bookmarks.AsObservableList().Connect()
                 .Filter(x => x.Equals(bookmark))
@@ -52,7 +52,7 @@ namespace Minimal_CS_Manga_Reader.Models
             if (list.Count == 0) Bookmarks.Add(bookmark);
             x.Dispose();
         }
-        public static void Delete(Bookmark bookmark)
+        public void Delete(Bookmark bookmark)
         {
             try
             {

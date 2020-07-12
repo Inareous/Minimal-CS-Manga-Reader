@@ -4,6 +4,7 @@ using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +17,16 @@ namespace Minimal_CS_Manga_Reader
     public class BookmarkViewModel : ReactiveObject
     {
         private Action<BookmarkViewModel, Bookmark> _closeCallback;
-
-        private IObservableCollection<Bookmark> _bookmarkList { get; } = new ObservableCollectionExtended<Bookmark>();
         public ReactiveCommand<Unit, Unit> Open { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
-
         public ReactiveCommand<Bookmark, Unit> DeleteBookmark { get; private set; }
         [Reactive] public Bookmark SelectedBookmark { get; set; }
-        
         public IObservableCollection<Bookmark> BookmarkList { get; } = new ObservableCollectionExtended<Bookmark>();
-        public BookmarkViewModel(Action<BookmarkViewModel, Bookmark> closeCallback)
+        readonly IBookmarksSource BookmarksSource;
+        public BookmarkViewModel(Action<BookmarkViewModel, Bookmark> closeCallback, IBookmarksSource bookmarks)
         {
+            BookmarksSource = bookmarks ?? Locator.Current.GetService<IBookmarksSource>();
+
             BookmarksSource.Bookmarks.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(BookmarkList).DisposeMany().Subscribe();
 

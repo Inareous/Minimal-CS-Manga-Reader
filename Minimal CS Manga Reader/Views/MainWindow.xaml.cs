@@ -9,12 +9,14 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Minimal_CS_Manga_Reader.Models;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Minimal_CS_Manga_Reader
 {
     public partial class MainWindow : MetroWindow, IViewFor<AppViewModel>
     {
-        public AppViewModel ViewModel { get; set; }
+        [Reactive] public AppViewModel ViewModel { get; set; } = Locator.Current.GetService<AppViewModel>();
 
         object IViewFor.ViewModel
         {
@@ -28,10 +30,8 @@ namespace Minimal_CS_Manga_Reader
 
         public MainWindow()
         {
-            ViewModel = new AppViewModel();
-            InitializeComponent();
             DataContext = ViewModel;
-
+            InitializeComponent();
             ScrollViewer.Focus();
 
             ScrollViewer.Events().ScrollChanged.Subscribe(_ =>
@@ -158,7 +158,7 @@ namespace Minimal_CS_Manga_Reader
                 Subscribe(x =>
                 {
                     x.Handled = true;
-                    BookmarksSource.Add(new Bookmark(DataSource.Path, ViewModel._chapterList[ViewModel.ActiveIndex]));
+                    ViewModel.AddBookmark();
                 });
 
             this.WhenActivated(d =>
@@ -221,7 +221,7 @@ namespace Minimal_CS_Manga_Reader
                     {
                         DialogCoordinator.Instance.HideMetroDialogAsync(this, dlg);
                         interaction.SetOutput(bookmarkItem);
-                    });
+                    }, ViewModel.BookmarksSource);
 
                     dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
                     dlg.Background = System.Windows.Media.Brushes.Transparent;

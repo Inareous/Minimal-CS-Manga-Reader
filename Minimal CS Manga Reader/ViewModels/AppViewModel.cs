@@ -5,6 +5,7 @@ using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,13 @@ namespace Minimal_CS_Manga_Reader
 {
     public class AppViewModel : ReactiveObject
     {
-        public AppViewModel()
+        public readonly IDataSource DataSource;
+        public readonly IBookmarksSource BookmarksSource;
+        public AppViewModel(IDataSource dataSource, IBookmarksSource bookmarksSource)
         {
+            DataSource = dataSource ?? Locator.Current.GetService<IDataSource>();
+            BookmarksSource = bookmarksSource ?? Locator.Current.GetService<IBookmarksSource>();
+
             InitializeWindow();
 
             #region Toggle Fullscreen
@@ -194,6 +200,11 @@ namespace Minimal_CS_Manga_Reader
             OpenBookmark = ReactiveCommand.CreateFromTask(OpenBookmarkDialog);
 
             #endregion dialog
+        }
+
+        public void AddBookmark()
+        {
+            BookmarksSource.Add(new Bookmark(DataSource.Path, _chapterList[ActiveIndex]));
         }
 
 

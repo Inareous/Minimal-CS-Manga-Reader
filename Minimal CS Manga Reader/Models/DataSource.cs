@@ -9,26 +9,26 @@ using System.Windows.Media.Imaging;
 
 namespace Minimal_CS_Manga_Reader
 {
-    public class DataSource
+    public class DataSource : IDataSource
     {
         #region Property
 
-        private static readonly DataCollector collector = new DataCollector();
-        public static string Title { get; private set; } = "";
+        private readonly DataCollector collector = new DataCollector();
+        public string Title { get; private set; } = "";
 
 
-        public static SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
-        public static string Path { get; private set; } = Settings.Default.Path;
+        public SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
+        public string Path { get; private set; } = Settings.Default.Path;
 
-        public static string ActiveChapterPath { get; set; } = System.IO.Path.DirectorySeparatorChar.ToString();
+        public string ActiveChapterPath { get; set; } = System.IO.Path.DirectorySeparatorChar.ToString();
 
-        public static SourceList<BitmapSource> ImageList { get; private set; } = new SourceList<BitmapSource>();
+        public SourceList<BitmapSource> ImageList { get; private set; } = new SourceList<BitmapSource>();
 
         #endregion Property
 
         #region Method
 
-        public static async Task InitializeAsync(string[] args)
+        public async Task InitializeAsync(string[] args)
         {
             if (args.Length > 1)
             {
@@ -48,7 +48,7 @@ namespace Minimal_CS_Manga_Reader
             await SetChapter(Path);
         }
 
-        public static async Task SetChapter(string path)
+        public async Task SetChapter(string path)
         {
             bool IsPathArchiveFile;
 
@@ -65,7 +65,7 @@ namespace Minimal_CS_Manga_Reader
             ChapterList.AddRange(list);
         }
 
-        public static async Task PopulateImageAsync(CancellationToken token)
+        public async Task PopulateImageAsync(CancellationToken token)
         {
             if (ImageList.Count > 0)
             {
