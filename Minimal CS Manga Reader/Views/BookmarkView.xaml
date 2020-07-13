@@ -47,7 +47,7 @@
                                         <TextBlock FontSize="13" Grid.Column="0" Padding="1" Text="{Binding ActiveChapterEntry.Name}"/>
                                         </StackPanel>
                                     </Border>
-                                    <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Open Image Settings"
+                                    <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                                         Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ViewModel.DeleteBookmark}"
                                         CommandParameter="{Binding .}">

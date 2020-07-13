@@ -39,7 +39,7 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="InterpolationMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
-                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Interpolation Mode</Label>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Interpolation Mode</TextBlock>
                 </Grid>
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
@@ -47,7 +47,7 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="PixelOffsetMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
-                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Pixel Offset Mode</Label>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Pixel Offset Mode</TextBlock>
                 </Grid>
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
@@ -55,7 +55,7 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
-                    <Label Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center">Set Smoothing Mode</Label>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Smoothing Mode</TextBlock>
                 </Grid>
                 <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
@@ -81,11 +81,9 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <ComboBox x:Name="OpenChapterOnLoadList" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
-                    <Label Grid.Column="1" Width="290" VerticalAlignment="Center" VerticalContentAlignment="Center">
-                        <TextBlock TextWrapping="WrapWithOverflow">
+                    <TextBlock Grid.Column="1" Width="290" VerticalAlignment="Center" TextAlignment="Left" TextWrapping="WrapWithOverflow">
                                 Open selected chapter when program is loaded
-                        </TextBlock>
-                    </Label>
+                    </TextBlock>
                 </Grid>
                 <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>
