@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using System.Windows;
 
 namespace Minimal_CS_Manga_Reader
 {
@@ -78,23 +79,23 @@ namespace Minimal_CS_Manga_Reader
                 {
                     if (x)
                     {
-                        WindowStyle = System.Windows.WindowStyle.None;
+                        WindowStyle = WindowStyle.None;
                         IgnoreTaskbarOnMaximize = true;
                         ShowTitleBar = false;
                         ShowCloseButton = false;
                         ViewModel.ToolbarHeight = 0;
-                        ResizeMode = System.Windows.ResizeMode.NoResize;
+                        ResizeMode = ResizeMode.NoResize;
 
-                        WindowState = System.Windows.WindowState.Maximized;
+                        WindowState = WindowState.Maximized;
                     }
                     else
                     {
-                        WindowStyle = System.Windows.WindowStyle.SingleBorderWindow;
+                        WindowStyle = WindowStyle.SingleBorderWindow;
                         IgnoreTaskbarOnMaximize = false;
                         ShowTitleBar = true;
                         ShowCloseButton = true;
                         ViewModel.ToolbarHeight = 30;
-                        ResizeMode = System.Windows.ResizeMode.CanResize;
+                        ResizeMode = ResizeMode.CanResize;
                     }
                 });
 
@@ -127,7 +128,7 @@ namespace Minimal_CS_Manga_Reader
                 Subscribe(x =>
                 {
                     x.Handled = true;
-                    var focusedControl = Keyboard.FocusedElement as System.Windows.FrameworkElement;
+                    var focusedControl = Keyboard.FocusedElement as FrameworkElement;
                     if (focusedControl is TextBox)
                     {
                         var expression = focusedControl.GetBindingExpression(TextBox.TextProperty);
@@ -158,6 +159,14 @@ namespace Minimal_CS_Manga_Reader
                 Subscribe(x =>
                 {
                     x.Handled = true;
+                    BookmarkSnackBar.MessageQueue = new MaterialDesignThemes.Wpf.SnackbarMessageQueue(TimeSpan.FromSeconds(1));
+                    BookmarkSnackBar.MessageQueue.Enqueue(
+                        new Label {
+                            Content = "Bookmark Added!",
+                            FontWeight = FontWeights.SemiBold,
+                            FontSize = 13,
+                            Margin = new Thickness(0),
+                            Padding = new Thickness(0) });// Not MVVM but whatever (?)
                     ViewModel.AddBookmark();
                 });
 
@@ -177,7 +186,7 @@ namespace Minimal_CS_Manga_Reader
 
                     dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
                     dlg.Background = System.Windows.Media.Brushes.Transparent;
-                    dlg.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                    dlg.HorizontalAlignment = HorizontalAlignment.Center;
 
                     await DialogCoordinator.Instance.ShowMetroDialogAsync(this, dlg);
 
@@ -215,7 +224,7 @@ namespace Minimal_CS_Manga_Reader
 
                     dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
                     dlg.Background = System.Windows.Media.Brushes.Transparent;
-                    dlg.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                    dlg.HorizontalAlignment = HorizontalAlignment.Center;
 
                     await DialogCoordinator.Instance.ShowMetroDialogAsync(this, dlg);
 
