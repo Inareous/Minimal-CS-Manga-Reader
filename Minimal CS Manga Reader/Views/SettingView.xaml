@@ -54,6 +54,14 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
+                    <ComboBox x:Name="Theme" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Theme</TextBlock>
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
                     <ComboBox x:Name="OpenChapterOnLoadList" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <TextBlock Grid.Column="1" Width="290" VerticalAlignment="Center" TextAlignment="Left" TextWrapping="WrapWithOverflow">
                                 Open selected chapter when program is loaded

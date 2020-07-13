@@ -25,6 +25,7 @@ namespace Minimal_CS_Manga_Reader
         {
             DataSource = dataSource ?? Locator.Current.GetService<IDataSource>();
             BookmarksSource = bookmarksSource ?? Locator.Current.GetService<IBookmarksSource>();
+            ThemeEditor.ModifyTheme(Settings.Default.Theme);
 
             InitializeWindow();
 
@@ -169,18 +170,6 @@ namespace Minimal_CS_Manga_Reader
 
             #endregion Scroll Increment
 
-            #region Dark Mode
-
-            this.WhenAnyValue(x => x.IsDark)
-                .Subscribe(_ =>
-                {
-                    Settings.Default.IsDark = IsDark;
-                    Settings.Default.Save();
-                    ModifyTheme(theme => theme.SetBaseTheme(IsDark ? Theme.Dark : Theme.Light));
-                });
-
-            #endregion Dark Mode
-
             #endregion Settings
 
             #region dialog
@@ -221,16 +210,6 @@ namespace Minimal_CS_Manga_Reader
             ScrollIncrement = _scrollIncrement.ToString();
             ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
             ActiveBackgroundView = Settings.Default.Background;
-        }
-
-        private void ModifyTheme(Action<ITheme> modificationAction)
-        {
-            PaletteHelper paletteHelper = new PaletteHelper();
-            ITheme theme = paletteHelper.GetTheme();
-
-            modificationAction?.Invoke(theme);
-
-            paletteHelper.SetTheme(theme);
         }
 
         private void UpdateImageHeight()
@@ -287,11 +266,8 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public List<ValueTuple<double, double>> ImageDimension { get; set; } = new List<ValueTuple<double, double>>();
         [Reactive] public string WindowTitle { get; set; } = "";
         [Reactive] public int ActiveIndex { get; set; } = 0;
-        [Reactive] public bool IsDark { get; set; } = Settings.Default.IsDark;
-
         [Reactive] public bool IsScrollBarVisible { get; set; } = Settings.Default.IsScrollBarVisible;
         [Reactive] public bool EnablePrevClick { get; set; }
-
         [Reactive] public bool EnableNextClick { get; set; }
         [Reactive] private int _activeImage { get; set; } = 0;
         [Reactive] public int ActiveImage { get; set; } = 0;
@@ -306,11 +282,8 @@ namespace Minimal_CS_Manga_Reader
         private int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
         private int _imageMarginSetter { get; set; } = Settings.Default.ImageMargin;
         private int _zoomScaleSetter { get; set; } = 100;
-
         [Reactive] public int ToolbarHeight { get; set; } = 30;
-
         [Reactive] public bool IsFullscreen { get; set; } = false;
-
         public double _scrollHeight = 0;
         [Reactive] public string ScrollIncrement { get; set; }
         [Reactive] public string ZoomScaleSetter { get; set; }

@@ -73,18 +73,6 @@ namespace Minimal_CS_Manga_Reader {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsDark {
-            get {
-                return ((bool)(this["IsDark"]));
-            }
-            set {
-                this["IsDark"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public global::System.Drawing.Drawing2D.InterpolationMode InterpolationMode {
             get {
@@ -152,6 +140,18 @@ namespace Minimal_CS_Manga_Reader {
             }
             set {
                 this["IsScrollBarVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public global::Minimal_CS_Manga_Reader.Models.Enums.Theme Theme {
+            get {
+                return ((global::Minimal_CS_Manga_Reader.Models.Enums.Theme)(this["Theme"]));
+            }
+            set {
+                this["Theme"] = value;
             }
         }
     }

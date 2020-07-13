@@ -14,9 +14,6 @@
     <Setting Name="Background" Type="System.String" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
-    <Setting Name="IsDark" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="InterpolationMode" Type="System.Drawing.Drawing2D.InterpolationMode" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -34,6 +31,9 @@
     </Setting>
     <Setting Name="IsScrollBarVisible" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Theme" Type="Minimal_CS_Manga_Reader.Models.Enums.Theme" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

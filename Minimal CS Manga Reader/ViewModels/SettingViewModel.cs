@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using DynamicData.Binding;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
@@ -59,6 +60,8 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public string SelectedBackground { get; set; }
         public Array BackgroundViewList { get; set; } = Enum.GetNames(typeof(Enums.ReaderBackground));
 
+        [Reactive] public Enums.Theme SelectedTheme { get; set; }
+        public IEnumerable<Enums.Theme> ThemeList { get; set; } = Enum.GetValues(typeof(Enums.Theme)).Cast<Enums.Theme>();
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback)
         {
             ContextIntegrated = RegistryContextManager.IsContextRegistry();
@@ -67,6 +70,7 @@ namespace Minimal_CS_Manga_Reader
             IsScrollBarVisible = Settings.Default.IsScrollBarVisible;
             OpenChapterOnLoad = Settings.Default.OpenChapterOnLoadChoice;
             SelectedBackground = Settings.Default.Background;
+            SelectedTheme = Settings.Default.Theme;
 
             try
             {
@@ -98,7 +102,20 @@ namespace Minimal_CS_Manga_Reader
                 _closeCallback(this, true);
             });
 
-            Close = ReactiveCommand.Create(() => _closeCallback(this, false));
+            Close = ReactiveCommand.Create(() => 
+            {
+                _closeCallback(this, false);
+                if (SelectedTheme != Settings.Default.Theme)
+                {
+                    // Restore theme
+                    ThemeEditor.ModifyTheme(Settings.Default.Theme);
+                }
+            });
+
+            this.WhenValueChanged(x => x.SelectedTheme).Subscribe(x => 
+            {
+                ThemeEditor.ModifyTheme(x);
+            });
         }
 
         private void SaveSettings(){
@@ -109,6 +126,7 @@ namespace Minimal_CS_Manga_Reader
             Settings.Default.IsScrollBarVisible = IsScrollBarVisible;
             Settings.Default.OpenChapterOnLoadChoice = OpenChapterOnLoad;
             Settings.Default.Background = SelectedBackground;
+            Settings.Default.Theme = SelectedTheme;
             Settings.Default.Save();
             if (_initialContextIntegrated != ContextIntegrated)
             {

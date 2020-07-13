@@ -183,6 +183,7 @@
                                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                                  HorizontalAlignment="Center" ToolTip="Edit margin of each image" Width="40" />
                     </Grid>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -197,6 +198,7 @@
                                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"
                                  HorizontalAlignment="Center" Width="40" />
                     </Grid>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -233,7 +235,7 @@
                                 </Canvas>
                         </Button>
                     </Grid>
-                    <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Button VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Fullscreen mode (F5)" Style="{StaticResource Icon}"
                             Command="{Binding ToggleFullscreen}" Margin="1 0 5 0" >
                         <Canvas Margin="-25,-25,0,0" >

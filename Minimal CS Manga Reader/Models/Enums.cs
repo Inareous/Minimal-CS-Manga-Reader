@@ -22,5 +22,11 @@ namespace Minimal_CS_Manga_Reader.Models
             WebP,
             NotImage
         }
+
+        public enum Theme
+        {
+            Light,
+            Dark
+        }
     }
 }
