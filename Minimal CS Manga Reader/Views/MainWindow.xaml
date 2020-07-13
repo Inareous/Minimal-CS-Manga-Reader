@@ -19,7 +19,9 @@
         WindowTransitionsEnabled = "False"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        BorderThickness="0">
+        BorderThickness="0"
+        OverlayFadeIn="{StaticResource FastDialogFadeIn}"
+        >
 
     <Window.Resources>
         <helper:BoolToHorizontalScrollBarVisibilityConverter x:Key="HConverter"/>
@@ -52,6 +54,13 @@
             <Setter Property="LightMaxButtonStyle" Value="{StaticResource WindowsButton}" />
             <Setter Property="LightCloseButtonStyle" Value="{StaticResource WindowsButton}" />
         </Style>
+        <Storyboard x:Key="NewFastFadeIn" x:Name="NewFastFadeIn"
+                AccelerationRatio="1"
+                BeginTime="0:0:0"
+                SpeedRatio="10"
+                Storyboard.TargetProperty="Opacity">
+            <DoubleAnimation To="1" />
+        </Storyboard>
     </Window.Resources>
     <Controls:MetroWindow.TitleTemplate>
         <DataTemplate>

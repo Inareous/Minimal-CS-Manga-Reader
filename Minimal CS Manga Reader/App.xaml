@@ -19,6 +19,15 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
                  -->
+                <ResourceDictionary>
+                    <Storyboard x:Key="FastDialogFadeIn" 
+                         AccelerationRatio=".97" 
+                         BeginTime="0:0:0" 
+                         SpeedRatio="8"
+                         Storyboard.TargetProperty="Opacity">
+                        <DoubleAnimation To=".7" />
+                    </Storyboard>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

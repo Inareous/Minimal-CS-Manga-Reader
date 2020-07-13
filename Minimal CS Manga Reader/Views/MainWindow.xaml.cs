@@ -111,7 +111,7 @@ namespace Minimal_CS_Manga_Reader
                 Subscribe(x =>
                 {
                     x.Handled = true;
-                    ViewModel.OpenBookmark.Execute().Subscribe();
+                    if(DialogCoordinator.Instance.GetCurrentDialogAsync<CustomDialog>(this).Result == null) ViewModel.OpenBookmark.Execute().Subscribe();
                 });
 
             this.Events().KeyDown.
@@ -167,12 +167,7 @@ namespace Minimal_CS_Manga_Reader
 
                 ViewModel.SettingDialogInteraction.RegisterHandler(async interaction =>
                 {
-                    var metroDialogSettings = new MetroDialogSettings()
-                    {
-                        AnimateHide = false,
-                        AnimateShow = true,
-                    };
-                    var dlg = new CustomDialog(metroDialogSettings);
+                    var dlg = GetCustomDialog();
 
                     var dlgvm = new SettingViewModel((SettingViewModel vm, bool IsSaved) =>
                     {
@@ -210,12 +205,7 @@ namespace Minimal_CS_Manga_Reader
 
                 ViewModel.BookmarkDialogInteraction.RegisterHandler(async interaction =>
                 {
-                    var metroDialogSettings = new MetroDialogSettings()
-                    {
-                        AnimateHide = false,
-                        AnimateShow = true,
-                    };
-                    var dlg = new CustomDialog(metroDialogSettings);
+                    var dlg = GetCustomDialog();
 
                     var dlgvm = new BookmarkViewModel((BookmarkViewModel vm, Bookmark bookmarkItem) =>
                     {
@@ -232,6 +222,21 @@ namespace Minimal_CS_Manga_Reader
                     await dlg.WaitUntilUnloadedAsync();
                 }).DisposeWith(d);
             });
+        }
+
+        private CustomDialog GetCustomDialog()
+        {
+            if (Locator.Current.GetService<CustomDialog>() == null)
+            {
+                var metroDialogSettings = new MetroDialogSettings()
+                {
+                    AnimateHide = false,
+                    AnimateShow = true,
+
+                };
+                Locator.CurrentMutable.Register(() => new CustomDialog(metroDialogSettings));
+            };
+            return Locator.Current.GetService<CustomDialog>();
         }
 
         private class DialogParticipationRegistration : IDisposable
