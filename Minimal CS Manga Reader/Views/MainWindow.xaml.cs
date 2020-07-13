@@ -159,15 +159,27 @@ namespace Minimal_CS_Manga_Reader
                 Subscribe(x =>
                 {
                     x.Handled = true;
-                    BookmarkSnackBar.MessageQueue = new MaterialDesignThemes.Wpf.SnackbarMessageQueue(TimeSpan.FromSeconds(1));
-                    BookmarkSnackBar.MessageQueue.Enqueue(
-                        new Label {
-                            Content = "Bookmark Added!",
-                            FontWeight = FontWeights.SemiBold,
-                            FontSize = 13,
-                            Margin = new Thickness(0),
-                            Padding = new Thickness(0) });// Not MVVM but whatever (?)
-                    ViewModel.AddBookmark();
+                    if (ViewModel.AddBookmark())
+                    {
+                        BookmarkSnackBar.Invoke(async () =>
+                        {
+                            // Manage message manually instead of using MessageQueue to avoid thread blocking with updating image
+                            BookmarkSnackBar.Message = new MaterialDesignThemes.Wpf.SnackbarMessage
+                            {
+                                Content = new Label //Doesn't work with TextBlock
+                                {
+                                    Content = "Bookmark Added!",
+                                    FontWeight = FontWeights.SemiBold,
+                                    FontSize = 13,
+                                    Margin = new Thickness(0),
+                                    Padding = new Thickness(0)
+                                }
+                            };
+                            BookmarkSnackBar.IsActive = true;
+                            await System.Threading.Tasks.Task.Delay(1000);
+                            BookmarkSnackBar.IsActive = false;
+                        }).ConfigureAwait(false);
+                    }
                 });
 
             this.WhenActivated(d =>

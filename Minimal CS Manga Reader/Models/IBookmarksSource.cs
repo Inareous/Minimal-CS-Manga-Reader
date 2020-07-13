@@ -7,8 +7,8 @@ namespace Minimal_CS_Manga_Reader.Models
     {
         SourceList<Bookmark> Bookmarks { get; set; }
 
-        void Add(Bookmark bookmark);
-        void Delete(Bookmark bookmark);
+        bool Add(Bookmark bookmark);
+        bool Delete(Bookmark bookmark);
         Task LoadAsync();
         Task SaveAsync();
     }

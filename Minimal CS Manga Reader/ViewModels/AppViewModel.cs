@@ -203,11 +203,10 @@ namespace Minimal_CS_Manga_Reader
             #endregion dialog
         }
 
-        public void AddBookmark()
+        public bool AddBookmark()
         {
-            BookmarksSource.Add(new Bookmark(DataSource.Path, _chapterList[ActiveIndex]));
+            return BookmarksSource.Add(new Bookmark(DataSource.Path, _chapterList[ActiveIndex]));
         }
-
 
         #region Method
 
