@@ -36,15 +36,15 @@
                 <ListBox x:Name="Bookmarks" Height="500">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                                <Grid>
+                                <Grid Margin="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0">
                                         <StackPanel>
-                                            <TextBlock FontSize="14" Grid.Column="0" Padding="1" Text="{Binding ChapterPathTrimmed}"/>
-                                        <TextBlock FontSize="13" Grid.Column="0" Padding="1" Text="{Binding ActiveChapterEntry.Name}"/>
+                                        <TextBlock FontSize="14" Grid.Column="0" Padding="1" Margin="0" Text="{Binding ChapterPathTrimmed}"/>
+                                        <TextBlock FontSize="13" Grid.Column="0" Padding="1" Margin="0"  Text="{Binding ActiveChapterEntry.Name}"/>
                                         </StackPanel>
                                     </Border>
                                     <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
