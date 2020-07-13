@@ -22,9 +22,13 @@ namespace Minimal_CS_Manga_Reader
                 this.OneWayBind(ViewModel, vm => vm.InterpolationMode, view => view.InterpolationMode.ItemsSource).DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.SmoothingMode, view => view.SmoothingMode.ItemsSource).DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.OpenChapterOnLoadList, view => view.OpenChapterOnLoadList.ItemsSource).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.BackgroundViewList, view => view.BackgroundView.ItemsSource).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.ThemeList, view => view.Theme.ItemsSource).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.SelectedPixelOffsetMode, view => view.PixelOffsetMode.SelectedItem).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.SelectedInterpolationMode, view => view.InterpolationMode.SelectedItem).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.SelectedSmoothingMode, view => view.SmoothingMode.SelectedItem).DisposeWith(d);
+                this.Bind(ViewModel, vm => vm.SelectedBackground, view => view.BackgroundView.SelectedItem).DisposeWith(d);
+                this.Bind(ViewModel, vm => vm.SelectedTheme, view => view.Theme.SelectedItem).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.OpenChapterOnLoad, view => view.OpenChapterOnLoadList.SelectedItem).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.ContextIntegrated, view => view.ContextIntegrated.IsChecked).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.FitImagesToScreen, view => view.FitImagesToScreen.IsChecked).DisposeWith(d);

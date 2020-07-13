@@ -169,17 +169,6 @@ namespace Minimal_CS_Manga_Reader
 
             #endregion Scroll Increment
 
-            #region Background
-
-            this.WhenAnyValue(x => x.ActiveBackgroundView)
-                .Subscribe(_ =>
-                {
-                    Settings.Default.Background = ActiveBackgroundView;
-                    Settings.Default.Save();
-                });
-
-            #endregion Background
-
             #region Dark Mode
 
             this.WhenAnyValue(x => x.IsDark)
@@ -327,7 +316,6 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public string ZoomScaleSetter { get; set; }
         [Reactive] public double ZoomScale { get; set; }
         [Reactive] public string ActiveBackgroundView { get; set; } = Settings.Default.Background;
-        public Array BackgroundViewList { get; set; } = Enum.GetNames(typeof(Enums.ReaderBackground));
 
         #endregion Property
 
@@ -349,7 +337,9 @@ namespace Minimal_CS_Manga_Reader
             try
             {
                 var saveAndRefresh = await SettingDialogInteraction.Handle(Unit.Default);
-                IsScrollBarVisible = Settings.Default.IsScrollBarVisible; //refresh
+                //refresh
+                IsScrollBarVisible = Settings.Default.IsScrollBarVisible;
+                ActiveBackgroundView = Settings.Default.Background;
 
                 if (saveAndRefresh) _ = UpdateAsync().ConfigureAwait(false);
             }

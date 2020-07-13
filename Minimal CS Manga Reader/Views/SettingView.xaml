@@ -16,8 +16,8 @@
         </Grid.RowDefinitions>
 
         <Border Background="{DynamicResource MaterialDesignPaper}" CornerRadius="10">
-            <StackPanel Margin="30 30 30 30">
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+            <StackPanel Margin="25">
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
@@ -25,7 +25,7 @@
                     <ComboBox x:Name="InterpolationMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Interpolation Mode</TextBlock>
                 </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
@@ -33,7 +33,7 @@
                     <ComboBox x:Name="PixelOffsetMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Pixel Offset Mode</TextBlock>
                 </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
@@ -41,25 +41,15 @@
                     <ComboBox x:Name="SmoothingMode" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set Smoothing Mode</TextBlock>
                 </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="ContextIntegrated" Content="Integrate Minimal CS Manga Reader with File Explorer Context"  FontSize="13" Margin="0 0 15 0" />
+                    <ComboBox x:Name="BackgroundView" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Left">Set background</TextBlock>
                 </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="FitImagesToScreen" Content="Resize image to fit screen horizontally"  FontSize="13" Margin="0 0 15 0" />
-                </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="IsScrollBarVisible" Content="Show ScrollBar"  FontSize="13" Margin="0 0 15 0" />
-                </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 10">
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
@@ -68,6 +58,24 @@
                     <TextBlock Grid.Column="1" Width="290" VerticalAlignment="Center" TextAlignment="Left" TextWrapping="WrapWithOverflow">
                                 Open selected chapter when program is loaded
                     </TextBlock>
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="ContextIntegrated" Content="Integrate Minimal CS Manga Reader with File Explorer Context"  FontSize="13" Margin="0 0 15 0" />
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="FitImagesToScreen" Content="Resize image to fit screen horizontally"  FontSize="13" Margin="0 0 15 0" />
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="IsScrollBarVisible" Content="Show ScrollBar"  FontSize="13" Margin="0 0 15 0" />
                 </Grid>
                 <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>

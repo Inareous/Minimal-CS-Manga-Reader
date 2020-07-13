@@ -56,6 +56,9 @@ namespace Minimal_CS_Manga_Reader
 
         [Reactive] public System.Drawing.Drawing2D.PixelOffsetMode SelectedPixelOffsetMode { get; set; } = System.Drawing.Drawing2D.PixelOffsetMode.Default;
 
+        [Reactive] public string SelectedBackground { get; set; }
+        public Array BackgroundViewList { get; set; } = Enum.GetNames(typeof(Enums.ReaderBackground));
+
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback)
         {
             ContextIntegrated = RegistryContextManager.IsContextRegistry();
@@ -63,6 +66,7 @@ namespace Minimal_CS_Manga_Reader
             FitImagesToScreen = Settings.Default.FitImagesToScreen;
             IsScrollBarVisible = Settings.Default.IsScrollBarVisible;
             OpenChapterOnLoad = Settings.Default.OpenChapterOnLoadChoice;
+            SelectedBackground = Settings.Default.Background;
 
             try
             {
@@ -104,6 +108,7 @@ namespace Minimal_CS_Manga_Reader
             Settings.Default.FitImagesToScreen = FitImagesToScreen;
             Settings.Default.IsScrollBarVisible = IsScrollBarVisible;
             Settings.Default.OpenChapterOnLoadChoice = OpenChapterOnLoad;
+            Settings.Default.Background = SelectedBackground;
             Settings.Default.Save();
             if (_initialContextIntegrated != ContextIntegrated)
             {

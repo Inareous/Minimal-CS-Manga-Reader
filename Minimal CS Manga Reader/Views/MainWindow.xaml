@@ -233,21 +233,6 @@
                                 </Canvas>
                         </Button>
                     </Grid>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" VerticalAlignment="Center">Background :</TextBlock>
-                        <ComboBox Grid.Column="1" ItemsSource="{Binding BackgroundViewList}" SelectedItem="{Binding ActiveBackgroundView}"
-                                  FontSize="13" Width="70" Margin="3,0,3,0"
-                                  Padding="2"
-                                  VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
-                                  HorizontalAlignment="Center"/>
-                    </Grid>
                     <ToggleButton Height="{Binding Width, RelativeSource={RelativeSource Self}}" Margin="5 0 5 0" IsChecked="{Binding IsDark, Mode=TwoWay}" Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
                     <Button VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Fullscreen mode (F5)" Style="{StaticResource Icon}"
                             Command="{Binding ToggleFullscreen}" Margin="1 0 5 0" >
