@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
                  -->
+                <ResourceDictionary Source="Styles/Toolbar.Overrides.xaml" />
                 <ResourceDictionary>
                     <Storyboard x:Key="FastDialogFadeIn" 
                          AccelerationRatio=".97" 
