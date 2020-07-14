@@ -33,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Styles\Toolbar.Overrides.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
