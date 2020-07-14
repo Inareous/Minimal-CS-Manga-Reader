@@ -7,8 +7,8 @@ namespace Minimal_CS_Manga_Reader.Helper
 {
     public class RegistryContextManager
     {
-        private static readonly string hkcuFolderContext = @"SOFTWARE\Classes\Folder\shell";
-        private static readonly string MCSRegistry = @"Minimal CS Manga Reader Context Menu";
+        private static readonly string hkcuFolderContext = @"Software\Classes\Directory\shell";
+        private static readonly string MCSRegistry = @"MCSReader";
         private static readonly string commandSubDir = @"command";
         private static readonly string keyPath = $@"{hkcuFolderContext}\{MCSRegistry}";
         private static readonly string programPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -66,6 +66,9 @@ namespace Minimal_CS_Manga_Reader.Helper
             try
             {
                 Registry.CurrentUser.DeleteSubKeyTree($@"{keyPath}", true);
+                //Delete old relic too
+                var oldKeyPath = @"SOFTWARE\Classes\Folder\shell\Minimal CS Manga Reader Context Menu";
+                Registry.CurrentUser.DeleteSubKeyTree($@"{oldKeyPath}", true);
             }
             catch (Exception e)
             {
