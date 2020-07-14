@@ -207,12 +207,12 @@ namespace Minimal_CS_Manga_Reader
         {
             WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
             ImageMargin = $"0,0,0,{ImageMarginSetter}";
-            ScrollIncrement = _scrollIncrement.ToString();
             ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
             ActiveBackgroundView = Config.Background;
             // Config Property
             IsScrollBarVisible = Config.IsScrollBarVisible;
             _scrollIncrement = Config.ScrollIncrement;
+            ScrollIncrement = _scrollIncrement.ToString();
             _imageMarginSetter = Config.ImageMargin;
             ActiveBackgroundView = Config.Background;
         }
