@@ -44,7 +44,7 @@ namespace Minimal_CS_Manga_Reader
             ScrollViewer.WhenAnyValue(x => x.ViewportWidth).Subscribe(x =>
             {
                 // To fix : This part got hit twice when changing to fullscreen
-                ViewModel.ViewportWidth = Settings.Default.FitImagesToScreen ? x : int.MaxValue;
+                ViewModel.ViewportWidth = ViewModel.Config.FitImagesToScreen ? x : int.MaxValue;
             });
 
             ChapterComboBox.Events().MouseWheel.Subscribe(x =>
@@ -194,7 +194,7 @@ namespace Minimal_CS_Manga_Reader
                     {
                         DialogCoordinator.Instance.HideMetroDialogAsync(this, dlg);
                         interaction.SetOutput(IsSaved);
-                    });
+                    }, ViewModel.Config);
 
                     dlg.Content = new ViewModelViewHost { ViewModel = dlgvm };
                     dlg.Background = System.Windows.Media.Brushes.Transparent;

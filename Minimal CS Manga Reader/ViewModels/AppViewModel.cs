@@ -21,11 +21,13 @@ namespace Minimal_CS_Manga_Reader
     {
         public readonly IDataSource DataSource;
         public readonly IBookmarksSource BookmarksSource;
-        public AppViewModel(IDataSource dataSource, IBookmarksSource bookmarksSource)
+        public readonly IUserConfig Config;
+        public AppViewModel(IDataSource dataSource, IBookmarksSource bookmarksSource, IUserConfig config)
         {
             DataSource = dataSource ?? Locator.Current.GetService<IDataSource>();
             BookmarksSource = bookmarksSource ?? Locator.Current.GetService<IBookmarksSource>();
-            ThemeEditor.ModifyTheme(Settings.Default.Theme);
+            Config = config ?? Locator.Current.GetService<IUserConfig>();
+            ThemeEditor.ModifyTheme(Config.Theme);
 
             InitializeWindow();
 
@@ -48,7 +50,7 @@ namespace Minimal_CS_Manga_Reader
                 .Subscribe(_ =>
                 {
                     ChapterList = _chapterList?.Select(x => x.File).ToList();
-                    ActiveIndex = ChapterList.Count > 0 && Settings.Default.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last.ToString() ? ChapterList.Count-1 : 0;
+                    ActiveIndex = ChapterList.Count > 0 && Config.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last.ToString() ? ChapterList.Count-1 : 0;
                     if (ActiveIndex == 0) { UpdateAsync().ConfigureAwait(false); }
                     EnablePrevClick = ActiveIndex > 0;
                     EnableNextClick = ActiveIndex < ChapterList.Count - 1;
@@ -143,8 +145,7 @@ namespace Minimal_CS_Manga_Reader
                     {
                         _imageMarginSetter = number;
                         if (_imageMarginSetter < 0) _imageMarginSetter = 0;
-                        Settings.Default.ImageMargin = _imageMarginSetter;
-                        Settings.Default.Save();
+                        Config.ImageMargin = _imageMarginSetter;
                         UpdateImageHeight();
                     }
                     ImageMarginSetter = _imageMarginSetter.ToString();
@@ -162,8 +163,7 @@ namespace Minimal_CS_Manga_Reader
                     if (succes && number != _scrollIncrement)
                     {
                         _scrollIncrement = number;
-                        Settings.Default.ScrollIncrement = _scrollIncrement;
-                        Settings.Default.Save();
+                        Config.ScrollIncrement = _scrollIncrement;
                     }
                     ScrollIncrement = _scrollIncrement.ToString();
                 });
@@ -209,7 +209,12 @@ namespace Minimal_CS_Manga_Reader
             ImageMargin = $"0,0,0,{ImageMarginSetter}";
             ScrollIncrement = _scrollIncrement.ToString();
             ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
-            ActiveBackgroundView = Settings.Default.Background;
+            ActiveBackgroundView = Config.Background;
+            // Config Property
+            IsScrollBarVisible = Config.IsScrollBarVisible;
+            _scrollIncrement = Config.ScrollIncrement;
+            _imageMarginSetter = Config.ImageMargin;
+            ActiveBackgroundView = Config.Background;
         }
 
         private void UpdateImageHeight()
@@ -266,7 +271,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public List<ValueTuple<double, double>> ImageDimension { get; set; } = new List<ValueTuple<double, double>>();
         [Reactive] public string WindowTitle { get; set; } = "";
         [Reactive] public int ActiveIndex { get; set; } = 0;
-        [Reactive] public bool IsScrollBarVisible { get; set; } = Settings.Default.IsScrollBarVisible;
+        [Reactive] public bool IsScrollBarVisible { get; set; }
         [Reactive] public bool EnablePrevClick { get; set; }
         [Reactive] public bool EnableNextClick { get; set; }
         [Reactive] private int _activeImage { get; set; } = 0;
@@ -279,8 +284,8 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, int> NextClick { get; }
         public ReactiveCommand<Unit, int> PreviousClick { get; }
         public ReactiveCommand<Unit, bool> ToggleFullscreen { get; }
-        private int _scrollIncrement { get; set; } = Settings.Default.ScrollIncrement;
-        private int _imageMarginSetter { get; set; } = Settings.Default.ImageMargin;
+        private int _scrollIncrement { get; set; }
+        private int _imageMarginSetter { get; set; }
         private int _zoomScaleSetter { get; set; } = 100;
         [Reactive] public int ToolbarHeight { get; set; } = 30;
         [Reactive] public bool IsFullscreen { get; set; } = false;
@@ -288,7 +293,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public string ScrollIncrement { get; set; }
         [Reactive] public string ZoomScaleSetter { get; set; }
         [Reactive] public double ZoomScale { get; set; }
-        [Reactive] public string ActiveBackgroundView { get; set; } = Settings.Default.Background;
+        [Reactive] public string ActiveBackgroundView { get; set; } 
 
         #endregion Property
 
@@ -311,8 +316,8 @@ namespace Minimal_CS_Manga_Reader
             {
                 var saveAndRefresh = await SettingDialogInteraction.Handle(Unit.Default);
                 //refresh
-                IsScrollBarVisible = Settings.Default.IsScrollBarVisible;
-                ActiveBackgroundView = Settings.Default.Background;
+                IsScrollBarVisible = Config.IsScrollBarVisible;
+                ActiveBackgroundView = Config.Background;
 
                 if (saveAndRefresh) _ = UpdateAsync().ConfigureAwait(false);
             }

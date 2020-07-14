@@ -2,6 +2,7 @@
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using SharpCompress.Archives;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,6 +20,12 @@ namespace Minimal_CS_Manga_Reader
 {
     public class DataCollector
     {
+        private readonly IUserConfig Config; 
+        public DataCollector(IUserConfig config)
+        {
+            Config = config ?? Locator.Current.GetService<IUserConfig>();
+        }
+
         public async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
             if (IsArchive) return new List<Entry> { new Entry(Path) };
@@ -137,9 +144,9 @@ namespace Minimal_CS_Manga_Reader
             Bitmap clone = new Bitmap(x.Width, x.Height, PixelFormat);
 
             using Graphics gr = Graphics.FromImage(clone);
-            gr.InterpolationMode = Settings.Default.InterpolationMode;
-            gr.PixelOffsetMode = Settings.Default.PixelOffsetMode;
-            gr.SmoothingMode = Settings.Default.SmoothingMode;
+            gr.InterpolationMode = Config.InterpolationMode;
+            gr.PixelOffsetMode = Config.PixelOffsetMode;
+            gr.SmoothingMode = Config.SmoothingMode;
             gr.Clear(Color.Transparent);
             gr.DrawImage(x, new Rectangle(0, 0, clone.Width, clone.Height));
             return clone;

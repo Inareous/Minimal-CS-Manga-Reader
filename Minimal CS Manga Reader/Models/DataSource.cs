@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
+using Splat;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -13,12 +14,13 @@ namespace Minimal_CS_Manga_Reader
     {
         #region Property
 
-        private readonly DataCollector collector = new DataCollector();
+        private readonly IUserConfig Config;
+
+        private DataCollector collector;
         public string Title { get; private set; } = "";
 
-
         public SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
-        public string Path { get; private set; } = Settings.Default.Path;
+        public string Path { get; private set; } = "";
 
         public string ActiveChapterPath { get; set; } = System.IO.Path.DirectorySeparatorChar.ToString();
 
@@ -28,8 +30,15 @@ namespace Minimal_CS_Manga_Reader
 
         #region Method
 
+        public DataSource(IUserConfig config)
+        {
+            Config = config ?? Locator.Current.GetService<IUserConfig>();
+            collector = new DataCollector(Config);
+        }
+
         public async Task InitializeAsync(string[] args)
         {
+            Path = Config.Path;
             if (args.Length > 1)
             {
                 for (int i = 1; i < args.Length; i++)
@@ -57,8 +66,7 @@ namespace Minimal_CS_Manga_Reader
             else return;
 
             Path = path;
-            Settings.Default.Path = Path;
-            Settings.Default.Save();
+            Config.Path = Path;
             Title = Path.Split(System.IO.Path.DirectorySeparatorChar).ToArray()[^1];
             ChapterList.Clear();
             var list = await collector.GetChapterListAsync(Path, IsPathArchiveFile);

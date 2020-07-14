@@ -4,6 +4,7 @@ using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,31 +63,34 @@ namespace Minimal_CS_Manga_Reader
 
         [Reactive] public Enums.Theme SelectedTheme { get; set; }
         public IEnumerable<Enums.Theme> ThemeList { get; set; } = Enum.GetValues(typeof(Enums.Theme)).Cast<Enums.Theme>();
-        public SettingViewModel(Action<SettingViewModel, bool> closeCallback)
+
+        readonly IUserConfig Config;
+        public SettingViewModel(Action<SettingViewModel, bool> closeCallback, IUserConfig config)
         {
+            Config = config ?? Locator.Current.GetService<IUserConfig>();
             ContextIntegrated = RegistryContextManager.IsContextRegistry();
             _initialContextIntegrated = ContextIntegrated;
-            FitImagesToScreen = Settings.Default.FitImagesToScreen;
-            IsScrollBarVisible = Settings.Default.IsScrollBarVisible;
-            OpenChapterOnLoad = Settings.Default.OpenChapterOnLoadChoice;
-            SelectedBackground = Settings.Default.Background;
-            SelectedTheme = Settings.Default.Theme;
+            FitImagesToScreen = Config.FitImagesToScreen;
+            IsScrollBarVisible = Config.IsScrollBarVisible;
+            OpenChapterOnLoad = Config.OpenChapterOnLoadChoice;
+            SelectedBackground = Config.Background;
+            SelectedTheme = Config.Theme;
 
             try
             {
-                SelectedInterpolationMode = Settings.Default.InterpolationMode;
-                SelectedSmoothingMode = Settings.Default.SmoothingMode;
-                SelectedPixelOffsetMode = Settings.Default.PixelOffsetMode;
+                SelectedInterpolationMode = Config.InterpolationMode;
+                SelectedSmoothingMode = Config.SmoothingMode;
+                SelectedPixelOffsetMode = Config.PixelOffsetMode;
             }
             catch (Exception)
             {
                 SelectedInterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
                 SelectedSmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
                 SelectedPixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Default;
-                Settings.Default.InterpolationMode = SelectedInterpolationMode;
-                Settings.Default.SmoothingMode = SelectedSmoothingMode;
-                Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
-                Settings.Default.Save();
+                Config.InterpolationMode = SelectedInterpolationMode;
+                Config.SmoothingMode = SelectedSmoothingMode;
+                Config.PixelOffsetMode = SelectedPixelOffsetMode;
+                Config.Save();
             }
             _closeCallback = closeCallback;
 
@@ -105,10 +109,10 @@ namespace Minimal_CS_Manga_Reader
             Close = ReactiveCommand.Create(() => 
             {
                 _closeCallback(this, false);
-                if (SelectedTheme != Settings.Default.Theme)
+                if (SelectedTheme != Config.Theme)
                 {
                     // Restore theme
-                    ThemeEditor.ModifyTheme(Settings.Default.Theme);
+                    ThemeEditor.ModifyTheme(Config.Theme);
                 }
             });
 
@@ -119,15 +123,15 @@ namespace Minimal_CS_Manga_Reader
         }
 
         private void SaveSettings(){
-            Settings.Default.InterpolationMode = SelectedInterpolationMode;
-            Settings.Default.SmoothingMode = SelectedSmoothingMode;
-            Settings.Default.PixelOffsetMode = SelectedPixelOffsetMode;
-            Settings.Default.FitImagesToScreen = FitImagesToScreen;
-            Settings.Default.IsScrollBarVisible = IsScrollBarVisible;
-            Settings.Default.OpenChapterOnLoadChoice = OpenChapterOnLoad;
-            Settings.Default.Background = SelectedBackground;
-            Settings.Default.Theme = SelectedTheme;
-            Settings.Default.Save();
+            Config.InterpolationMode = SelectedInterpolationMode;
+            Config.SmoothingMode = SelectedSmoothingMode;
+            Config.PixelOffsetMode = SelectedPixelOffsetMode;
+            Config.FitImagesToScreen = FitImagesToScreen;
+            Config.IsScrollBarVisible = IsScrollBarVisible;
+            Config.OpenChapterOnLoadChoice = OpenChapterOnLoad;
+            Config.Background = SelectedBackground;
+            Config.Theme = SelectedTheme;
+            Config.Save();
             if (_initialContextIntegrated != ContextIntegrated)
             {
                 try

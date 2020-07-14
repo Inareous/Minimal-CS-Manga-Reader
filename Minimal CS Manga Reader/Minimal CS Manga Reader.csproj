@@ -24,28 +24,12 @@
     <PackageReference Include="ReactiveUI.Fody" Version="11.4.17" />
     <PackageReference Include="ReactiveUI.WPF" Version="11.4.17" />
     <PackageReference Include="sharpcompress" Version="0.25.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="WpfMouseWheelLib">
       <HintPath>dlls\WpfMouseWheelLib.dll</HintPath>
     </Reference>
-  </ItemGroup>
-	 
-  <ItemGroup>
-    <Compile Update="Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

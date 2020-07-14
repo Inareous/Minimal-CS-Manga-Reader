@@ -1,7 +1,6 @@
 ﻿using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
 using Splat;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Minimal_CS_Manga_Reader
@@ -13,24 +12,28 @@ namespace Minimal_CS_Manga_Reader
     {
         readonly IDataSource data;
         readonly IBookmarksSource bookmarks;
+        readonly IUserConfig config;
 
         public App()
         {
-            Locator.CurrentMutable.RegisterConstant(new DataSource(), typeof(IDataSource));
             Locator.CurrentMutable.RegisterConstant(new BookmarksSource(), typeof(IBookmarksSource));
+            bookmarks = Locator.Current.GetService<IBookmarksSource>();
+            Locator.CurrentMutable.RegisterConstant(new UserConfig(), typeof(IUserConfig));
+            config = Locator.Current.GetService<IUserConfig>();
+            Locator.CurrentMutable.RegisterConstant(new DataSource(config), typeof(IDataSource));
+            data = Locator.Current.GetService<IDataSource>();
             //
-            Locator.CurrentMutable.Register(() => new AppViewModel(Locator.Current.GetService<IDataSource>(), Locator.Current.GetService<IBookmarksSource>()));
-            Locator.CurrentMutable.Register(() => new MainWindow(), typeof(IViewFor<AppViewModel>));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new AppViewModel(Locator.Current.GetService<IDataSource>(), Locator.Current.GetService<IBookmarksSource>(), Locator.Current.GetService<IUserConfig>()));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new MainWindow(), typeof(IViewFor<AppViewModel>));
             Locator.CurrentMutable.RegisterLazySingleton(() => new BookmarkView(), typeof(IViewFor<BookmarkViewModel>));
             Locator.CurrentMutable.RegisterLazySingleton(() => new SettingView(), typeof(IViewFor<SettingViewModel>));
             //
-            data = Locator.Current.GetService<IDataSource>();
-            bookmarks = Locator.Current.GetService<IBookmarksSource>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            config.Load();
             data.InitializeAsync(System.Environment.GetCommandLineArgs());
             bookmarks.LoadAsync();
             Current.MainWindow = (MainWindow)Locator.Current.GetService(typeof(IViewFor<AppViewModel>));
@@ -40,6 +43,7 @@ namespace Minimal_CS_Manga_Reader
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
+            config.Save();
             bookmarks.SaveAsync();
         }
     }
