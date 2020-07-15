@@ -15,6 +15,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         ShowIconOnTitleBar="False"
         WindowTitleBrush="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontFamily="{DynamicResource MaterialDesignFont}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         WindowTransitionsEnabled = "False"
@@ -87,6 +88,7 @@
              Opacity="1"
              FontWeight="Regular"
              FontStretch="ExtraExpanded"
+             VerticalAlignment="Center"
              TextBlock.FontSize="12" />
         </DataTemplate>
     </Controls:MetroWindow.TitleTemplate>

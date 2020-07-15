@@ -329,6 +329,7 @@ namespace Minimal_CS_Manga_Reader
                 //refresh
                 IsScrollBarVisible = Config.IsScrollBarVisible;
                 ActiveBackgroundView = Config.Background;
+                ViewportWidth = Config.FitImagesToScreen ? ViewportWidth : int.MaxValue;
 
                 if (saveAndRefresh) _ = UpdateAsync().ConfigureAwait(false);
             }
