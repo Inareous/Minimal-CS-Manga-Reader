@@ -1,0 +1,44 @@
+[v0.1.0.9]
+- Experimental : Add bookmarks. Press F1 on selected chapter to add it to bookmarks (No docs for experimental feature) #14
+- Fix touchpad scrolling #18
+- Add option to hide scrollbar #17
+- important changelog from v0.1.0.7 if you upgrade from v0.1.0.6 or lower
+- Housekeeping
+
+[v0.1.0.8]
+- Added support for webp (#16)
+- Enable editing ActiveImage as a way to navigate (#13)
+- Navigate chapter by hover-scrolling the chapterlist (#13)
+- important changelog from v0.1.0.7 if you upgrade from v0.1.0.6 or lower
+
+[v0.1.0.7]
+Fix on #12 with few takeaway if you've used previous releases of Minimal CS Manga Reader:
+- If you've integrated it with File Explorer, re-check/re-enable "Integrate .." in Settings again.
+- If you've used it with FMD, HakuNeko, etc. and used `"-path=%PATH%"` as custom parameter, remove `-path=`
+
+[v0.1.0.6]
+From this release and so on: Releases no longer bundled with its runtime so you must have .NET Core 3.1 Desktop Runtime installed in your machine.
+If you don't have it installed already, you can get it from Microsoft's .NET Core 3.1 Desktop Runtime download page.
+
+Changelog:
+- Add #6
+- Housekeeping
+
+[v0.1.0.5]
+Add #8 and small fixes
+
+[v0.1.0.4]
+Add fullscreen mode and a few small fixes.
+
+[v0.1.0.3]
+Implement #4
+
+[v0.1.0.2]
+Fix #3 and integrate IntegrateContext to app
+
+[v0.1.0.1]
+Enable TieredCompilationQuickJitForLoops, ReadyToRun, and Fixing some small bugs.
+Note : This configuration is still slower than .Net Framework's Ngen, and added to milestone on .NET 5. link
+
+[v0.1.0.0]
+Enjoy the first public release!
