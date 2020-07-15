@@ -1,17 +1,17 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using ReactiveUI;
-using System;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Minimal_CS_Manga_Reader.Models;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
+using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Minimal_CS_Manga_Reader.Models;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-using System.Windows;
 
 namespace Minimal_CS_Manga_Reader
 {
@@ -48,9 +48,9 @@ namespace Minimal_CS_Manga_Reader
             });
 
             ChapterComboBox.Events().SelectionChanged.Subscribe(_ =>
-           {
-               ViewModel._activeIndex = ChapterComboBox.SelectedIndex;
-           });
+            {
+                ViewModel._activeIndex = ChapterComboBox.SelectedIndex;
+            });
 
             ChapterComboBox.Events().MouseWheel.Subscribe(x =>
             {
@@ -104,33 +104,33 @@ namespace Minimal_CS_Manga_Reader
                     }
                 });
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.F5)).
-                Subscribe(x =>
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.F5))
+                .Subscribe(x =>
                 {
                     x.Handled = true;
                     ViewModel.IsFullscreen = !ViewModel.IsFullscreen;
                 });
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.F2)).
-                Subscribe(x =>
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.F2))
+                .Subscribe(x =>
                 {
                     x.Handled = true;
-                    if(DialogCoordinator.Instance.GetCurrentDialogAsync<CustomDialog>(this).Result == null) ViewModel.OpenBookmark.Execute().Subscribe();
+                    if (DialogCoordinator.Instance.GetCurrentDialogAsync<CustomDialog>(this).Result == null) ViewModel.OpenBookmark.Execute().Subscribe();
                 });
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.Escape) && ViewModel.IsFullscreen).
-                Subscribe(x =>
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.Escape) && ViewModel.IsFullscreen)
+                .Subscribe(x =>
                 {
                     x.Handled = true;
                     ViewModel.IsFullscreen = !ViewModel.IsFullscreen;
                 });
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.Enter)).
-                Subscribe(x =>
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.Enter))
+                .Subscribe(x =>
                 {
                     x.Handled = true;
                     var focusedControl = Keyboard.FocusedElement as FrameworkElement;
@@ -142,25 +142,19 @@ namespace Minimal_CS_Manga_Reader
                     ScrollViewer.Focus();
                 });
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.Insert)).
-                Subscribe(x =>
-                {
-                    x.Handled = true;
-                    ViewModel.PreviousClick.Execute().Subscribe();
-                });
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.Insert))
+                .Select(args => System.Reactive.Unit.Default)
+                .InvokeCommand(ViewModel.PreviousClick);
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.Delete)).
-                Subscribe(x =>
-                {
-                    x.Handled = true;
-                    ViewModel.NextClick.Execute().Subscribe();
-                });
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.Delete))
+                .Select(args => System.Reactive.Unit.Default)
+                .InvokeCommand(ViewModel.NextClick);
 
-            this.Events().KeyDown.
-                Where(x => x.Key.Equals(Key.F1)).
-                Subscribe(x =>
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.F1))
+                .Subscribe(x =>
                 {
                     x.Handled = true;
                     if (ViewModel.AddBookmark())
@@ -257,7 +251,6 @@ namespace Minimal_CS_Manga_Reader
                 {
                     AnimateHide = false,
                     AnimateShow = true,
-
                 };
                 Locator.CurrentMutable.Register(() => new CustomDialog(metroDialogSettings));
             };
