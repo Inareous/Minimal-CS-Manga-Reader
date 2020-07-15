@@ -47,6 +47,11 @@ namespace Minimal_CS_Manga_Reader
                 ViewModel.ViewportWidth = ViewModel.Config.FitImagesToScreen ? x : int.MaxValue;
             });
 
+            ChapterComboBox.Events().SelectionChanged.Subscribe(_ =>
+           {
+               ViewModel._activeIndex = ChapterComboBox.SelectedIndex;
+           });
+
             ChapterComboBox.Events().MouseWheel.Subscribe(x =>
             {
                 if (!_isChapterComboBoxOnCooldown)
@@ -152,7 +157,6 @@ namespace Minimal_CS_Manga_Reader
                     x.Handled = true;
                     ViewModel.NextClick.Execute().Subscribe();
                 });
-
 
             this.Events().KeyDown.
                 Where(x => x.Key.Equals(Key.F1)).

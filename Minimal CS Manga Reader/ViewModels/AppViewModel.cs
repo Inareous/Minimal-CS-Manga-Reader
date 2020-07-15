@@ -60,13 +60,9 @@ namespace Minimal_CS_Manga_Reader
                 .Subscribe(activeIndex =>
                 {
                     ActiveIndex = activeIndex;
+                    UpdateAsync().ConfigureAwait(false);
                     EnablePrevClick = activeIndex > 0;
                     EnableNextClick = activeIndex < ChapterList.Count - 1;
-                });
-            this.WhenAnyValue(x => x.ActiveIndex)
-                .Subscribe(_ =>
-                {
-                    UpdateAsync().ConfigureAwait(false);
                 });
             DataSource.ImageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
@@ -285,7 +281,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public List<ValueTuple<double, double>> ImageDimension { get; set; } = new List<ValueTuple<double, double>>();
         [Reactive] public string WindowTitle { get; set; } = "";
         [Reactive] public int ActiveIndex { get; set; } = 0;
-        [Reactive] private int _activeIndex { get; set; } = 0;
+        [Reactive] public int _activeIndex { get; set; } = 0;
         [Reactive] public bool IsScrollBarVisible { get; set; }
         [Reactive] public bool EnablePrevClick { get; set; }
         [Reactive] public bool EnableNextClick { get; set; }
