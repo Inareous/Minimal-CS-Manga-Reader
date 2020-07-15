@@ -12,7 +12,7 @@ namespace Minimal_CS_Manga_Reader.Models
 {
     public class BookmarksSource : IBookmarksSource
     {
-        private const string fileName = "bookmarks.json";
+        private readonly string fileName = $@"{AppDomain.CurrentDomain.BaseDirectory}\bookmarks.json";
         public SourceList<Bookmark> Bookmarks { get; set; } = new SourceList<Bookmark>();
         public async Task LoadAsync()
         {

@@ -10,7 +10,6 @@ namespace Minimal_CS_Manga_Reader
     /// </summary>
     public partial class App : Application
     {
-        readonly IDataSource data;
         readonly IBookmarksSource bookmarks;
         readonly IUserConfig config;
 
@@ -21,7 +20,6 @@ namespace Minimal_CS_Manga_Reader
             Locator.CurrentMutable.RegisterConstant(new UserConfig(), typeof(IUserConfig));
             config = Locator.Current.GetService<IUserConfig>();
             Locator.CurrentMutable.RegisterConstant(new DataSource(config), typeof(IDataSource));
-            data = Locator.Current.GetService<IDataSource>();
             //
             Locator.CurrentMutable.RegisterLazySingleton(() => new AppViewModel(Locator.Current.GetService<IDataSource>(), Locator.Current.GetService<IBookmarksSource>(), Locator.Current.GetService<IUserConfig>()));
             Locator.CurrentMutable.RegisterLazySingleton(() => new MainWindow(), typeof(IViewFor<AppViewModel>));
@@ -34,7 +32,6 @@ namespace Minimal_CS_Manga_Reader
         {
             base.OnStartup(e);
             config.Load();
-            data.InitializeAsync(System.Environment.GetCommandLineArgs());
             bookmarks.LoadAsync();
             Current.MainWindow = (MainWindow)Locator.Current.GetService(typeof(IViewFor<AppViewModel>));
             Current.MainWindow.Show();

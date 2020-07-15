@@ -1,6 +1,5 @@
 ﻿using DynamicData;
 using DynamicData.Binding;
-using MaterialDesignThemes.Wpf;
 using Minimal_CS_Manga_Reader.Helper;
 using Minimal_CS_Manga_Reader.Models;
 using ReactiveUI;
@@ -27,9 +26,8 @@ namespace Minimal_CS_Manga_Reader
             DataSource = dataSource ?? Locator.Current.GetService<IDataSource>();
             BookmarksSource = bookmarksSource ?? Locator.Current.GetService<IBookmarksSource>();
             Config = config ?? Locator.Current.GetService<IUserConfig>();
-            ThemeEditor.ModifyTheme(Config.Theme);
 
-            InitializeWindow();
+            Initialize();
 
             #region Toggle Fullscreen
 
@@ -50,27 +48,25 @@ namespace Minimal_CS_Manga_Reader
                 .Subscribe(_ =>
                 {
                     ChapterList = _chapterList?.Select(x => x.File).ToList();
-                    ActiveIndex = ChapterList.Count > 0 && Config.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last ? ChapterList.Count-1 : 0;
-                    if (ActiveIndex == 0) { UpdateAsync().ConfigureAwait(false); }
-                    EnablePrevClick = ActiveIndex > 0;
-                    EnableNextClick = ActiveIndex < ChapterList.Count - 1;
                 });
 
             #endregion ChapterList Change
 
             #region Chapter Change
 
-            NextClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex >= ChapterList.Count - 1 ? ChapterList.Count - 1 : ActiveIndex + 1);
-            PreviousClick = ReactiveCommand.Create(() => ActiveIndex = ActiveIndex <= 0 ? 0 : ActiveIndex - 1);
+            NextClick = ReactiveCommand.Create(() => _activeIndex = _activeIndex >= ChapterList.Count - 1 ? ChapterList.Count - 1 : _activeIndex + 1);
+            PreviousClick = ReactiveCommand.Create(() => _activeIndex = _activeIndex <= 0 ? 0 : _activeIndex - 1);
+            this.WhenAnyValue(x => x._activeIndex)
+                .Subscribe(activeIndex =>
+                {
+                    ActiveIndex = activeIndex;
+                    EnablePrevClick = activeIndex > 0;
+                    EnableNextClick = activeIndex < ChapterList.Count - 1;
+                });
             this.WhenAnyValue(x => x.ActiveIndex)
                 .Subscribe(_ =>
                 {
-                    if (ChapterList.Count > 0)
-                    {
-                        UpdateAsync().ConfigureAwait(false);
-                    }
-                    EnablePrevClick = ActiveIndex > 0;
-                    EnableNextClick = ActiveIndex < ChapterList.Count - 1;
+                    UpdateAsync().ConfigureAwait(false);
                 });
             DataSource.ImageList.Connect().ObserveOn(RxApp.MainThreadScheduler)
                 .OnItemAdded(x =>
@@ -179,6 +175,7 @@ namespace Minimal_CS_Manga_Reader
             OpenBookmark = ReactiveCommand.CreateFromTask(OpenBookmarkDialog);
 
             #endregion dialog
+
         }
 
         public bool AddBookmark()
@@ -203,18 +200,35 @@ namespace Minimal_CS_Manga_Reader
 
         #endregion Scroll
 
-        private void InitializeWindow()
+        private void Initialize()
         {
-            WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+            _ = Task.Run(async () =>
+            {
+                DataSource.Initialize(Environment.GetCommandLineArgs());
+                var updated = await DataSource.SetChapter(DataSource.Path); // Self-initialize
+                WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
+                if (updated)
+                {
+                    // Refresh from source instead of ViewModel since it's not initialized yet
+                    _activeIndex = DataSource.ChapterList.Count > 0 && Config.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last ? DataSource.ChapterList.Count - 1 : 0;
+                    ActiveIndex = _activeIndex;
+                }
+            });
+            ThemeEditor.ModifyTheme(Config.Theme);
             ImageMargin = $"0,0,0,{ImageMarginSetter}";
             ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
             ActiveBackgroundView = Config.Background;
-            // Config Property
             IsScrollBarVisible = Config.IsScrollBarVisible;
             _scrollIncrement = Config.ScrollIncrement;
             ScrollIncrement = _scrollIncrement.ToString();
             _imageMarginSetter = Config.ImageMargin;
             ActiveBackgroundView = Config.Background;
+        }
+
+        private void RefreshActiveIndex()
+        {
+            _activeIndex = _chapterList.Count > 0 && Config.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last ? _chapterList.Count - 1 : 0;
+            ActiveIndex = _activeIndex;
         }
 
         private void UpdateImageHeight()
@@ -271,6 +285,7 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public List<ValueTuple<double, double>> ImageDimension { get; set; } = new List<ValueTuple<double, double>>();
         [Reactive] public string WindowTitle { get; set; } = "";
         [Reactive] public int ActiveIndex { get; set; } = 0;
+        [Reactive] private int _activeIndex { get; set; } = 0;
         [Reactive] public bool IsScrollBarVisible { get; set; }
         [Reactive] public bool EnablePrevClick { get; set; }
         [Reactive] public bool EnableNextClick { get; set; }
@@ -334,7 +349,8 @@ namespace Minimal_CS_Manga_Reader
                 var (callback, openChapterPath) = await FolderDialogInteraction.Handle(DataSource.Path);
                 if (callback == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
                 {
-                    await DataSource.SetChapter(openChapterPath);
+                    var updated = await DataSource.SetChapter(openChapterPath);
+                    if (updated) RefreshActiveIndex();
                     WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
                 }
             }
@@ -352,7 +368,8 @@ namespace Minimal_CS_Manga_Reader
                 if (callback == null) return; // Allow null but discard (for 'Cancel')
                 if (callback.ChapterPath != DataSource.Path)
                 {
-                    await DataSource.SetChapter(callback.ChapterPath);
+                    var updated = await DataSource.SetChapter(callback.ChapterPath);
+                    
                     WindowTitle = $"{DataSource.Title}  -  Minimal CS Manga Reader";
                 }
                 if (callback.ActiveChapterEntry.AbsolutePath == DataSource.ActiveChapterPath) return;
@@ -360,10 +377,12 @@ namespace Minimal_CS_Manga_Reader
                 {
                     if (_chapterList[i].AbsolutePath == callback.ActiveChapterEntry.AbsolutePath)
                     {
-                        ActiveIndex = i;
+                        _activeIndex = i;
                         return;
                     }
                 }
+                // No matching chapter
+                RefreshActiveIndex();
             }
             catch (Exception e)
             {

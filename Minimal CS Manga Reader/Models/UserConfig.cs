@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Minimal_CS_Manga_Reader.Models
 {
     public class UserConfig : IUserConfig
     {
-        private const string userFile = "UserConfig.json";
+        private readonly string userFile = $@"{AppDomain.CurrentDomain.BaseDirectory}\UserConfig.json";
         public string Path { get; set; } = "FirstTimeNotSet";
         public int ScrollIncrement { get; set; } = 100;
         public int ImageMargin { get; set; } = 20;
