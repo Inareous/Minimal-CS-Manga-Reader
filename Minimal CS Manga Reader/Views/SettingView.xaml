@@ -7,7 +7,6 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />
         </Grid.ColumnDefinitions>
@@ -67,24 +66,9 @@
                                 Open selected chapter when program is loaded
                     </TextBlock>
                 </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="ContextIntegrated" Content="Integrate Minimal CS Manga Reader with File Explorer Context"  FontSize="13" Margin="0 0 15 0" />
-                </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="FitImagesToScreen" Content="Resize image to fit screen horizontally"  FontSize="13" Margin="0 0 15 0" />
-                </Grid>
-                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="IsScrollBarVisible" Content="Show ScrollBar"  FontSize="13" Margin="0 0 15 0" />
-                </Grid>
+                <CheckBox x:Name="ContextIntegrated" Content="Integrate Minimal CS Manga Reader with File Explorer Context"  FontSize="13" Margin="0 0 15 8" HorizontalAlignment="Left" />
+                <CheckBox x:Name="FitImagesToScreen" Content="Resize image to fit screen horizontally"  FontSize="13" Margin="0 0 15 8" HorizontalAlignment="Left" />
+                <CheckBox x:Name="IsScrollBarVisible" Content="Show ScrollBar"  FontSize="13" Margin="0 0 15 8" HorizontalAlignment="Left" />
                 <Grid HorizontalAlignment="Right" Margin="0 50 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
