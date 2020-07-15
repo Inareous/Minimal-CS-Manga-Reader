@@ -23,8 +23,6 @@ namespace Minimal_CS_Manga_Reader
         [Reactive] public bool ContextIntegrated { get; set; }
         [Reactive] public bool FitImagesToScreen { get; set; }
         [Reactive] public bool IsScrollBarVisible { get; set; }
-        [Reactive] public Array OpenChapterOnLoadList { get; set; } = Enum.GetNames(typeof(Enums.OpenChapterOnLoad));
-        [Reactive] public string OpenChapterOnLoad { get; set; }
         public IEnumerable<System.Drawing.Drawing2D.InterpolationMode> InterpolationMode
         {
             get
@@ -63,6 +61,8 @@ namespace Minimal_CS_Manga_Reader
 
         [Reactive] public Enums.Theme SelectedTheme { get; set; }
         public IEnumerable<Enums.Theme> ThemeList { get; set; } = Enum.GetValues(typeof(Enums.Theme)).Cast<Enums.Theme>();
+        public IEnumerable<Enums.OpenChapterOnLoad> OpenChapterOnLoadList { get; set; } = Enum.GetValues(typeof(Enums.OpenChapterOnLoad)).Cast<Enums.OpenChapterOnLoad>();
+        [Reactive] public Enums.OpenChapterOnLoad OpenChapterOnLoad { get; set; }
 
         readonly IUserConfig Config;
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback, IUserConfig config)

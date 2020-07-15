@@ -18,7 +18,7 @@ namespace Minimal_CS_Manga_Reader.Models
         public System.Drawing.Drawing2D.SmoothingMode SmoothingMode { get; set; }
         public System.Drawing.Drawing2D.PixelOffsetMode PixelOffsetMode { get; set; }
         public bool FitImagesToScreen { get; set; } = false;
-        public string OpenChapterOnLoadChoice { get; set; } = "Last";
+        public Enums.OpenChapterOnLoad OpenChapterOnLoadChoice { get; set; } = Enums.OpenChapterOnLoad.Last;
         public bool IsScrollBarVisible { get; set; } = true;
         public Enums.Theme Theme { get; set; } = Enums.Theme.Light;
         public void Load()

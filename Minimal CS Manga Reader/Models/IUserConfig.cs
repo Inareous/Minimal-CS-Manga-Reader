@@ -9,7 +9,7 @@ namespace Minimal_CS_Manga_Reader.Models
         int ImageMargin { get; set; }
         InterpolationMode InterpolationMode { get; set; }
         bool IsScrollBarVisible { get; set; }
-        string OpenChapterOnLoadChoice { get; set; }
+        Enums.OpenChapterOnLoad OpenChapterOnLoadChoice { get; set; }
         string Path { get; set; }
         PixelOffsetMode PixelOffsetMode { get; set; }
         int ScrollIncrement { get; set; }

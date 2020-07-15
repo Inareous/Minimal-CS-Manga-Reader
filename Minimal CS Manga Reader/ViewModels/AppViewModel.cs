@@ -50,7 +50,7 @@ namespace Minimal_CS_Manga_Reader
                 .Subscribe(_ =>
                 {
                     ChapterList = _chapterList?.Select(x => x.File).ToList();
-                    ActiveIndex = ChapterList.Count > 0 && Config.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last.ToString() ? ChapterList.Count-1 : 0;
+                    ActiveIndex = ChapterList.Count > 0 && Config.OpenChapterOnLoadChoice == Enums.OpenChapterOnLoad.Last ? ChapterList.Count-1 : 0;
                     if (ActiveIndex == 0) { UpdateAsync().ConfigureAwait(false); }
                     EnablePrevClick = ActiveIndex > 0;
                     EnableNextClick = ActiveIndex < ChapterList.Count - 1;
