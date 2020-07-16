@@ -24,6 +24,7 @@ namespace Minimal_CS_Manga_Reader
             BookmarksSource = bookmarks ?? Locator.Current.GetService<IBookmarksSource>();
 
             BookmarksSource.Bookmarks.Connect().ObserveOn(RxApp.MainThreadScheduler)
+                .Sort(new BookmarkComparer(StringComparison.OrdinalIgnoreCase))
                 .Bind(BookmarkList).DisposeMany().Subscribe();
 
             _closeCallback = closeCallback;
