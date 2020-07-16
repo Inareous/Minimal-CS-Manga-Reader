@@ -117,7 +117,9 @@ namespace Minimal_CS_Manga_Reader
                 .Subscribe(x =>
                 {
                     x.Handled = true;
-                    if (DialogCoordinator.Instance.GetCurrentDialogAsync<CustomDialog>(this).Result == null) ViewModel.OpenBookmark.Execute().Subscribe();
+                    var cDialog = DialogCoordinator.Instance.GetCurrentDialogAsync<CustomDialog>(this).Result;
+                    if (cDialog == null) ViewModel.OpenBookmark.Execute().Subscribe();
+                    else if (cDialog.Name == "Bookmarks") DialogCoordinator.Instance.HideMetroDialogAsync(this, dlg);
                 });
 
             this.Events().KeyDown
@@ -186,7 +188,8 @@ namespace Minimal_CS_Manga_Reader
 
                 ViewModel.SettingDialogInteraction.RegisterHandler(async interaction =>
                 {
-                    var dlg = GetCustomDialog();
+                    dlg = GetCustomDialog();
+                    dlg.Name = "Settings";
 
                     var dlgvm = new SettingViewModel((SettingViewModel vm, bool IsSaved) =>
                     {
@@ -224,7 +227,8 @@ namespace Minimal_CS_Manga_Reader
 
                 ViewModel.BookmarkDialogInteraction.RegisterHandler(async interaction =>
                 {
-                    var dlg = GetCustomDialog();
+                    dlg = GetCustomDialog();
+                    dlg.Name = "Bookmarks";
 
                     var dlgvm = new BookmarkViewModel((BookmarkViewModel vm, Bookmark bookmarkItem) =>
                     {
@@ -242,6 +246,8 @@ namespace Minimal_CS_Manga_Reader
                 }).DisposeWith(d);
             });
         }
+
+        private CustomDialog dlg; 
 
         private CustomDialog GetCustomDialog()
         {
