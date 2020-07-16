@@ -3,9 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="400"
+             Background="Transparent"
+             TextOptions.TextRenderingMode="ClearType">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="ListBoxItems" Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ViewModel.BookmarkList}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="ChapterPathTrimmed" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />
@@ -16,7 +26,12 @@
 
         <Border Background="{DynamicResource MaterialDesignPaper}" CornerRadius="10">
             <StackPanel Margin="30 30 30 30">
-                <ListBox x:Name="Bookmarks" Height="500">
+                <ListBox x:Name="Bookmarks" Height="500"
+                         ItemsSource="{Binding Source={StaticResource ListBoxItems}}"
+                         materialDesign:RippleAssist.IsDisabled="True"
+                         SnapsToDevicePixels="True"
+                         UseLayoutRounding="True"
+                         >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                                 <Grid Margin="0">
@@ -25,29 +40,39 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0">
-                                        <StackPanel>
-                                        <TextBlock FontSize="14" Grid.Column="0" Padding="1" Margin="0" Text="{Binding ChapterPathTrimmed}"/>
-                                        <TextBlock FontSize="13" Grid.Column="0" Padding="1" Margin="0"  Text="{Binding ActiveChapterEntry.Name}"/>
-                                        </StackPanel>
+                                        <TextBlock FontSize="13" Grid.Column="0" Padding="1" Margin="10 0 0 0" TextWrapping="WrapWithOverflow" Text="{Binding ActiveChapterEntry.Name}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     </Border>
-                                    <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20"
                                         Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ViewModel.DeleteBookmark}"
                                         CommandParameter="{Binding .}">
-                                        <Canvas Margin="-25,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Canvas Margin="-37,-25,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="MediumPurple" />
                                         </Canvas>
                                     </Button>
                                 </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Medium" Margin="10" FontSize="14" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListBox.GroupStyle>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-
                             <Setter Property="Padding" Value="5"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                 </ListBox>
                 <Grid>
                     <Grid.ColumnDefinitions>
