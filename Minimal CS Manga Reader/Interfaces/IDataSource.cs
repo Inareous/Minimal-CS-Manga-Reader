@@ -1,10 +1,9 @@
 ﻿using DynamicData;
-using Minimal_CS_Manga_Reader.Models;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace Minimal_CS_Manga_Reader
+namespace Minimal_CS_Manga_Reader.Models
 {
     public interface IDataSource
     {
