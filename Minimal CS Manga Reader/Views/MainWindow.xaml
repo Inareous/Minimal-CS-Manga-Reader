@@ -17,9 +17,9 @@
         WindowTitleBrush="{DynamicResource MaterialDesignPaper}"
         TextElement.FontFamily="{DynamicResource MaterialDesignFont}"
         TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
+        TextElement.FontSize="14"
         WindowTransitionsEnabled = "False"
-        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
         BorderThickness="0"
         OverlayFadeIn="{StaticResource FastDialogFadeIn}"
@@ -46,13 +46,15 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Margin" Value="8 3 0 3" />
+            <Setter Property="FontWeight" Value="Regular" />
         </Style>
         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignTextBlock}">
             <Setter Property="MinHeight" Value="1" />
-            <Setter Property="Margin" Value="0 1 0 0" />
+            <Setter Property="Margin" Value="0 2 0 0" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="FontWeight" Value="Regular" />
         </Style>
          <Style TargetType="{x:Type Separator}">
             <Setter Property="Margin" Value="0 10 0 10" />
@@ -86,8 +88,8 @@
              Foreground="{DynamicResource MaterialDesignBody}"
              Margin="10 2 0 0"
              Opacity="1"
-             FontWeight="Regular"
-             FontStretch="ExtraExpanded"
+             FontWeight="Medium"
+             FontStretch="UltraExpanded"
              VerticalAlignment="Center"
              TextBlock.FontSize="12" />
         </DataTemplate>
@@ -127,7 +129,7 @@
                                      HorizontalAlignment="Center">
                             <ComboBox.ItemContainerStyle>
                                 <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Height" Value="23" />
+                                    <Setter Property="Height" Value="25" />
                                     <Setter Property="VerticalAlignment" Value="Center" />
                                     <Setter Property="SnapsToDevicePixels" Value="true" />
                                     <Setter Property="Padding" Value="5 0 0 0" />
@@ -143,8 +145,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock
-                  Text="{Binding }" MaxWidth="600"
-                  TextTrimming="CharacterEllipsis" TextOptions.TextRenderingMode="ClearType" />
+                                              Text="{Binding }" MaxWidth="600"
+                                              TextTrimming="CharacterEllipsis" TextOptions.TextRenderingMode="ClearType" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                             <ComboBox.ItemsPanel>
@@ -176,7 +178,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="ActiveIndexBox" Grid.Column="0" Text="{Binding ActiveImage, Mode=OneWay}" Width="30"/>
-                        <TextBlock Margin="5 1 0 0" Grid.Column="1" >/</TextBlock>
+                        <TextBlock Grid.Column="1" >/</TextBlock>
                         <TextBlock Grid.Column="2" Name="ImageCount"
                                Text="{Binding ImageCount, Mode=TwoWay}"
                                MinWidth="25" MinHeight="1"/>

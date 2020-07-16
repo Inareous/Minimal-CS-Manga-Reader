@@ -7,8 +7,7 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400"
-             Background="Transparent"
-             TextOptions.TextRenderingMode="ClearType">
+             Background="Transparent">
     <UserControl.Resources>
         <CollectionViewSource x:Key="ListBoxItems" Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ViewModel.BookmarkList}">
             <CollectionViewSource.GroupDescriptions>
@@ -40,7 +39,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Border Grid.Column="0">
-                                        <TextBlock FontSize="13" Grid.Column="0" Padding="1" Margin="10 0 0 0" TextWrapping="WrapWithOverflow" Text="{Binding ActiveChapterEntry.Name}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="14" Grid.Column="0" Padding="1" Margin="10 0 0 0" TextWrapping="WrapWithOverflow" Text="{Binding ActiveChapterEntry.Name}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     </Border>
                                     <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20"
                                         Margin="1 0 5 0" Style="{DynamicResource MaterialDesignFlatButton}"
