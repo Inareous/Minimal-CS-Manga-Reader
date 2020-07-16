@@ -14,6 +14,10 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <TieredCompilationQuickJitForLoops>True</TieredCompilationQuickJitForLoops>
     <PublishReadyToRun>True</PublishReadyToRun>
+    <Authors>Inareous</Authors>
+    <Description>A minimal program for your daily use of reading manga continously in one page.</Description>
+    <PackageProjectUrl>https://github.com/Inareous/Minimal-CS-Manga-Reader</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Inareous/Minimal-CS-Manga-Reader</RepositoryUrl>
   </PropertyGroup>
    
   <ItemGroup>
