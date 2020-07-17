@@ -35,6 +35,8 @@ jobs:
       run: |
         .\build.ps1 x64
         New-Item -ItemType Directory -Path C:\builtfiles -Force > $null
+        New-Item -Path "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x64\version.txt"
+        Set-Content "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x64\version.txt" '${{steps.tagName.outputs.tag}}'
         Compress-Archive -Path "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x64" -DestinationPath C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x64.zip
 
     - name: Build (.NET Core x86)
@@ -42,6 +44,8 @@ jobs:
       run: |
         .\build.ps1 x86
         New-Item -ItemType Directory -Path C:\builtfiles -Force > $null
+        New-Item -Path "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x86\version.txt"
+        Set-Content "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x86\version.txt" '${{steps.tagName.outputs.tag}}'
         Compress-Archive -Path "Minimal CS Manga Reader\Release\Minimal CS Manga Reader x86" -DestinationPath C:\builtfiles\Minimal.CS.Manga.Reader.${{steps.tagName.outputs.tag}}-x86.zip
 
     - name: Upload Artifact (.NET Core x64)
