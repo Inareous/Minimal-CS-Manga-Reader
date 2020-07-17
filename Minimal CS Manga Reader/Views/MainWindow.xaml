@@ -233,13 +233,13 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" ToolTip="Decrease by 10%" Style="{StaticResource Icon}"
+                        <Button Grid.Column="0" ToolTip="Decrease by 10% ([)" Style="{StaticResource Icon}"
                                 Command="{Binding DecreaseZoom}">
                                 <Canvas Margin="-25,-25,0,0">
                                 <Path Data="M19,13H5V11H19V13Z" Fill="{DynamicResource PrimaryHueMidBrush}" />
                                 </Canvas>
                         </Button>
-                        <Button Grid.Column="1" ToolTip="Increase by 10%" Style="{StaticResource Icon}"
+                        <Button Grid.Column="1" ToolTip="Increase by 10% (])" Style="{StaticResource Icon}"
                                 Command="{Binding IncreaseZoom}">
                                 <Canvas Margin="-25,-25,0,0">
                                 <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Fill="{DynamicResource PrimaryHueMidBrush}" />

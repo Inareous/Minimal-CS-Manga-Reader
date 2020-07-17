@@ -190,6 +190,14 @@ namespace Minimal_CS_Manga_Reader
                 .Where(x => x.Key.Equals(Key.O) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
                 .InvokeCommand(ViewModel.OpenFolder);
 
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.OemCloseBrackets))
+                .Subscribe(x => ViewModel.IncreaseZoom.Execute().Subscribe());
+
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.OemOpenBrackets))
+                .Subscribe(x=> ViewModel.DecreaseZoom.Execute().Subscribe());
+
             this.WhenActivated(d =>
             {
                 new DialogParticipationRegistration(this).DisposeWith(d);
