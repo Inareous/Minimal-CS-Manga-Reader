@@ -65,10 +65,10 @@ namespace Minimal_CS_Manga_Reader.Helper
         {
             try
             {
-                Registry.CurrentUser.DeleteSubKeyTree($@"{keyPath}", true);
+                Registry.CurrentUser.DeleteSubKeyTree($@"{keyPath}", false);
                 //Delete old relic too
                 var oldKeyPath = @"SOFTWARE\Classes\Folder\shell\Minimal CS Manga Reader Context Menu";
-                Registry.CurrentUser.DeleteSubKeyTree($@"{oldKeyPath}", true);
+                Registry.CurrentUser.DeleteSubKeyTree($@"{oldKeyPath}", false);
             }
             catch (Exception e)
             {

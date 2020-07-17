@@ -11,7 +11,7 @@ namespace Minimal_CS_Manga_Reader.Models
         {
             AbsolutePath = absolutePath;
             File = absolutePath.Split(Path.DirectorySeparatorChar)[^1];
-            Name = Path.GetFileNameWithoutExtension(File);
+            Name = Directory.Exists(AbsolutePath) ? File : Path.GetFileNameWithoutExtension(File);
         }
 
         public string AbsolutePath { get; set; }
