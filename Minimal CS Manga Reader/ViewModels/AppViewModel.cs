@@ -239,6 +239,22 @@ namespace Minimal_CS_Manga_Reader
             }
         }
 
+        public void ClearWindow()
+        {
+            Ts.Cancel();
+            T?.Wait(Ts.Token);
+            DataSource.Path = "FirstTimeNotSet";
+            DataSource.Title = "";
+            WindowTitle = "Minimal CS Manga Reader";
+            DataSource.ImageList.Clear();
+            DataSource.ChapterList.Clear();
+            ImageHeight.Clear();
+            ImageDimension.Clear();
+            //Save
+            Config.Path = DataSource.Path;
+            Config.Save();
+        }
+
         #region Chapter Updater
 
         private Task T;

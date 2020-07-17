@@ -17,10 +17,10 @@ namespace Minimal_CS_Manga_Reader
         private readonly IUserConfig Config;
 
         private DataCollector collector;
-        public string Title { get; private set; } = "";
+        public string Title { get; set; } = "";
 
         public SourceList<Entry> ChapterList { get; private set; } = new SourceList<Entry>();
-        public string Path { get; private set; } = "";
+        public string Path { get; set; } = "";
 
         public string ActiveChapterPath { get; set; } = System.IO.Path.DirectorySeparatorChar.ToString();
 

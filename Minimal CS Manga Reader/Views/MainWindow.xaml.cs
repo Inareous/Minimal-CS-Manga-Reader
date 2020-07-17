@@ -182,6 +182,14 @@ namespace Minimal_CS_Manga_Reader
                     }
                 });
 
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.W) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                .Subscribe(_ => ViewModel.ClearWindow());
+
+            this.Events().KeyDown
+                .Where(x => x.Key.Equals(Key.O) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                .InvokeCommand(ViewModel.OpenFolder);
+
             this.WhenActivated(d =>
             {
                 new DialogParticipationRegistration(this).DisposeWith(d);
