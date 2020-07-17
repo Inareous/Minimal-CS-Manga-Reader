@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="400">
@@ -64,6 +65,41 @@
                     <ComboBox x:Name="OpenChapterOnLoadList" DisplayMemberPath="." FontSize="13" Width="120" Margin="0 0 15 0" />
                     <TextBlock Grid.Column="1" Width="290" VerticalAlignment="Center" TextAlignment="Left" TextWrapping="WrapWithOverflow">
                                 Open selected chapter when program is loaded
+                    </TextBlock>
+                </Grid>
+                <Grid HorizontalAlignment="Left" Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PopupBox StaysOpen="True" IsEnabled="True" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="1 0 5 0" x:Name="Popup">
+                        <materialDesign:PopupBox.ToggleContent>
+                            <Border Width="14" Height="14" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="PopupToggleButton" CornerRadius="2">
+                            </Border>
+                        </materialDesign:PopupBox.ToggleContent>
+                        <StackPanel>
+                        <Grid Visibility="Visible" Height="200" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300" />
+                                <ColumnDefinition Width="150" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:ColorPicker Grid.Column="0" x:Name="ColorPicker"/>
+                            <StackPanel Grid.Column="1" Margin="10">
+                                <TextBox x:Name="ColorTextBox"
+                                     Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" materialDesign:HintAssist.Hint="Color HEX value"
+                                     Margin="10 0 10 0"/>
+                                <Rectangle x:Name="BrushColor" Margin="10 10 10 0" Width="Auto" Height="50" />
+                            </StackPanel>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Grid.Column="2" Margin="10 10 10 10" x:Name="SetAccentColor" Content="Apply" Style="{DynamicResource MaterialDesignFlatMidBgButton}" />
+                                <Button Grid.Column="2" Margin="10 10 10 10" x:Name="CancelAccentColor" Content="Cancel" Style="{DynamicResource MaterialDesignFlatMidBgButton}" />
+                                <Button Grid.Column="2" Margin="10 10 10 10" x:Name="ResetAccentColor" Content="Reset to Default"  Style="{DynamicResource MaterialDesignFlatMidBgButton}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                    <TextBlock Grid.Column="1" Width="290" VerticalAlignment="Center" TextAlignment="Left" TextWrapping="WrapWithOverflow">
+                                Edit accent color
                     </TextBlock>
                 </Grid>
                 <CheckBox x:Name="ContextIntegrated" Content="Integrate Minimal CS Manga Reader with File Explorer Context"  FontSize="13" Margin="0 0 15 8" HorizontalAlignment="Left" />

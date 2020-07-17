@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Drawing2D;
+using System.Windows.Media;
 
 namespace Minimal_CS_Manga_Reader.Models
 {
@@ -15,6 +16,7 @@ namespace Minimal_CS_Manga_Reader.Models
         int ScrollIncrement { get; set; }
         SmoothingMode SmoothingMode { get; set; }
         Enums.Theme Theme { get; set; }
+        Color AccentColor { get; set; }
 
         void Load();
         void Save();

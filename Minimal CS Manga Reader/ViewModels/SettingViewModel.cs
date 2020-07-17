@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows.Media;
 
 namespace Minimal_CS_Manga_Reader
 {
@@ -20,6 +21,9 @@ namespace Minimal_CS_Manga_Reader
         public ReactiveCommand<Unit, Unit> Save { get; }
         public ReactiveCommand<Unit, Unit> SaveAndRefresh { get; }
         public ReactiveCommand<Unit, Unit> Close { get; }
+        public ReactiveCommand<Unit, Unit> SetAccentColor { get; }
+        public ReactiveCommand<Unit, Unit> CancelAccentColor { get; }
+        public ReactiveCommand<Unit, Unit> ResetAccentColor { get; }
         [Reactive] public bool ContextIntegrated { get; set; }
         [Reactive] public bool FitImagesToScreen { get; set; }
         [Reactive] public bool IsScrollBarVisible { get; set; }
@@ -63,7 +67,11 @@ namespace Minimal_CS_Manga_Reader
         public IEnumerable<Enums.Theme> ThemeList { get; set; } = Enum.GetValues(typeof(Enums.Theme)).Cast<Enums.Theme>();
         public IEnumerable<Enums.OpenChapterOnLoad> OpenChapterOnLoadList { get; set; } = Enum.GetValues(typeof(Enums.OpenChapterOnLoad)).Cast<Enums.OpenChapterOnLoad>();
         [Reactive] public Enums.OpenChapterOnLoad OpenChapterOnLoad { get; set; }
-
+        public Color InitialAccentColor { get; set; } = ThemeEditor.theme.PrimaryMid.Color;
+        [Reactive] public Color SelectedColor { get; set; } = ThemeEditor.theme.PrimaryMid.Color;
+        [Reactive] public Brush SelectedBrush { get; set; }
+        [Reactive] public bool IsPopupOpen { get; set; } = false;
+         
         readonly IUserConfig Config;
         public SettingViewModel(Action<SettingViewModel, bool> closeCallback, IUserConfig config)
         {
@@ -114,11 +122,38 @@ namespace Minimal_CS_Manga_Reader
                     // Restore theme
                     ThemeEditor.ModifyTheme(Config.Theme);
                 }
+                ThemeEditor.ChangePrimaryColor(Config.AccentColor);
+            });
+
+            SetAccentColor = ReactiveCommand.Create(() =>
+            {
+                InitialAccentColor = SelectedColor;
+                ThemeEditor.ChangePrimaryColor(SelectedColor);
+                IsPopupOpen = false;
+            });
+
+            CancelAccentColor = ReactiveCommand.Create(() =>
+            {
+                SelectedColor = Config.AccentColor;
+                IsPopupOpen = false;
+            });
+
+            ResetAccentColor = ReactiveCommand.Create(() =>
+            {
+                InitialAccentColor = Color.FromArgb(255, 154, 103, 234);
+                SelectedColor = InitialAccentColor;
+                ThemeEditor.ChangePrimaryColor(InitialAccentColor);
+                IsPopupOpen = false;
             });
 
             this.WhenValueChanged(x => x.SelectedTheme).Subscribe(x => 
             {
                 ThemeEditor.ModifyTheme(x);
+            });
+
+            this.WhenAnyValue(x => x.SelectedColor).Subscribe(x =>
+            {
+                SelectedBrush = new SolidColorBrush(SelectedColor);
             });
         }
 
@@ -131,6 +166,7 @@ namespace Minimal_CS_Manga_Reader
             Config.OpenChapterOnLoadChoice = OpenChapterOnLoad;
             Config.Background = SelectedBackground;
             Config.Theme = SelectedTheme;
+            Config.AccentColor = SelectedColor;
             Config.Save();
             if (_initialContextIntegrated != ContextIntegrated)
             {

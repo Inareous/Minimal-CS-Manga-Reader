@@ -211,6 +211,7 @@ namespace Minimal_CS_Manga_Reader
                 }
             });
             ThemeEditor.ModifyTheme(Config.Theme);
+            ThemeEditor.ChangePrimaryColor(Config.AccentColor);
             ImageMargin = $"0,0,0,{ImageMarginSetter}";
             ZoomScale = _zoomScaleSetter == 100 ? 1 : Math.Round(_zoomScaleSetter / 99.999999999999, 3);
             ActiveBackgroundView = Config.Background;
