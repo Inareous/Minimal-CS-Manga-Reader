@@ -198,7 +198,7 @@ namespace Minimal_CS_Manga_Reader
 
         private void Initialize()
         {
-            _ = Task.Run(async () =>
+            var updateChapter = Task.Run(async () =>
             {
                 DataSource.Initialize(Environment.GetCommandLineArgs());
                 var updated = await DataSource.SetChapter(DataSource.Path); // Self-initialize
@@ -220,6 +220,7 @@ namespace Minimal_CS_Manga_Reader
             ScrollIncrement = _scrollIncrement.ToString();
             _imageMarginSetter = Config.ImageMargin;
             ActiveBackgroundView = Config.Background;
+            updateChapter.Wait();
         }
 
         private void RefreshActiveIndex()

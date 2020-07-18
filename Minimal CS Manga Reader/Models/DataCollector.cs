@@ -28,19 +28,24 @@ namespace Minimal_CS_Manga_Reader
 
         public async Task<IEnumerable<Entry>> GetChapterListAsync(string Path, bool IsArchive)
         {
-            if (IsArchive) return new List<Entry> { new Entry(Path) };
+            if (IsArchive) return new List<Entry> { new Entry(Path, false, false) };
             var FilesInFolder = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
                                                         .Where(s => PathHelper.EnsureAcceptedImageTypes(s) != Enums.ImageType.NotImage));
             var Files = Task.Run(() => Directory.EnumerateFiles(Path, "*.*", SearchOption.TopDirectoryOnly)
-                                                .Where(s => PathHelper.EnsureAcceptedFileTypes(s)));
-            var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly));
+                                                .Where(s => PathHelper.EnsureAcceptedFileTypes(s))
+                                                .Select(x => new Entry(x, false, false))
+                                                );
+            var Folders = Task.Run(() => Directory.EnumerateDirectories(Path, "*", SearchOption.TopDirectoryOnly)
+                                                  .Select(x => new Entry(x, false, true))
+                                                  );
             await Task.WhenAll(Files, Folders, FilesInFolder).ConfigureAwait(false);
 
-            var ReturnList = (Files.Result ?? Enumerable.Empty<string>()).Concat(Folders.Result ?? Enumerable.Empty<string>());
-            var Entries = ReturnList.Select(x => new Entry(x));
-            var OrderedEntries = Entries.OrderBy(x => x.Name, new NaturalSortComparer(StringComparison.OrdinalIgnoreCase)).ToList();
-            if (FilesInFolder.Result.Any()) OrderedEntries.Insert(0, new Entry(Path));
-            return OrderedEntries;
+            var Entries = (Files.Result ?? Enumerable.Empty<Entry>())
+                        .Concat(Folders.Result ?? Enumerable.Empty<Entry>())
+                        .OrderBy(x => x.Name, new NaturalSortComparer(StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+            if (FilesInFolder.Result.Any()) Entries.Insert(0, new Entry(Path));
+            return Entries;
         }
 
         public void GetImages(string Path, SourceList<BitmapSource> imageList, CancellationToken token)
